@@ -1,11 +1,5 @@
 import { loadView } from "../helpers/loadView.js";
 import { inicioController } from "../views/inicio/inicioController.js";
-import { categoriaController } from "../views/categorias/categoriaController.js";
-import { productoController } from "../views/productos/productoController.js";
-import { crearCategoriaController } from "../views/categorias/crearCategoriaController.js";
-import { editarControllerCat } from "../views/categorias/editarController.js";
-import { editarControllerPro } from "../views/productos/editarController.js";
-import { crearProductoController } from "../views/productos/crearProductoController.js";
 import { registroController } from "../views/registro/registroController.js";
 import { loginController } from "../views/login/loginController.js";
 import { estaAutenticado } from "../helpers/auth.js";
