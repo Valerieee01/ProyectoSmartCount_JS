@@ -2,12 +2,39 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite App</title>
+    <link rel="stylesheet" href="/src/style.css">
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link href="/../fontawesome/css/all.css" rel="stylesheet" />
+    <link href="/../fontawesome/css/brands.css" rel="stylesheet" />
+    <link href="/../fontawesome/css/solid.css" rel="stylesheet" />
+    <link href="/../fontawesome/css/regular.css" rel="stylesheet" />
+    <link href="/../fontawesome/css/svg-with-js.css" rel="stylesheet" />  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   </head>
   <body>
-    <div id="app"></div>
+    <nav>
+      <div class="nav__header">
+        <div class="nav__logo">
+          <a href="#">Fix<span>Master S.A.S</span></a>
+        </div>
+        <div class="nav__menu__btn" id="menu-btn">
+          <span><i class="fa-solid fa-bars"></i></span>
+        </div>
+      </div>
+      <u class="nav__links" id="nav-links">
+        <li><a href="#">Nostros</a></li>
+        <li><a href="#">Servicios</a></li>
+        <li><a href="#">Responsable</a></li>
+        <li><a href="#">Contacto</a></li>
+      </u>
+  
+      <div class="nav__btns">
+        <button class="btn sign__up">Registrate</button>
+        <button class="btn sign__in">Inicia Sesion</button>
+      </div>
+
+    </nav>
     <script type="module" src="/src/main.js"></script>
   </body>
 </html>
