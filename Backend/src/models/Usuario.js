@@ -10,11 +10,11 @@ export class Usuario {
     return rows[0];
   }
 
-  static async create(nombre, email, hashedPassword) {
+  static async create(nombre, correo, hashedPassword) {
     console.log(nombre, email, hashedPassword);
     const [result] = await db.query(
-      "INSERT INTO usuarios (nombre, email, password) VALUES (?, ?, ?)",
-      [nombre, email, hashedPassword]
+      "INSERT INTO usuarios (nombre, correo, contrasena) VALUES (?, ?, ?)",
+      [nombre, correo, hashedPassword]
     );
     return result.insertId;
   }

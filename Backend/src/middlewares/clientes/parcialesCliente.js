@@ -1,7 +1,7 @@
 import { ResponseProvider } from "../../providers/ResponseProvider.js";
 import { campos } from "./campos.js";
 
-export const parcialesProducto = (req, res, next) => {
+export function parcialesPersona(req, res, next) {
   const errors = [];
   // Capturamos los campos del body de la petición
   const bodyKeys = Object.keys(req.body);
@@ -19,6 +19,7 @@ export const parcialesProducto = (req, res, next) => {
       400
     );
   }
+
   // Recorremos el arreglo de campos a validar
   for (const campo of campos) {
     const {
@@ -26,13 +27,9 @@ export const parcialesProducto = (req, res, next) => {
       required, // Si el campo es requerido
       minLength, // si el campo tiene un tamaño mínimo
       maxLength, // si el campo tiene un tamaño máximo
-      type, // Tipo de dato del campo
     } = campo;
-    // Asignamos el valor del campo a una variable
     const valor = req.body[name];
-    // Validamos que el valor no sea undefined
     if (valor !== undefined) {
-      // Validar el tipo de dato del campo y su valor no sea vacío
       if (required && valor === "") {
         errors.push({
           campo: name,
@@ -41,7 +38,7 @@ export const parcialesProducto = (req, res, next) => {
         // Si el campo es requerido y está vacío, continuamos al siguiente campo, evitando el resto de validaciones
         continue;
       }
-      // Validar el tamaño mínimo del campo
+      // Validar el tamaño mínimo y máximo del campo
       if (minLength && valor.length < minLength) {
         errors.push({
           campo: name,
@@ -58,22 +55,6 @@ export const parcialesProducto = (req, res, next) => {
         });
         // Si el campo no cumple con el tamaño máximo, continuamos al siguiente campo, evitando el resto de validaciones
         continue;
-      }
-      // Validar el tipo de dato del campo
-      // Validar que el campo sea de timpo numérico
-      if (type === "number" && valor) {
-        // Convertimos el valor a un número entero
-        const numero = Number(valor);    
-        // Validamos si el valor es un número
-        if (!Number.isInteger(numero)) {
-          // Si el valor no es un número entero, agregamos un error
-          errors.push({
-            campo: name,
-            message: `El campo ${name} debe ser un número entero.`,
-          });
-          // Si el campo no es un número entero, continuamos al siguiente campo, evitando el resto de validaciones
-          continue;
-        }
       }
     }
   }
