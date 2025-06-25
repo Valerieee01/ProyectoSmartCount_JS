@@ -1,61 +1,84 @@
 <!doctype html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>Vite App</title>
-    <link rel="stylesheet" href="/src/style.css">
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link href="/../fontawesome/css/all.css" rel="stylesheet" />
-    <link href="/../fontawesome/css/brands.css" rel="stylesheet" />
-    <link href="/../fontawesome/css/solid.css" rel="stylesheet" />
-    <link href="/../fontawesome/css/regular.css" rel="stylesheet" />
-    <link href="/../fontawesome/css/svg-with-js.css" rel="stylesheet" />  
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  </head>
-  <body>
-    <nav>
-      <div class="nav__header">
-        <div class="nav__logo">
-          <a href="#">Fix<span>Master</span></a>
-        </div>
-        <div class="nav__menu__btn" id="menu-btn">
-          <span><i class="ri-menu-line"></i></span>
-        </div>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>Vite App</title>
+  <link rel="stylesheet" href="/src/style.css">
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+  <link href="/../fontawesome/css/all.css" rel="stylesheet" />
+  <link href="/../fontawesome/css/brands.css" rel="stylesheet" />
+  <link href="/../fontawesome/css/solid.css" rel="stylesheet" />
+  <link href="/../fontawesome/css/regular.css" rel="stylesheet" />
+  <link href="/../fontawesome/css/svg-with-js.css" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+</head>
+
+<body>
+  <nav>
+    <div class="nav__header">
+      <div class="nav__logo">
+        <a href="#">Fix<span>Master</span></a>
       </div>
-      <ul class="nav__links" id="nav-links">
-        <li><a href="#">Nostros</a></li>
-        <li><a href="#">Servicios</a></li>
-        <li><a href="#">Responsable</a></li>
-        <li><a href="#">Contacto</a></li>
-      </ul>
-  
-      <div class="nav__btns">
-        <button class="btn sign__up">Registrate</button>
-        <button class="btn sign__in">Inicia Sesion</button>
-      </div>
-    </nav>
-
-    <div class="header heder__container">
-      <div class="header__image">
-        <div class="header__image__card header__image__card-1">
-          <span></span>
-        </div>
-
-        <div class="header__image__card header__image__card-1">
-          <span></span>
-        </div>
-
-        <div class="header__image__card header__image__card-1">
-          <span></span>
-        </div>
-
-        <div class="header__image__card header__image__card-1">
-          <span></span>
-        </div>
-        <img src="./src/assets/inicio/mixer-removebg-preview.png" alt="">
+      <div class="nav__menu__btn" id="menu-btn">
+        <span><i class="ri-menu-line"></i></span>
       </div>
     </div>
-  </body>
-  <script type="module" src="/src/main.js"></script>
+    <ul class="nav__links" id="nav-links">
+      <li><a href="#">Nostros</a></li>
+      <li><a href="#">Servicios</a></li>
+      <li><a href="#">Responsable</a></li>
+      <li><a href="#">Contacto</a></li>
+    </ul>
+
+    <div class="nav__btns">
+      <button class="btn sign__up">Registrate</button>
+      <button class="btn sign__in">Inicia Sesión</button>
+    </div>
+  </nav>
+  <header class="header__container">
+    <div class="header__image">
+      <div class="header__image__card header__image__card-1">
+        <span><i class="ri-tools-line"></i></i></span>
+        Mantenimientos
+      </div>
+      <div class="header__image__card header__image__card-2">
+        <span><i class="ri-user-community-line"></i></span>
+        Asesorias
+      </div>
+      <div class="header__image__card header__image__card-3">
+        <span><i class="ri-paint-fill"></i></span>
+        Pintura
+      </div>
+      <img src="./src/assets/inicio/mixer-removebg-preview.png" alt="header" />
+    </div>
+    <div class="header__content">
+      <h1>VEN CONOCENOS!<br />LA <span>HONESTIDAD</span> ES NUESTRO FUERTE</h1>
+      <p>
+        Fixmaster, soms unas empresa donde tus equipos estan en total seguridad y confort
+        cada paso que damos lo hacemos pensando en nuestros clientes, expertos en el sector industrial 
+        asesorias de ma mejor calidad, con profesionales certificados y calificados.
+      </p>
+      <form action="/">
+        <div class="input__row">
+          <div class="input__group">
+            <h5>Ubicación</h5>
+            <div>
+              <span><i class="ri-map-pin-line"></i></span>
+              <input type="text" placeholder="Bucaramanga, Santander" />
+            </div>
+          </div>
+        </div>
+        <button type="submit">Conoce más</button>
+      </form>
+      <div class="bar">
+        Copyright © 2024 Web Design Mastery. All rights reserved.
+      </div>
+    </div>
+  </header>
+</body>
+<script src="https://unpkg.com/scrollreveal"></script>
+<script type="module" src="/src/main.js"></script>
+
 </html>

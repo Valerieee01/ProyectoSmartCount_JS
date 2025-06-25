@@ -1,39 +1,39 @@
 import connection from "../utils/db.js";
 
-class Mantenimiento {
+class Pago {
     
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT * FROM mantenimientos");
+            const [rows] = await connection.query("SELECT * FROM personas");
             return rows; 
         } catch (error) {
-            throw new Error("Error al obtener los mantenmientos");
+            throw new Error("Error al obtener las categorías");
         }
     }
 
     async getById() {
         try {
-            const [rows] = await connection.query( "SELECT * FROM mantenimientos WHERE id = ?",[id]);
+            const [rows] = await connection.query( "SELECT * FROM personas WHERE id = ?",[id]);
             if (rows.length === 0) {
-                return []; // Retorna un array vacío si no se encuentra la mantenimiento
+                return []; // Retorna un array vacío si no se encuentra la persona
             }
         return [];
         } catch (error) {
-                  throw new Error("Error al obtener la mantenimiento");
+                  throw new Error("Error al obtener la persona");
         }
     }
 
     // Método para crear una nueva categoría
-  async create(id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones) {
+  async create(id_cliente, id_mantenimento, detalle, valor_trabajo, valor_pagado, estado_pago, fecha_facturacion, dias_plazo) {
     try {
       const [result] = await connection.query(
-        "INSERT INTO mantenimientos (id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones]
+        "INSERT INTO pagos (id_cliente, id_mantenimento, detalle, valor_trabajo, valor_pagado, estado_pago, fecha_facturacion, dias_plazo) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [id_cliente, id_mantenimento, detalle, valor_trabajo, valor_pagado, estado_pago, fecha_facturacion, dias_plazo]
       );
       if (result.affectedRows === 0) {
-        return null; // Retorna null si no se pudo crear la mantenimiento
+        return null; // Retorna null si no se pudo crear la persona
       }
-      // Retorna la nueva mantenimiento creada
+      // Retorna la nueva persona creada
       return { id: result.insertId, };
     } catch (error) {
       throw new Error("Error al crear el pago");
@@ -42,7 +42,7 @@ class Mantenimiento {
 
    async update(id, campos) {
     try {
-      let query = "UPDATE mantenimientos SET ";
+      let query = "UPDATE personas SET ";
       let params = [];
 
       // Construimos dinámicamente la consulta de actualización solo con los campos proporcionados
@@ -60,31 +60,31 @@ class Mantenimiento {
       const [result] = await connection.query(query, params);
       return result.affectedRows > 0 ? { id, ...campos } : null;
     } catch (error) {
-      throw new Error("Error al actualizar el mantenimiento");
+      throw new Error("Error al actualizar el pago");
     }
   }
 
-   // Método para eliminar una Mantenimiento
-  async delete(id_mantenimiento) {
+   // Método para eliminar una Pago
+  async delete(personaId) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(
-      "DELETE FROM mantenimiento WHERE id_mantenimiento = ?",
-      [id_mantenimiento]
+      "DELETE FROM persona WHERE personaId = ?",
+      [personaId]
     );
 
     if (result.affectedRows === 0) {
       return {
         error: true,
-        mensaje: "No se pudo eliminar el mantenimiento, ocurrio un error inesperado.",
+        mensaje: "No se pudo eliminar el pago, ocurrio un error inesperado.",
       };
     }
 
     return {
       error: false,
-      mensaje: "Mantenimiento eliminado exitosamente.",
+      mensaje: "Pago eliminado exitosamente.",
     };
   }
 
 }
 
-export default Mantenimiento;
+export default Pago;

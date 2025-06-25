@@ -4,8 +4,7 @@ import dotenv from "dotenv"; // trabajar con el archivo de configuracion
 import cors from "cors";// para trabajar fuera del dominio
 import bodyParser from "body-parser"; //parsear de lo que recibire en la informacion
 import cookieParser from "cookie-parser"; // autenticacion para enviar una cookie
-import productoRoutes from "./src/routes/productosRoutes.js";
-import categoriasRoutes from "./src/routes/categoriasRoutes.js";
+import clientesRoutes from './src/routes/clientesRoutes.js';
 import authRoutes from "./src/routes/authRoutes.js";
 import administradorRoutes from "./src/routes/administradorRoutes.js";
 
@@ -24,8 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 // Permite manejar cookies en las respuestas.
 app.use(cookieParser());
 // Rutas
-app.use('/api/productos', productoRoutes);
-app.use("/api/categorias", categoriasRoutes);
+app.use('/api/clientes', clientesRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/admin", administradorRoutes);
 

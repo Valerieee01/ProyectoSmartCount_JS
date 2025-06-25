@@ -4,16 +4,17 @@ class Cliente {
     
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT * FROM clientes");
+            const [rows] = await connection.query("SELECT p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona ");
             return rows; 
         } catch (error) {
             throw new Error("Error al obtener las clientes");
         }
     }
 
-    async getById() {
+    async getById(id) {
         try {
-            const [rows] = await connection.query( "SELECT * FROM clientes WHERE id = ?",[id]);
+            const [rows] = await connection.query( "SELECT p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona "
+              + "WHERE c.id_cliente = p.id_persona",[id]);
             if (rows.length === 0) {
                 return []; // Retorna un array vacío si no se encuentra la categoría
             }
