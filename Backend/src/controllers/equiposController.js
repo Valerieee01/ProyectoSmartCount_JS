@@ -1,5 +1,5 @@
 import { ResponseProvider } from "../providers/ResponseProvider.js";
-import EquipoService from "../services/EquipoService.js";
+import EquipoService from "../services/EquipoServices.js";
 
 class EquiposController {
 
@@ -61,10 +61,10 @@ class EquiposController {
 
   // Crear una nueva categoría
   static createEquipos = async (req, res) => {
-    const { id_persona } = req.body;
+    const { numero_equipo, placa, descripcion, id_cliente } = req.body;
     try {
-      const response = await EquipoService.createCliente(
-        id_persona
+      const response = await EquipoService.createEquipo(
+        numero_equipo, placa, descripcion, id_cliente
       );
       if (response.error) {
         // Llamamos el equipo para centralizar los mensajes de respuesta

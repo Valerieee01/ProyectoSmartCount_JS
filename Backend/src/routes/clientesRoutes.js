@@ -5,9 +5,6 @@ import ClientesController from "../controllers/clientesController.js";
 import {parcialesCliente} from "../middlewares/clientes/parcialesCliente.js";
 import {camposCliente} from "../middlewares/clientes/camposCliente.js";
 
-
-
-
 const router = express.Router();
 // Creamos una instancia del controlador
 

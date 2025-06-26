@@ -118,7 +118,7 @@ class EmpleadosController {
   };
 
   // Eliminar una categoría
-  static deleteCliente = async (req, res) => {
+  static deleteEmpleado = async (req, res) => {
     const { id } = req.params;
     try {
       // Llamamos al servicio para eliminar la categoría
