@@ -68,7 +68,7 @@ class Mantenimiento {
   async delete(id_mantenimiento) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(
-      "DELETE FROM mantenimiento WHERE id_mantenimiento = ?",
+      "DELETE FROM mantenimientos WHERE id_mantenimiento = ?",
       [id_mantenimiento]
     );
 

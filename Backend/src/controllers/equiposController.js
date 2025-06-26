@@ -117,12 +117,12 @@ class EquiposController {
     }
   };
 
-  // Eliminar una categoría
-  static deleteCliente = async (req, res) => {
+  // Eliminar un equipo
+  static deleteEquipos = async (req, res) => {
     const { id } = req.params;
     try {
       // Llamamos al servicio para eliminar la categoría
-      const response = await EquipoService.deleteCliente(id);
+      const response = await EquipoService.deleteEquipo(id);
       if (response.error) {
         // Llamamos el equipo para centralizar los mensajes de respuesta
         ResponseProvider.error(

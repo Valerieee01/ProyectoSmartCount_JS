@@ -1,2 +1,2 @@
-export * from "./camposPersona.js";
-export * from "./parcialesPersona.js";
+export * from "./camposPagos.js";
+export * from "./parcialesPagos.js";

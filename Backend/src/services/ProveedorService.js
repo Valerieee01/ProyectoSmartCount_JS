@@ -2,7 +2,7 @@ import Proveedor from "../models/Proveedor.js";
 
 class ProveedorService { 
 
-  static async getProveedors()
+  static async getProveedores()
   { 
     try {
       const proveedorInstance = new Proveedor();
@@ -31,7 +31,7 @@ class ProveedorService {
     }
   }
 
-  static async getProveedorsById(id) {
+  static async getProveedoresById(id) {
     try {
       const proveedorInstance = new Proveedor();
       const proveedores = await proveedorInstance.getById(id);

@@ -4,7 +4,7 @@ class Pago {
     
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT * FROM personas");
+            const [rows] = await connection.query("SELECT * FROM pagos");
             return rows; 
         } catch (error) {
             throw new Error("Error al obtener las categorías");
@@ -13,7 +13,7 @@ class Pago {
 
     async getById() {
         try {
-            const [rows] = await connection.query( "SELECT * FROM personas WHERE id = ?",[id]);
+            const [rows] = await connection.query( "SELECT * FROM pagos WHERE id = ?",[id]);
             if (rows.length === 0) {
                 return []; // Retorna un array vacío si no se encuentra la persona
             }
@@ -42,7 +42,7 @@ class Pago {
 
    async update(id, campos) {
     try {
-      let query = "UPDATE personas SET ";
+      let query = "UPDATE pagos SET ";
       let params = [];
 
       // Construimos dinámicamente la consulta de actualización solo con los campos proporcionados
@@ -65,11 +65,11 @@ class Pago {
   }
 
    // Método para eliminar una Pago
-  async delete(personaId) {
+  async delete(id) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(
-      "DELETE FROM persona WHERE personaId = ?",
-      [personaId]
+      "DELETE FROM pagos WHERE id_pago = ?",
+      [id]
     );
 
     if (result.affectedRows === 0) {

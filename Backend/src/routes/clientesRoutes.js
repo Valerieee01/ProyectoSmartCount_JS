@@ -9,7 +9,7 @@ const router = express.Router();
 // Creamos una instancia del controlador
 
 // Obtener todas las clientes
-router.get("/",  ClientesController.getAllClientes);
+router.get("/", ClientesController.getAllClientes);
 
 // Obtener una cliente por ID
 router.get("/:id",  ClientesController.getClientesById);

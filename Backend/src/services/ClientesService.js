@@ -35,6 +35,8 @@ class ClienteService {
     try {
       const clienteInstance = new Cliente();
       const cliente = await clienteInstance.getById(id);
+      console.log(cliente);
+      
       // Validamos si no hay clientes
       if (cliente.length === 0) {
         return {
@@ -43,22 +45,17 @@ class ClienteService {
           message: "Clientes no encontrada",
         };
       }
-      // Consultamos los productos asociados a la categoría
-      const productos = await clienteInstance.productos(id);
-      // Agregamos la propiedad productos al objeto categoría
-      cliente.productos = productos;
-      // Retornamos la categoría obtenida
       return {
         error: false,
         code: 200,
-        message: "Categoría obtenida correctamente",
+        message: "Cliente obtenido correctamente",
         data: cliente,
       };
-    } catch (error) {
+    } catch (error) {      
       return {
         error: true,
         code: 500,
-        message: "Error al obtener la categoría",
+        message: "Error al obtener el Cliente",
       };
     }
   }
