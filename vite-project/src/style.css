@@ -35,6 +35,7 @@ nav {
   isolation: isolate;
   width: 100%;
   z-index: 9;
+  background-color: var(--white);
 }
 
 .nav__header {
@@ -102,6 +103,7 @@ nav {
   display: grid;
   gap: 2rem;
   overflow-x: hidden;
+  height: 100vh;
 }
 
 .header__image {
@@ -279,12 +281,195 @@ nav {
   text-align: center;
 }
 
+
+/* --- General Section Styles --- */
+.section__container {
+  max-width: var(--max-width);
+  margin: auto;
+  padding-block: 4rem 2rem; 
+  padding-inline: 1rem;
+}
+
+.section__header {
+  text-align: center;
+  margin-bottom: 3rem;
+}
+
+.section__header h2 {
+  font-size: 3rem;
+  font-weight: 400;
+  font-family: var(--header-font);
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.section__header p {
+  color: var(--text-light);
+  line-height: 1.75rem;
+}
+
+/* --- Nosotros Section Styles --- */
+.about__grid {
+  display: grid;
+  gap: 2rem;
+}
+
+.about__content h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.about__content p {
+  color: var(--text-dark);
+  line-height: 1.75rem;
+  text-align: center;
+}
+
+.about__image {
+  max-width: 400px;
+  margin: auto;
+}
+
+/* --- Servicios Section Styles --- */
+.services__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 2rem;
+}
+
+.service__card {
+  background-color: var(--white);
+  padding: 1.5rem;
+  text-align: center;
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+  transition: 0.3s;
+}
+
+.service__card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.service__icon {
+  display: inline-block;
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.service__card h4 {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  margin-bottom: 0.75rem;
+}
+
+.service__card p {
+  color: var(--text-light);
+  line-height: 1.6rem;
+}
+
+/* --- Responsable Section Styles --- */
+.responsible__content {
+  display: grid;
+  gap: 2rem;
+}
+
+.responsible__text p {
+  color: var(--text-dark);
+  line-height: 1.75rem;
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+.responsible__image {
+  max-width: 500px;
+  margin: auto;
+}
+
+
+/* --- Contacto Section Styles --- */
+.contact__form__container {
+  max-width: 700px;
+  margin: auto;
+  padding: 2rem;
+  background-color: var(--white);
+  border-radius: 10px;
+  box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+}
+
+.contact__form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.contact__form .input__group {
+  display: flex;
+  flex-direction: column;
+}
+
+.contact__form .input__group label {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--text-dark);
+  margin-bottom: 0.5rem;
+}
+
+.contact__form .input__group input,
+.contact__form .input__group textarea {
+  padding: 0.8rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  font-size: 1rem;
+  color: var(--text-dark);
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.contact__form .input__group input:focus,
+.contact__form .input__group textarea:focus {
+  border-color: var(--primary-color);
+}
+
+.contact__form .input__group textarea {
+  resize: vertical;
+}
+
+.contact__form .full-width {
+  grid-column: 1 / -1; /* Makes the textarea span full width on larger screens */
+}
+
+.contact__form .submit__button {
+  width: 100%;
+  padding: 1rem 2rem;
+  outline: none;
+  border: none;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--white);
+  background-color: var(--primary-color);
+  border-radius: 10px;
+  transition: 0.3s;
+  cursor: pointer;
+  margin-top: 1rem;
+}
+
+.contact__form .submit__button:hover {
+  background-color: var(--primary-color-dark);
+}
+
+
+
 @media (width > 768px) {
   nav {
-    position: static;
+    position: fixed;
     padding-block: 2rem 0;
     padding-inline: 1rem;
-    max-width: var(--max-width);
+    max-width: 100%;
     margin-inline: auto;
     display: flex;
     align-items: center;
@@ -375,7 +560,49 @@ nav {
   .header__content :is(h1, p, .bar) {
     text-align: left;
   }
+
+
+  /* Nosotros Section Media Queries */
+  .about__grid {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+  }
+
+  .about__content h3,
+  .about__content p {
+    text-align: left;
+  }
+
+  .about__image {
+    margin: 0; /* Reset margin for larger screens */
+  }
+
+  /* Responsible Section Media Queries */
+  .responsible__content {
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+  }
+
+  .responsible__text p {
+    text-align: left;
+  }
+
+  /* Contacto Section Media Queries */
+  .contact__form {
+    grid-template-columns: repeat(2, 1fr); /* Two columns for inputs */
+  }
+
+  .contact__form .full-width {
+    grid-column: 1 / -1; /* Keeps textarea full width */
+  }
+
+  .contact__form .submit__button {
+    width: fit-content; /* Adjust button width */
+    justify-self: end; /* Align button to the right */
+  }
 }
+
+
 
 @media (width > 1024px) {
   .header__content form {
