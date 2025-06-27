@@ -7,36 +7,69 @@ class Empleado {
             const [rows] = await connection.query("SELECT * FROM empleados");
             return rows; 
         } catch (error) {
-            throw new Error("Error al obtener las empleados");
+            throw new Error("Error al obtener los empleados");
         }
     }
 
-    async getById() {
-        try {
-            const [rows] = await connection.query( "SELECT * FROM empleados WHERE id = ?",[id]);
-            if (rows.length === 0) {
-                return []; // Retorna un array vacío si no se encuentra la categoría
-            }
-        return [];
-        } catch (error) {
-                  throw new Error("Error al obtener la persona");
-        }
+    async getById(id) {
+  try {
+    console.log(id);
+
+    const [rows] = await connection.query(
+      "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
+      "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona " +
+      "WHERE e.id_empleado = ?",
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return []; // retornar un array vacío si prefieres que la ausencia de resultados sea un array vacío
     }
+
+    return rows[0]; // Retorna el primer (y único) resultado encontrado, asumiendo que id_cliente es único
+  } catch (error) {
+    console.error("Error al obtener el cliente por ID:", error); // Usa console.error para errores
+    throw new Error("Error al obtener el cliente.");
+  }
+}
 
     // Método para crear una nueva categoría
   async create(id_persona) {
     try {
+      
+      // Verificar si la persona ya existe
+      const [existingPersona] = await connection.query(
+        "SELECT id_persona FROM personas WHERE id_persona = ?",
+        [id_persona]
+      );
+
+      if (existingPersona.length === 0) {
+        throw new Error("La persona con el ID proporcionado no existe.");
+      }
+
+      // Verificar si la persona ya es un cliente
+      const [existingEmpleado] = await connection.query(
+        "SELECT id_cliente FROM clientes WHERE id_persona = ?",
+        [id_persona]
+      );
+
+      if (existingEmpleado.length > 0) {
+        throw new Error("La persona ya es un cliente.");
+      }
+      
       const [result] = await connection.query(
-        "INSERT INTO personas (id_empleado) VALUES (?)",
+        "INSERT INTO empleados (id_empleado) VALUES (?)",
         [id_persona]
       );
       if (result.affectedRows === 0) {
         return null; // Retorna null si no se pudo crear la empleado
       }
-      // Retorna la nueva persona creada
+      // Retorna la nueva empleado creado
       return { id: result.insertId, id_persona };
     } catch (error) {
-      throw new Error("Error al crear la empleado");
+      console.log(error);
+      
+      throw new Error("Error al crear el empleado");
     }
   }
 

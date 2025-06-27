@@ -37,9 +37,8 @@ class ClientesController {
     
     try {
       // Llamamos al servicio para obtener la categoría por su ID
-      const response = await ClienteSe
-      rvice.getClientesById(id);
-      console.log(response);
+      const response = await ClienteService.getClientesById(id);
+    
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta
         return ResponseProvider.error(
@@ -64,10 +63,10 @@ class ClientesController {
 
   // Crear una nueva categoría
   static createClientes = async (req, res) => {
-    const { id_persona } = req.body;
+    const { id_cliente } = req.body;
     try {
       const response = await ClienteService.createCliente(
-        id_persona
+        id_cliente
       );
       if (response.error) {
         // Llamamos el provider para centralizar los mensajes de respuesta

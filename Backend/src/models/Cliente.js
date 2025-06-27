@@ -10,24 +10,31 @@ class Cliente {
       throw new Error("Error al obtener las clientes");
     }
   }
+  // Método para buscar un cliente por id
 
   async getById(id) {
-    try {
-      const [rows] = await connection.query("SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
-        "FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona " +
-        "WHERE c.id_cliente = ?" [id]);
-      if (rows.length === 0) {
-        return []; // Retorna un array vacío si no se encuentra la categoría
-      }
-      return [];
-    } catch (error) {
-      console.log(error);
-      
-      throw new Error("Error al obtener el clientes");
-    }
-  }
+  try {
+    console.log(id);
 
-  // Método para crear una nueva categoría
+    const [rows] = await connection.query(
+      "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
+      "FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona " +
+      "WHERE c.id_cliente = ?",
+      [id]
+    );
+
+    if (rows.length === 0) {
+      return []; // retornar un array vacío si prefieres que la ausencia de resultados sea un array vacío
+    }
+
+    return rows[0]; // Retorna el primer (y único) resultado encontrado, asumiendo que id_cliente es único
+  } catch (error) {
+    console.error("Error al obtener el cliente por ID:", error); // Usa console.error para errores
+    throw new Error("Error al obtener el cliente.");
+  }
+}
+
+  // Método para crear  un cliente
   async create(id_persona) {
     try {
 
@@ -43,7 +50,7 @@ class Cliente {
 
       // Verificar si la persona ya es un cliente
       const [existingClient] = await connection.query(
-        "SELECT id_cliente FROM clientes WHERE id_persona = ?",
+        "SELECT id_cliente FROM clientes WHERE id_cliente = ?",
         [id_persona]
       );
 
@@ -61,6 +68,7 @@ class Cliente {
       // Retorna el nueva cliente creado
       return { id: result.insertId, id_persona };
     } catch (error) {
+      console.log(error);
       throw new Error("Error al crear la cliente");
     }
   }

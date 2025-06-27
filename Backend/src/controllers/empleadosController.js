@@ -3,7 +3,7 @@ import EmpleadoService from "../services/EmpleadosService.js";
 
 class EmpleadosController {
 
-  // Obtener todas las empleados
+  // Obtener todos los empleados
   static getAllEmpleados = async (req, res) => {    
     try {
       // Llamamos al servicio para obtener las empleados
@@ -61,10 +61,10 @@ class EmpleadosController {
 
   // Crear una nueva categoría
   static createEmpleados = async (req, res) => {
-    const { id_persona } = req.body;
+    const { id_empleado } = req.body;
     try {
-      const response = await EmpleadoService.createCliente(
-        id_persona
+      const response = await EmpleadoService.createEmpleado(
+        id_empleado
       );
       if (response.error) {
         // Llamamos el empleado para centralizar los mensajes de respuesta
@@ -95,7 +95,7 @@ class EmpleadosController {
     const campos = req.body;
     try {
       // Crear una instancia de la clase Categoria
-      const clientes = await EmpleadoService.updateCliente(id, campos);
+      const clientes = await EmpleadoService.updateEmpleado(id, campos);
       // Validamos si no se pudo actualizar la categoría
       if (clientes.error) {
         ResponseProvider.error(
@@ -122,7 +122,7 @@ class EmpleadosController {
     const { id } = req.params;
     try {
       // Llamamos al servicio para eliminar la categoría
-      const response = await EmpleadoService.deleteCliente(id);
+      const response = await EmpleadoService.deleteEmpleado(id);
       if (response.error) {
         // Llamamos el empleado para centralizar los mensajes de respuesta
         ResponseProvider.error(

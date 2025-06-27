@@ -51,6 +51,8 @@ class EmpleadoService {
         data: empleados,
       };
     } catch (error) {
+      console.log(error);
+      
       return {
         error: true,
         code: 500,
@@ -75,10 +77,12 @@ class EmpleadoService {
       return {
         error: false,
         code: 201,
-        message: "empleado creada correctamente",
+        message: "empleado creado correctamente",
         data: empleados,
       };
     } catch (error) {
+      console.log(error);
+      
       return {
         error: true,
         code: 500,
