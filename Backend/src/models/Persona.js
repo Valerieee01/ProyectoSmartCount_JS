@@ -24,11 +24,11 @@ class Persona {
     }
 
     // Método para crear una nueva categoría
-  async create(nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) {
+  async create(nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado, id_usuario) {
     try {
       const [result] = await connection.query(
-        "INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado]
+        "INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
+        [nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado, id_usuario]
       );
       if (result.affectedRows === 0) {
         return null; // Retorna null si no se pudo crear la persona

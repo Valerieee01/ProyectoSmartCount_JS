@@ -1,19 +1,19 @@
 export const campos = [
   {
-    name: "nombre",
+    name: "nombreCompleto",
     required: true,
     minLength: 6,
     maxLength: 40
   },
   {
-    name: "email",
+    name: "correo",
     required: true,
     minLength: 6,
     maxLength: 40,
     type: "email",
   },
   {
-    name: "password",
+    name: "contrasena",
     required: true,
     minLength: 6,
     maxLength: 40

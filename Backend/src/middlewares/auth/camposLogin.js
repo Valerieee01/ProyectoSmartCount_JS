@@ -2,14 +2,14 @@ import { ResponseProvider } from "../../providers/ResponseProvider.js";
 // Campos personalizados para validar el login
 const campos = [
   {
-    name: "email",
+    name: "correo",
     required: true,
     minLength: 6,
     maxLength: 40,
     type: "email",
   },
   {
-    name: "password",
+    name: "contrasena",
     required: true,
     minLength: 6,
     maxLength: 40,

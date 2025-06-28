@@ -1,14 +1,14 @@
 <div class="body">
     <div class="container">
         <div class="form-box login">
-            <form action="">
+            <form action="" id="formLogin">
                 <h1>Inicio Sesion</h1>
                 <div class="input-box">
-                    <input type="text" placeholder="Usuario" required>
+                    <input type="text" placeholder="Usuario" id="correo">
                     <i class="ri-user-line"></i>
                 </div>
                 <div class="input-box">
-                    <input type="password" placeholder="Contraseña" required>
+                    <input type="password" placeholder="Contraseña" id="contrasena">
                     <i class="ri-lock-password-line"></i>
                 </div>
                 <div class="forgot-link">
@@ -27,22 +27,18 @@
         </div>
 
         <div class="form-box register">
-            <form action="">
+            <form action="" id="formRegister">
                 <h1>Registro</h1>
                 <div class="input-box">
-                    <input type="text" placeholder="Usuario" required>
+                    <input type="text" placeholder="Nombre Usuario" id="nombre">
                     <i class="ri-user-line"></i>
                 </div>
                 <div class="input-box">
-                    <input type="email" placeholder="Correo" required>
+                    <input type="email" placeholder="Correo" id="correo">
                     <i class="ri-mail-line"></i>
                 </div>
                 <div class="input-box">
-                    <input type="text" placeholder="Rol" required>
-                    <i class="ri-group-3-line"></i>               
-                </div>
-                <div class="input-box">
-                    <input type="password" placeholder="Contraseña" required>
+                    <input type="password" placeholder="Contraseña" id="contrasena">
                     <i class="ri-lock-password-line"></i>
                 </div>
                 <button type="submit" class='btn'>Registrase</button>
@@ -68,6 +64,4 @@
             </div>
         </div>
     </div>
-    <script type="module" src="/src/views/login_register/app.js"></script>
-    <link rel="stylesheet" href="/src/views/login_register/loginRegister.css">
-</div>
+   </div>

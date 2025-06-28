@@ -30,7 +30,9 @@ class AuthService {
       const userId = await Usuario.create(nombre, email, hashedPassword);
       // Retornamos la respuesta
       return { error: false, code: 201, message: "Usuario creado" };
-    } catch (error) {      
+    } catch (error) {
+      console.log(error);
+
       return { error: true, code: 500, message: "Error al crear el usuario" };
     }
   }
@@ -41,9 +43,11 @@ class AuthService {
    * @returns
    */
   static async login(email, password) {
+    
     try {
       // Consultamos el usuario por el email
       const user = await Usuario.findByEmail(email);
+      console.log(user.contrasena);
       // Validamos si el usuario esta registrado en la base de datos      
       if (!user)
         return {
@@ -52,7 +56,8 @@ class AuthService {
           message: "El correo o la contraseña proporcionados no son correctos.",
         };
       // Comparmamos la contraseña del usuarios registrado con la ingresada basado en la llave de encriptación
-      const validPassword = await bcrypt.compare(password, user.password);
+      const validPassword = await bcrypt.compare(password, user.contrasena);
+      
       // Validamos si la contraseña es la misma
       if (!validPassword)
         return {
@@ -65,7 +70,7 @@ class AuthService {
       // Generamos el refresh token
       const refreshToken = this.generateRefreshToken(user);
       // Actualizamos el refreshToken en la base de datos
-      await Usuario.updateRefreshToken(user.id, refreshToken);
+      await Usuario.updateRefreshToken(user.id_usuario, refreshToken);
       // Retornamos los datos de validación del usuario
       return {
         error: false,

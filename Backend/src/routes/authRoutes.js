@@ -14,7 +14,7 @@ import {
 const router = express.Router();
 
 // Registro de usuario
-router.post("/register", camposRegistro, register);
+router.post("/registro", camposRegistro, register);
 
 // Inicio de sesión
 router.post("/login",camposLogin, login);

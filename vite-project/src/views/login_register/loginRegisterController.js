@@ -1,6 +1,8 @@
+import { loginController } from "./loginController";
+import { registroController } from "./registroController";
 
-export const loginRegisterController = (params) => {
-    // Select elements after the view is loaded into the DOM
+export const loginRegisterController = () => {
+    
     const container = document.querySelector('.container');
     const registerBtn = document.querySelector('.register-btn');
     const loginBtn = document.querySelector('.login-btn');
@@ -18,16 +20,23 @@ export const loginRegisterController = (params) => {
            
         });
 
-        if (location.hash === "#registro") {
-            container.classList.add('active');
-        } else if (location.hash === "#login") {
-            container.classList.remove('active');
-        }
+        
     } else {
         console.error("Login/Register elements not found in the DOM.");
     }
-
     
+    registerBtn.addEventListener('click' , () => { 
+        location.hash = "#registro";
+    });
+    loginBtn.addEventListener('click' , () => {
+        location.hash = "#login";
+    });
+    
+    if (location.hash === "#registro") {
+        registroController(container);
+    } else if (location.hash === "#login") {
+        loginController(container)
+    }
 };
     
 

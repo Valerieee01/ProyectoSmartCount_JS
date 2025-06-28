@@ -73,11 +73,11 @@ const header = (navMenu) => {
     divNavHeader.append(divNavLogo, divNavMenuBtn);
 
     btnInicioSesion.addEventListener('click', () => {
-        location.hash = "#login"; // Router listens for hashchange
+        location.hash = "#login"; 
     });
 
     btnRegistro.addEventListener('click', () => {
-        location.hash = "#registro"; // Router listens for hashchange
+        location.hash = "#registro"; 
     });
 
     navMenu.append(divNavHeader, ulMenu, navBtn);

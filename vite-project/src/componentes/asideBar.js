@@ -100,3 +100,5 @@ const asideBar = (asideBar) => {
     asideBar.append(divContainer);
 
 }
+
+export default asideBar;

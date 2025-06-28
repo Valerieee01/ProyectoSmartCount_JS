@@ -2,9 +2,9 @@ import { ResponseProvider } from "../providers/ResponseProvider.js";
 import AuthService from "../services/AuthService.js";
 
 export const register = async (req, res) => {
-  const { nombre, email, password } = req.body;
+  const { nombreCompleto, correo, contrasena } = req.body;
   try {
-    const response = await AuthService.register(nombre, email, password);
+    const response = await AuthService.register(nombreCompleto, correo, contrasena);
     if (!response.error) {
       // Llamamos el provider para centralizar los mensajes de respuesta
       ResponseProvider.success(res, {}, response.message, response.code);
@@ -19,9 +19,11 @@ export const register = async (req, res) => {
 }
 
 export const login = async (req, res) => {
-  const { email, password } = req.body;
+  const { correo, contrasena } = req.body;
+  console.log(correo, contrasena);
+  
   try {
-    const response = await AuthService.login(email, password);
+    const response = await AuthService.login(correo, contrasena);
     if (response.error) {
       console.log(response);
       
