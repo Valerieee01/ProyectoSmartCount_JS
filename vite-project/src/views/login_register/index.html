@@ -1,38 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FixmasterSAS</title>
-    <link href="https://cdn.jsdelivr.net/npm/remixicon@4.5.0/fonts/remixicon.css" rel="stylesheet" />
-    <link rel="stylesheet" href="style.css">
-   </head>
-<body>
-    
+<div class="body">
     <div class="container">
         <div class="form-box login">
             <form action="">
                 <h1>Inicio Sesion</h1>
                 <div class="input-box">
                     <input type="text" placeholder="Usuario" required>
-                    <i class="fa-solid fa-user"></i>
+                    <i class="ri-user-line"></i>
                 </div>
                 <div class="input-box">
                     <input type="password" placeholder="Contraseña" required>
-                    <i class="fa-solid fa-lock"></i>
+                    <i class="ri-lock-password-line"></i>
                 </div>
                 <div class="forgot-link">
                     <a href="#">Olvidaste tu Contraseña</a>
 
                 </div>
-                <button type="submit" class ='btn'>Iniciar Sesion</button>
+                <button type="submit" class='btn'>Iniciar Sesion</button>
                 <p>Ingresar con otra cuenta</p>
-            <div class="social-icons">
-                <a href="#"><i class="ri-google-line"></i></a>
-                <a href="#"><i class="ri-facebook-circle-line"></i></a>
-                <a href="#"><i class="ri-github-fill"></i></a>
-                <a href="#"><i class="ri-linkedin-line"></i></a>
-            </div>
+                <div class="social-icons">
+                    <a href="#"><i class="ri-google-line"></i></a>
+                    <a href="#"><i class="ri-facebook-circle-line"></i></a>
+                    <a href="#"><i class="ri-github-fill"></i></a>
+                    <a href="#"><i class="ri-linkedin-line"></i></a>
+                </div>
             </form>
         </div>
 
@@ -41,24 +31,24 @@
                 <h1>Registro</h1>
                 <div class="input-box">
                     <input type="text" placeholder="Usuario" required>
-                    <i class="fa-solid fa-user"></i>
+                    <i class="ri-user-line"></i>
                 </div>
                 <div class="input-box">
                     <input type="text" placeholder="Correo" required>
-                    <i class="fa-solid fa-envelope"></i>
+                    <i class="ri-mail-line"></i>
                 </div>
                 <div class="input-box">
                     <input type="password" placeholder="Contraseña" required>
-                    <i class="fa-solid fa-lock"></i>
+                    <i class="ri-lock-password-line"></i>
                 </div>
-                <button type="submit" class ='btn'>Registrase</button>
+                <button type="submit" class='btn'>Registrase</button>
                 <p>Registrase con otra cuenta</p>
-            <div class="social-icons">
-                <a href="#"><i class="ri-google-line"></i></a>
-                <a href="#"><i class="ri-facebook-circle-line"></i></a>
-                <a href="#"><i class="ri-github-fill"></i></a>
-                <a href="#"><i class="ri-linkedin-line"></i></a>
-            </div>
+                <div class="social-icons">
+                    <a href="#"><i class="ri-google-line"></i></a>
+                    <a href="#"><i class="ri-facebook-circle-line"></i></a>
+                    <a href="#"><i class="ri-github-fill"></i></a>
+                    <a href="#"><i class="ri-linkedin-line"></i></a>
+                </div>
             </form>
         </div>
         <div class="toggel-box">
@@ -70,12 +60,10 @@
             <div class="toggle-panel toggle-right">
                 <h1>Bienvenido de vuelta</h1>
                 <p>Ya tienes una cuenta?</p>
-                <a class="btn login-btn" href="#inicioSesion">Inicia Sesion</a>
+                <a class="btn login-btn" href="#login">Inicia Sesion</a>
             </div>
         </div>
     </div>
-
-
-    <script type="module" src="app.js"></script>
-</body>
-</html>
+    <script type="module" src="/src/views/login_register/app.js"></script>
+    <link rel="stylesheet" href="/src/views/login_register/loginRegister.css">
+</div>

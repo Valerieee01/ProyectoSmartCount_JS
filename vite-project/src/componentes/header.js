@@ -1,8 +1,6 @@
-
-const header = () => {
-
+const header = (navMenu) => {
     const divNavHeader = document.createElement('div');
-    const divNavLogo =  document.createElement('div');
+    const divNavLogo = document.createElement('div');
     const divNavMenuBtn = document.createElement('div');
     const ulMenu = document.createElement('ul');
     const navBtn = document.createElement('div');
@@ -20,7 +18,6 @@ const header = () => {
 
     const logoSpan = document.createElement('span');
     const menuLineSpan = document.createElement('span');
-
     const menuLineIcon = document.createElement('i');
 
     const btnRegistro = document.createElement('a');
@@ -30,15 +27,14 @@ const header = () => {
     divNavLogo.classList.add('nav__logo');
     divNavMenuBtn.classList.add('nav__menu__btn');
     menuLineIcon.classList.add('ri-menu-line');
+    navBtn.classList.add('nav__btns');
 
-    ulMenu.classLists.add('nav__links');
+    ulMenu.classList.add('nav__links');
 
-    btnRegistro.classList.add('btn');
-    btnRegistro.classList.add('sign__up');
-    btnInicioSesion.classList.add('btn');
-    btnInicioSesion.classList.add('sign__in');
+    btnRegistro.classList.add('btn', 'sign__up');
+    btnInicioSesion.classList.add('btn', 'sign__in');
 
-    btnInicioSesion.setAttribute('href', '#inicioSesion');
+    btnInicioSesion.setAttribute('href', '#login'); 
     btnRegistro.setAttribute('href', '#registro');
 
     aNosotros.setAttribute('href', '#nosotros');
@@ -47,13 +43,12 @@ const header = () => {
     aContacto.setAttribute('href', '#contacto');
     aLogo.setAttribute('href', '#home');
 
-
-    divNavMenuBtn.setAttribute('id','menu-btn');
+    divNavMenuBtn.setAttribute('id', 'menu-btn');
     ulMenu.setAttribute('id', 'nav-links');
 
     aNosotros.textContent = 'Nosotros';
     aServicios.textContent = 'Servicios';
-    aResponsable.textContent = 'Resposable';
+    aResponsable.textContent = 'Responsable'; 
     aContacto.textContent = 'Contacto';
     aLogo.textContent = 'Fix';
     logoSpan.textContent = 'Master';
@@ -69,7 +64,6 @@ const header = () => {
     ulMenu.append(liNosotros, liServicios, liResponsable, liContacto);
     navBtn.append(btnRegistro, btnInicioSesion);
 
-
     aLogo.appendChild(logoSpan);
     divNavLogo.append(aLogo);
 
@@ -78,15 +72,15 @@ const header = () => {
 
     divNavHeader.append(divNavLogo, divNavMenuBtn);
 
-
     btnInicioSesion.addEventListener('click', () => {
-
+        location.hash = "#login"; // Router listens for hashchange
     });
 
     btnRegistro.addEventListener('click', () => {
-        
+        location.hash = "#registro"; // Router listens for hashchange
     });
-    
-}
+
+    navMenu.append(divNavHeader, ulMenu, navBtn);
+};
 
 export default header;
