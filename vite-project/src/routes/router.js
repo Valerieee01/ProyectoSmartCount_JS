@@ -1,32 +1,23 @@
 import { loadView } from "../helpers/loadView.js";
 // import { inicioController } from "../views/inicio/inicioController.js";
 // import { registroController } from "../views/registro/registroController.js";
-// import { loginController } from "../views/login/loginController.js";
+// import { loginController } from "../views/login_register/login_registerController.js";
 // import { estaAutenticado } from "../helpers/auth.js";
 
-// const routes = {
-//   home: {
-//     template: "home/index.html",
-//     controlador: inicioController,
-//     private: false,
-//   },
-//   login: {
-//     template: "login/index.html",
-//     controlador: loginController,
-//     private: false,
-//   },
-//   registro: {
-//     template: "registro/index.html",
-//     controlador: registroController,
-//     private: false,
-//   },
-// };
+  //  const routes = {
+  //    home: {
+  //      template: "home/index.html",
+  //      controlador: loginController,
+  //      private: false,
+  //    },
+
+  //  };
 
 export const router = async (app) => {
   const hash = location.hash.slice(1);
   const [rutas, params] = matchRoute(hash);
   if (!rutas) {
-    await loadView(app, "index.html");
+    await loadView(app, "home/index.html");
     // inicioController();
     return;
   }

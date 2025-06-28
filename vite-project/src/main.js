@@ -1,9 +1,11 @@
-// Constantes para los elementos del menú y su icono
-const menuBtn = document.getElementById('menu-btn');
-const navLinks = document.getElementById('nav-links');
-const menuBtnIcon = menuBtn.querySelector('i');
+import header from "./componentes/header";
 
-// ---
+// Constantes para los elementos del menú y su icono
+const menu = document.querySelector('.nav_menu');
+header();
+const menuBtn = menu.getElementById('menu-btn');
+const navLinks = menu.getElementById('nav-links');
+const menuBtnIcon = menu.querySelector('i');
 
 // Desplazamiento suave para los enlaces de navegación
 // Itera sobre todos los enlaces cuyo href empieza con '#'
@@ -24,7 +26,6 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     });
 });
 
-// ---
 
 // Lógica para alternar el menú móvil al hacer clic en el botón
 menuBtn.addEventListener('click', () => {
@@ -35,7 +36,6 @@ menuBtn.addEventListener('click', () => {
     menuBtnIcon.setAttribute('class', isOpen ? 'ri-close-line' : 'ri-menu-line');
 });
 
-// ---
 
 // Configuración global para las animaciones de ScrollReveal
 const scrollRevealOption = {
@@ -49,7 +49,6 @@ const scrollRevealOption = {
 // Crea una instancia de ScrollReveal con la configuración global
 const scrollReveal = scrollReveal(scrollRevealOption);
 
-// ---
 
 // Animaciones para la sección del encabezado (Header)
 scrollReveal.reveal(".header__image img", {
@@ -83,7 +82,6 @@ scrollReveal.reveal(".header__image__card", {
     delay: 2500,
 });
 
-// ---
 
 // Animaciones para las nuevas secciones (Nosotros, Servicios, Responsable, Contacto)
 scrollReveal.reveal(".section__header", { interval: 200 }); // Aplica animación a los encabezados de sección

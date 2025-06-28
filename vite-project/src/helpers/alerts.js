@@ -1,4 +1,5 @@
 import Swal from "sweetalert2";
+
 export const success = (response) => {
   Swal.fire({
     title: "Muy bien!",

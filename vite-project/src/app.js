@@ -3,8 +3,10 @@ import "./style.css";
 import { router } from "./routes/router.js";
 
 
-const nav = document.querySelector('nav');
+const nav = document.querySelector('.nav_menu');
+console.log(nav);
 header();
+
 
 
 window.addEventListener('DOMContentLoaded', () => {
