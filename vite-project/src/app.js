@@ -37,6 +37,8 @@ const initializeMenuListeners = () => {
 };
 initializeMenuListeners(); // Llama a la función de inicialización del menú
 
+
+
 // Router event listeners
 window.addEventListener('DOMContentLoaded', () => {
     router(divApp); // Carga la vista inicial
