@@ -1,6 +1,5 @@
 #Crear un usuario DBA
 create user if not exists usuario_fixmasterAcces@localhost identified by "FixmasterP1";
-
 #Creamos la base de datos 
 create database Fixmaster_P1_DBA;
 
@@ -8,27 +7,9 @@ create database Fixmaster_P1_DBA;
 grant all privileges on Fixmaster_P1_DBA .* to usuario_fixmasterAcces@localhost;
 flush privileges;
 
-#----------------------------------------------------------------------------------
-#Crear un usuario Admin
-create user if not exists usuario_fixmasterADMIN@localhost identified by "admin";
-
-#Asignar permisos al usuario 
-grant all privileges on Fixmaster_P1_DBA .* to usuario_fixmasterADMIN@localhost;
-
-#----------------------------------------------------------------------------------
-
-#Crear un usuario Admin
-create user if not exists usuario_fixmasterEMPLOY@localhost identified by "employ";
-
-#---DROP USER usuario_SmartCountEMPLOY@localhost;
-
-#Asignar permisos al usuario 
-grant all privileges on Fixmaster_P1_DBA .* to usuario_fixmasterEMPLOY@localhost;
-
-
 **********************************************************************************************************************************
-
 USE Fixmaster_P1_DBA;
+show tables;
 
 -- Tabla de tipos de identificación
 CREATE TABLE tipos_identificacion (
@@ -44,24 +25,18 @@ CREATE TABLE ciudades (
     pais VARCHAR(100) DEFAULT 'Colombia'
 );
 
--- Tabla de roles
-CREATE TABLE roles (
-    id_rol INT AUTO_INCREMENT PRIMARY KEY,
-    nombre_rol VARCHAR(50) NOT NULL UNIQUE
-);
-
 -- Tabla de usuarios
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
     nombreCompleto VARCHAR(100) NOT NULL,
     correo VARCHAR(150) NOT NULL UNIQUE,
     contrasena VARCHAR(255) NOT NULL,
-    id_rol INT NOT NULL,
-    estado ENUM('activo', 'inactivo') DEFAULT 'activo',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE
+    fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
 );
+
+alter table usuarios add column refresh_token TEXT;
+
 
 -- Tabla de personas (base para clientes, proveedores y empleados)
 CREATE TABLE personas (
@@ -74,10 +49,13 @@ CREATE TABLE personas (
     direccion VARCHAR(255),
     id_ciudad INT NOT NULL, -- Corregido: Uso de FK desde el inicio
     estado ENUM('activo', 'inactivo') DEFAULT 'activo',
+    id_usuario INT NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_tipo_identificacion) REFERENCES tipos_identificacion(id_tipo_identificacion) ON DELETE CASCADE,
-    FOREIGN KEY (id_ciudad) REFERENCES ciudades(id_ciudad) ON DELETE CASCADE
+    FOREIGN KEY (id_ciudad) REFERENCES ciudades(id_ciudad) ON DELETE CASCADE,
+	FOREIGN KEY (id_usuario) REFERENCES usuarios(id_usuario) ON DELETE CASCADE
+
 );
 
 -- Clientes
@@ -115,7 +93,7 @@ CREATE TABLE mantenimientos (
     id_mantenimiento INT AUTO_INCREMENT PRIMARY KEY,
     id_equipo INT NOT NULL,
     descripcion_trabajo TEXT,
-    id_empleado INT, -- Ahora es una FK directa
+    id_empleado INT, 
     tipo_mantenimiento ENUM('preventivo', 'correctivo') NOT NULL,
     fecha_mantenimiento DATE,
     observaciones TEXT,
@@ -137,6 +115,7 @@ CREATE TABLE empleados_mantenimiento (
 );
 
 -- Pagos
+-- Se ha cambiado el valor por defecto de estado_pago a 'pendiente'.
 CREATE TABLE pagos (
     id_pago INT AUTO_INCREMENT PRIMARY KEY,
     id_cliente INT NOT NULL,
@@ -194,83 +173,82 @@ INSERT INTO ciudades (nombre_ciudad, departamento, pais) VALUES
 ('Quibdó', 'Chocó', 'Colombia');
 
 --
--- Datos para la tabla 'roles'
+-- Datos para la tabla 'usuarios'
+-- Corregidos para usar 'nombreCompleto' y solo los roles 'Administrador' (ID 1) y 'Empleado' (ID 2).
+-- Los usuarios que antes eran 'Cliente' o 'Contador' se han mapeado o eliminado según el contexto.
 --
-INSERT INTO roles (nombre_rol) VALUES
-('Administrador'), -- ID 1
-('Empleado');      -- ID 2
+INSERT INTO usuarios (nombreCompleto, correo, contrasena) VALUES
+('Admin Principal', 'admin@fixmaster.com', 'hashed_password_admin_1'),
+('Laura García Diaz', 'laura.garcia@fixmaster.com', 'hashed_password_laura'), 
+('Carlos Restrepo Zapata', 'carlos.restrepo@fixmaster.com', 'hashed_password_carlos'),
+('Diego Torres Moreno', 'diego.torres@fixmaster.com', 'hashed_password_diego'),
+('Miguel Ángel Rodríguez', 'miguel.rodriguez@fixmaster.com', 'hashed_password_miguel'),
+('Andrés Felipe Rojas', 'andres.rojas@fixmaster.com', 'hashed_password_andres' ),
+('Fernando David Ríos', 'fernando.rios@fixmaster.com', 'hashed_password_fernando'),
+('Valentina Osorio Vargas', 'valentina.osorio@fixmaster.com', 'hashed_password_valentina'); 
 
 --
 -- Datos para la tabla 'personas' (base para clientes, proveedores y empleados)
 --
-INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) VALUES
+INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado, id_usuario ) VALUES
 -- Clientes
-('Juan Pérez Gómez', 1, '1012345678', 'juan.perez@example.com', '3001234567', 'Calle 10 # 5-15', 1, 'activo'),
-('Maria López Cía. S.A.S.', 3, '900123456-1', 'maria.lopez@empresa.com', '6012345678', 'Avenida siempre viva 123', 2, 'activo'),
-('Ana María Restrepo', 1, '1001001001', 'ana.restrepo@example.com', '3011234500', 'Calle 50 # 15-20', 1, 'activo'),
-('Pedro Sánchez', 1, '1001001002', 'pedro.sanchez@example.com', '3022345601', 'Carrera 8 # 25-30', 2, 'activo'),
-('Sofía Vargas', 1, '1001001003', 'sofia.vargas@example.com', '3033456702', 'Avenida 40 # 10-10', 3, 'activo'),
-('Constructora Sol S.A.S.', 3, '900000001-1', 'contact@constructorasol.com', '6044567803', 'Diagonal 60 # 5-50', 4, 'activo'),
-('Transportes Rápidos Ltda.', 3, '900000002-2', 'info@transportesrapidos.com', '6055678904', 'Via 100 # 20-30', 5, 'activo'),
-('Luisa Fernanda Giraldo', 1, '1001001004', 'luisa.giraldo@example.com', '3019876543', 'Calle 22 # 11-22', 6, 'activo'),
-('Roberto Carlos Días', 1, '1001001005', 'roberto.diaz@example.com', '3005544332', 'Carrera 15 # 33-44', 7, 'activo'),
-('Inversiones Alfa S.A.', 3, '900000003-3', 'gerencia@alfainversiones.com', '6078899001', 'Avenida 80 # 7-77', 8, 'activo'),
-('Andrea Carolina Pardo', 1, '1001001006', 'andrea.pardo@example.com', '3041234567', 'Calle 100 # 50-50', 9, 'activo'),
-('Fábrica del Futuro S.A.S.', 3, '900000004-4', 'ventas@fabricafuturo.com', '6089900112', 'Zona Industrial Km 5', 10, 'activo'),
+('Juan Pérez Gómez', 1, '1012345678', 'juan.perez@example.com', '3001234567', 'Calle 10 # 5-15', 1, 'activo',1),
+('Maria López Cía. S.A.S.', 3, '900123456-1', 'maria.lopez@empresa.com', '6012345678', 'Avenida siempre viva 123', 2, 'activo', 2),
+('Ana María Restrepo', 1, '1001001001', 'ana.restrepo@example.com', '3011234500', 'Calle 50 # 15-20', 1, 'activo',3),
+('Pedro Sánchez', 1, '1001001002', 'pedro.sanchez@example.com', '3022345601', 'Carrera 8 # 25-30', 2, 'activo', 4),
+('Sofía Vargas', 1, '1001001003', 'sofia.vargas@example.com', '3033456702', 'Avenida 40 # 10-10', 3, 'activo', 5),
+('Constructora Sol S.A.S.', 3, '900000001-1', 'contact@constructorasol.com', '6044567803', 'Diagonal 60 # 5-50', 4, 'activo', 6),
+('Transportes Rápidos Ltda.', 3, '900000002-2', 'info@transportesrapidos.com', '6055678904', 'Via 100 # 20-30', 5, 'activo', 7),
+('Luisa Fernanda Giraldo', 1, '1001001004', 'luisa.giraldo@example.com', '3019876543', 'Calle 22 # 11-22', 6, 'activo',8),
+('Roberto Carlos Días', 1, '1001001005', 'roberto.diaz@example.com', '3005544332', 'Carrera 15 # 33-44', 7, 'activo', 1),
+('Inversiones Alfa S.A.', 3, '900000003-3', 'gerencia@alfainversiones.com', '6078899001', 'Avenida 80 # 7-77', 8, 'activo', 2),
+('Andrea Carolina Pardo', 1, '1001001006', 'andrea.pardo@example.com', '3041234567', 'Calle 100 # 50-50', 9, 'activo', 3),
+('Fábrica del Futuro S.A.S.', 3, '900000004-4', 'ventas@fabricafuturo.com', '6089900112', 'Zona Industrial Km 5', 10, 'activo', 4),
 
 -- Proveedores
-('Proveedora Repuestos S.A.', 3, '800987654-2', 'ventas@repuestos.com', '3109876543', 'Carrera 20 # 30-40', 3, 'activo'),
-('Distribuciones Herramientas Ltda.', 3, '700111222-3', 'info@herramientas.com', '3205556677', 'Diagonal 50 # 10-20', 1, 'activo'),
-('Suministros Industriales S.A.', 3, '800000001-1', 'ventas@suministrosind.com', '6011122334', 'Calle 70 # 10-10', 1, 'activo'),
-('Ferretería El Tornillo', 3, '800000002-2', 'contacto@eltornillo.com', '6022233445', 'Carrera 30 # 10-20', 2, 'activo'),
-('Lubricantes Premium Ltda.', 3, '800000003-3', 'pedidos@lubricantesprem.com', '6033344556', 'Autopista Sur Km 1', 3, 'activo'),
-('Herramientas de Precisión S.A.S.', 3, '800000004-4', 'info@herrprecision.com', '6044455667', 'Via Principal # 1-10', 4, 'activo'),
-('Electrónica Avanzada Cía.', 3, '800000005-5', 'soporte@electronicaav.com', '6055566778', 'Parque Industrial Local 5', 5, 'activo'),
+('Proveedora Repuestos S.A.', 3, '800987654-2', 'ventas@repuestos.com', '3109876543', 'Carrera 20 # 30-40', 3, 'activo', 5),
+('Distribuciones Herramientas Ltda.', 3, '700111222-3', 'info@herramientas.com', '3205556677', 'Diagonal 50 # 10-20', 1, 'activo', 6),
+('Suministros Industriales S.A.', 3, '800000001-1', 'ventas@suministrosind.com', '6011122334', 'Calle 70 # 10-10', 1, 'activo', 7),
+('Ferretería El Tornillo', 3, '800000002-2', 'contacto@eltornillo.com', '6022233445', 'Carrera 30 # 10-20', 2, 'activo', 8),
+('Lubricantes Premium Ltda.', 3, '800000003-3', 'pedidos@lubricantesprem.com', '6033344556', 'Autopista Sur Km 1', 3, 'activo', 1),
+('Herramientas de Precisión S.A.S.', 3, '800000004-4', 'info@herrprecision.com', '6044455667', 'Via Principal # 1-10', 4, 'activo', 2),
+('Electrónica Avanzada Cía.', 3, '800000005-5', 'soporte@electronicaav.com', '6055566778', 'Parque Industrial Local 5', 5, 'activo', 3),
 
 -- Empleados
-('Carlos Restrepo Zapata', 1, '1020304050', 'carlos.restrepo@fixmaster.com', '3112233445', 'Calle 30 # 45-60', 4, 'activo'),
-('Laura García Diaz', 1, '1030405060', 'laura.garcia@fixmaster.com', '3156677889', 'Carrera 70 # 80-90', 1, 'activo'),
-('Diego Torres Moreno', 1, '1040506070', 'diego.torres@fixmaster.com', '3009988776', 'Avenida 45 # 5-50', 2, 'activo'),
-('Miguel Ángel Rodríguez', 1, '1001001007', 'miguel.rodriguez@fixmaster.com', '3123456789', 'Calle 80 # 20-30', 1, 'activo'),
-('Valentina Osorio Vargas', 1, '1001001008', 'valentina.osorio@fixmaster.com', '3134567890', 'Carrera 40 # 5-10', 2, 'activo'),
-('Andrés Felipe Rojas', 1, '1001001009', 'andres.rojas@fixmaster.com', '3145678901', 'Diagonal 90 # 10-10', 3, 'activo'),
-('Camila Alejandra Soto', 1, '1001001010', 'camila.soto@fixmaster.com', '3156789012', 'Calle 60 # 12-34', 4, 'activo'),
-('Fernando David Ríos', 1, '1001001011', 'fernando.rios@fixmaster.com', '3167890123', 'Avenida 10 # 5-5', 5, 'activo');
-
---
--- Datos para la tabla 'usuarios'
---
-INSERT INTO usuarios (nombreCompleto, correo, contrasena, id_rol, estado) VALUES
-('Admin Principal', 'admin@fixmaster.com', 'hashed_password_admin_1', 1, 'activo'),
-('Laura García Diaz', 'laura.garcia@fixmaster.com', 'hashed_password_laura', 1, 'activo'), 
-('Carlos Restrepo Zapata', 'carlos.restrepo@fixmaster.com', 'hashed_password_carlos', 2, 'activo'),
-('Diego Torres Moreno', 'diego.torres@fixmaster.com', 'hashed_password_diego', 2, 'activo'),
-('Miguel Ángel Rodríguez', 'miguel.rodriguez@fixmaster.com', 'hashed_password_miguel', 2, 'activo'),
-('Andrés Felipe Rojas', 'andres.rojas@fixmaster.com', 'hashed_password_andres', 2, 'activo'),
-('Fernando David Ríos', 'fernando.rios@fixmaster.com', 'hashed_password_fernando', 2, 'activo'),
-('Valentina Osorio Vargas', 'valentina.osorio@fixmaster.com', 'hashed_password_valentina', 2, 'activo');
+('Carlos Restrepo Zapata', 1, '1020304050', 'carlos.restrepo@fixmaster.com', '3112233445', 'Calle 30 # 45-60', 4, 'activo', 4),
+('Laura García Diaz', 1, '1030405060', 'laura.garcia@fixmaster.com', '3156677889', 'Carrera 70 # 80-90', 1, 'activo', 5),
+('Diego Torres Moreno', 1, '1040506070', 'diego.torres@fixmaster.com', '3009988776', 'Avenida 45 # 5-50', 2, 'activo', 6),
+('Miguel Ángel Rodríguez', 1, '1001001007', 'miguel.rodriguez@fixmaster.com', '3123456789', 'Calle 80 # 20-30', 1, 'activo', 7),
+('Valentina Osorio Vargas', 1, '1001001008', 'valentina.osorio@fixmaster.com', '3134567890', 'Carrera 40 # 5-10', 2, 'activo', 8),
+('Andrés Felipe Rojas', 1, '1001001009', 'andres.rojas@fixmaster.com', '3145678901', 'Diagonal 90 # 10-10', 3, 'activo', 1),
+('Camila Alejandra Soto', 1, '1001001010', 'camila.soto@fixmaster.com', '3156789012', 'Calle 60 # 12-34', 4, 'activo', 2),
+('Fernando David Ríos', 1, '1001001011', 'fernando.rios@fixmaster.com', '3167890123', 'Avenida 10 # 5-5', 5, 'activo', 3);
 
 
 --
 -- Datos para la tabla 'clientes'
+-- Se vinculan los nuevos clientes de la tabla 'personas'.
 --
 INSERT INTO clientes (id_cliente) VALUES
 (1), (2), (8), (9), (10), (11), (12), (13), (14), (15), (16), (17);
 
 --
 -- Datos para la tabla 'proveedores'
+-- Se vinculan los nuevos proveedores de la tabla 'personas'.
 --
 INSERT INTO proveedores (id_proveedor) VALUES
 (3), (4), (18), (19), (20), (21), (22);
 
 --
 -- Datos para la tabla 'empleados'
+-- Se vinculan los nuevos empleados de la tabla 'personas'.
 --
 INSERT INTO empleados (id_empleado) VALUES
 (5), (6), (7), (23), (24), (25), (26), (27);
 
 --
 -- Datos para la tabla 'equipos'
+-- Se añaden más equipos, vinculándolos a los clientes existentes (incluyendo los nuevos).
 --
 INSERT INTO equipos (numero_equipo, placa, descripcion, id_cliente) VALUES
 ('EQ001', 'ABC123', 'Vehículo: Camioneta Ford F-150', 1),
@@ -292,6 +270,8 @@ INSERT INTO equipos (numero_equipo, placa, descripcion, id_cliente) VALUES
 
 --
 -- Datos para la tabla 'mantenimientos'
+-- Se añaden muchos más mantenimientos.
+-- Se asegura que id_equipo y id_empleado existan.
 --
 INSERT INTO mantenimientos (id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones) VALUES
 (1, 'Cambio de aceite y filtro', 5, 'preventivo', '2024-06-20', 'Se usó aceite sintético.'),
@@ -326,6 +306,7 @@ INSERT INTO mantenimientos (id_equipo, descripcion_trabajo, id_empleado, tipo_ma
 
 --
 -- Datos para la tabla 'empleados_mantenimiento'
+-- Se añaden más relaciones muchos a muchos.
 --
 INSERT INTO empleados_mantenimiento (id_empleado, id_mantenimiento) VALUES
 (5, 1), (7, 2), (5, 3), (7, 4),
@@ -367,4 +348,13 @@ INSERT INTO pagos (id_cliente, id_mantenimiento, detalle, valor_trabajo, valor_p
 (17, 24, 'Revisión eléctrica moto Yamaha', 110.00, 0.00, 'pendiente', '2024-07-14', 5),
 (1, 25, 'Cambio correas camioneta', 190.00, 0.00, 'pendiente', '2024-07-15', 20),
 (2, 26, 'Diagnóstico ruido taladro', 220.00, 0.00, 'pendiente', '2024-07-16', 30);
+
+
+SELECT p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona;
+select * from usuarios;
+
+SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono 
+FROM personas p 
+JOIN clientes c ON c.id_cliente = p.id_persona 
+WHERE c.id_cliente = 1;
 
