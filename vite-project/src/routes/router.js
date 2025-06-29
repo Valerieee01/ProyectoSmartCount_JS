@@ -1,7 +1,7 @@
 // src/routes/router.js
 
 import { loadView } from "../helpers/loadView.js";
-import { inicioController } from "../views/home/inicioController.js";
+import { inicioController } from "../views/inicio/inicioController.js";
 import { loginRegisterController } from "../views/login_register/loginRegisterController.js"; // Importa el nuevo controlador
 // import { estaAutenticado } from "../helpers/auth.js"; // Descomenta si lo usas para rutas privadas
 
@@ -20,6 +20,11 @@ const routes = {
         template: "login_register/index.html", // Misma vista HTML
         controlador: loginRegisterController,
         private: false,
+    },
+    "inicio": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "inicio/index.html", // Misma vista HTML
+        controlador: inicioController,
+        private: true,
     },
     // Agrega más rutas aquí si es necesario
 };

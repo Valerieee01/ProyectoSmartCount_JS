@@ -29,7 +29,7 @@ export const loginController = (container) => {
       form.reset();
       success(response);
       setData(response.data);
-      location.hash = "#home";
+      location.hash = "#inicio";
       window.dispatchEvent(new CustomEvent("modificandoHeader", {}));
     } else {
       console.log(response);

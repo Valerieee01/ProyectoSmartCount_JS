@@ -82,6 +82,16 @@ const asideBar = (asideBar) => {
     aPagos.setAttribute('href', '#pagos');
     aCerrarSesion.setAttribute('href', '#cerrarSesion');
 
+    aHome.textContent = 'Inicio';
+    aUsuario.textContent = 'Usuario';
+    aCiente.textContent = 'Cliente';
+    aEmpleado.textContent = 'Empleado';
+    aMantenimiento.textContent = 'Mantenimiento';
+    aEquipos.textContent = 'Equipos';
+    aProveedores.textContent = 'Proveedores';
+    aPagos.textContent = 'Pagos';
+    aCerrarSesion.textContent = 'Cerrar Sesion';
+
     liHome.append(iHome, aHome);
     liUsuario.append(iUsuario, aUsuario);
     liCliente.append(iCiente, aCiente);
@@ -94,7 +104,7 @@ const asideBar = (asideBar) => {
 
     ulIconItems.append(liHome, liUsuario, liCliente, liEmpleado, liMantenimiento, liEquipos, liProveedores, liPagos, liCerrarSesion);
     divIconItems.appendChild(ulIconItems);
-    divSideNav.append(divLogo, title);
+    divSideNav.append(divLogo, title, divIconItems, divSearchBar);
     labelClick.append(iconSearch, iconClose);
     divContainer.append(inputCheckBox,labelClick , divSideNav);
     asideBar.append(divContainer);

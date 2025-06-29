@@ -4,8 +4,8 @@ import "./style.css";
 import { router } from "./routes/router.js";
 import { estaAutenticado } from "./helpers/auth.js";
 
-const headerContainer = document.getElementById("#header-container");
-const asideContainer = document.getElementById("#aside-container");
+const headerContainer = document.getElementById("header-container");
+const asideContainer = document.getElementById("aside-container");
 const nav = document.querySelector(".nav_menu");
 header(nav); // Renderiza el header/nav menu dinámicamente
 
@@ -47,16 +47,15 @@ const initializeMenuListeners = () => {
   });
 };
 
-initializeMenuListeners(); // Llama a la función de inicialización del menú
+initializeMenuListeners(); 
 
 window.addEventListener("modificandoHeader", (e) => {
-    console.log(headerContainer);
-    
-//   if (estaAutenticado()) {
-//     headerContainer.remove(nav);
-//     asideBar(asideContainer);
+    e.preventDefault();
+   if (estaAutenticado()) {
+     headerContainer.remove(nav);
+     asideBar(asideContainer);
 
-//   }
+   }
   
 });
 
