@@ -18,13 +18,14 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    height: 100vh;
     background: var(--background-body)
 }
 
 .container {
     position: relative;
     width: 850px;
-    height: 100vh;
+    height: 550px;
     background: var(--color-white);
     border-radius: 30px;
     box-shadow: 0 0 30px rgba(0, 0, 0, .2);

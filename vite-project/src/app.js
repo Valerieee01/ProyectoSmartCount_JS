@@ -28,8 +28,7 @@ const initializeMenuListeners = () => {
     anchor.addEventListener("click", function (e) {
       e.preventDefault();
       document
-        .querySelector(this.getAttribute("href"))
-        .scrollIntoView({ behavior: "smooth" });
+        .querySelector(this.getAttribute("href")).scrollIntoView({ behavior: "smooth" });
       if (navLinks.classList.contains("open")) {
         navLinks.classList.remove("open");
         menuBtnIcon.setAttribute("class", "ri-menu-line");

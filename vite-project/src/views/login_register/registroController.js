@@ -6,6 +6,7 @@ export const registroController = (container) => {
   const form = divForm.querySelector("form");
   const nombre = divForm.querySelector("#nombre");
   const correo = divForm.querySelector("#correo");
+  const rol = divForm.querySelector("#rol");
   const contrasena = divForm.querySelector("#contrasena");
 
   // Declaración de métodos
@@ -14,6 +15,7 @@ export const registroController = (container) => {
     const data = {
       nombreCompleto: nombre.value,
       correo: correo.value,
+      id_rol:rol.value,
       contrasena: contrasena.value,
     };
     const request = await fetch("http://localhost:3000/api/auth/registro", {

@@ -17,7 +17,7 @@ class AuthService {
    * @param {*} password
    * @returns
    */
-  static async register(nombre, email, password) {
+  static async register(nombre, email, id_rol, password) {
     try {
       // Verificar si el usuario ya existe
       const userExists = await Usuario.findByEmail(email);
@@ -27,7 +27,7 @@ class AuthService {
       // Hashear la contraseña || encriptar la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
       // Registramos el usuario en la base de datos
-      const userId = await Usuario.create(nombre, email, hashedPassword);
+      const userId = await Usuario.create(nombre, email, id_rol,hashedPassword);
       // Retornamos la respuesta
       return { error: false, code: 201, message: "Usuario creado" };
     } catch (error) {
