@@ -50,11 +50,25 @@ initializeMenuListeners();
 
 window.addEventListener("modificandoHeader", (e) => {
     e.preventDefault();
-   if (estaAutenticado()) {
-     headerContainer.remove(nav);
-     asideBar(asideContainer);
-
-   }
+    if (estaAutenticado()) {
+        if (headerContainer) {
+            headerContainer.remove() // Oculta el header si el aside lo reemplaza
+        }
+        if (asideContainer) {
+            // Limpia el aside antes de re-renderizarlo para evitar duplicados si asideBar
+            // no maneja el vaciado interno.
+            asideContainer.innerHTML = '';
+            asideBar(asideContainer);
+        }
+    } else {
+        // Si ya no está autenticado, muestra el header y limpia el aside
+        if (headerContainer) {
+            headerContainer.style.display = 'block'; // Vuelve a mostrar el header
+        }
+        if (asideContainer) {
+            asideContainer.innerHTML = ''; // Limpia el contenido del aside
+        }
+    }
   
 });
 

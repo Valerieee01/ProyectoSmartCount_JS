@@ -60,7 +60,7 @@ const asideBar = (asideBar) => {
     iPagos.classList.add("ri-wallet-3-line");
     iCerrarSesion.classList.add("ri-logout-box-r-line");
 
-    divContainer.classList.add('container');
+    divContainer.classList.add('containerSidebar');
     iconClose.classList.add('ri-close-circle-line');
     iconSearch.classList.add('ri-menu-line');
     divSideNav.classList.add('sidenav');
@@ -71,6 +71,7 @@ const asideBar = (asideBar) => {
     inputCheckBox.setAttribute('id', 'click');
     inputCheckBox.setAttribute('type', 'checkbox');
     form.setAttribute('action','#');
+     labelClick.setAttribute('for', 'click'); 
 
     aHome.setAttribute('href', '#inicio');
     aUsuario.setAttribute('href', '#usuario');
