@@ -1,4 +1,7 @@
-const asideBar = (asideBar) => {
+import { cleanLocalStorage } from "../helpers/auth";
+import header from "./header";
+
+const asideBar = (asideContainer) => {
 
     const divContainer = document.createElement('div');
     const inputCheckBox = document.createElement('input');
@@ -10,7 +13,6 @@ const asideBar = (asideBar) => {
     const divLogo = document.createElement('div');
     const title = document.createElement('h2');
 
-    const divSearchBar = document.createElement('div');
     const form = document.createElement('form');
 
     const divIconItems = document.createElement('div');
@@ -23,6 +25,7 @@ const asideBar = (asideBar) => {
     const liEquipos= document.createElement('li');
     const liProveedores = document.createElement('li');
     const liPagos = document.createElement('li');
+    const liReportes = document.createElement('li');
     const liCerrarSesion = document.createElement('li');
 
 
@@ -34,7 +37,7 @@ const asideBar = (asideBar) => {
     const iEquipos= document.createElement('i');
     const iProveedores = document.createElement('i');
     const iPagos = document.createElement('i');
-
+    const iReportes = document.createElement('i');
     const iCerrarSesion = document.createElement('i');
 
 
@@ -46,6 +49,7 @@ const asideBar = (asideBar) => {
     const aEquipos= document.createElement('a');
     const aProveedores = document.createElement('a');
     const aPagos = document.createElement('a');
+    const aReportes = document.createElement('a');
     const aCerrarSesion  = document.createElement('a');
 
 
@@ -58,20 +62,23 @@ const asideBar = (asideBar) => {
     iEquipos.classList.add("ri-truck-line");
     iProveedores.classList.add("ri-shopping-bag-3-line");
     iPagos.classList.add("ri-wallet-3-line");
+    iReportes.classList.add("ri-file-chart-line");
     iCerrarSesion.classList.add("ri-logout-box-r-line");
+
 
     divContainer.classList.add('containerSidebar');
     iconClose.classList.add('ri-close-circle-line');
+    iconClose.classList.add('close-btn');
     iconSearch.classList.add('ri-menu-line');
+    iconSearch.classList.add('menu-btn');
     divSideNav.classList.add('sidenav');
     divLogo.classList.add('logo');
-    divSearchBar.classList.add('search_bar');
 
 
     inputCheckBox.setAttribute('id', 'click');
     inputCheckBox.setAttribute('type', 'checkbox');
     form.setAttribute('action','#');
-     labelClick.setAttribute('for', 'click'); 
+    labelClick.setAttribute('for', 'click'); 
 
     aHome.setAttribute('href', '#inicio');
     aUsuario.setAttribute('href', '#usuario');
@@ -81,6 +88,7 @@ const asideBar = (asideBar) => {
     aEquipos.setAttribute('href', '#equipos');
     aProveedores.setAttribute('href', '#proveedores');
     aPagos.setAttribute('href', '#pagos');
+    aReportes.setAttribute('href', '#reportes');
     aCerrarSesion.setAttribute('href', '#cerrarSesion');
 
     aHome.textContent = 'Inicio';
@@ -91,6 +99,7 @@ const asideBar = (asideBar) => {
     aEquipos.textContent = 'Equipos';
     aProveedores.textContent = 'Proveedores';
     aPagos.textContent = 'Pagos';
+    aReportes.text = 'Reportes'
     aCerrarSesion.textContent = 'Cerrar Sesion';
 
     liHome.append(iHome, aHome);
@@ -101,14 +110,22 @@ const asideBar = (asideBar) => {
     liEquipos.append(iEquipos, aEquipos);
     liProveedores.append(iProveedores, aProveedores);
     liPagos.append(iPagos, aPagos);
+    liReportes.append(iReportes, aReportes);
     liCerrarSesion.append(iCerrarSesion, aCerrarSesion);
 
-    ulIconItems.append(liHome, liUsuario, liCliente, liEmpleado, liMantenimiento, liEquipos, liProveedores, liPagos, liCerrarSesion);
+    ulIconItems.append(liHome, liUsuario, liCliente, liEmpleado, liMantenimiento, liEquipos, liProveedores, liPagos, liReportes, liCerrarSesion);
     divIconItems.appendChild(ulIconItems);
-    divSideNav.append(divLogo, title, divIconItems, divSearchBar);
+    divSideNav.append(divLogo, title, divIconItems);
     labelClick.append(iconSearch, iconClose);
     divContainer.append(inputCheckBox,labelClick , divSideNav);
-    asideBar.append(divContainer);
+    asideContainer.append(divContainer);
+
+     aCerrarSesion.addEventListener('click', (e) => {
+       e.preventDefault();
+       cleanLocalStorage()
+       location.hash = "#home";
+       asideContainer.remove(divContainer);
+    })
 
 }
 

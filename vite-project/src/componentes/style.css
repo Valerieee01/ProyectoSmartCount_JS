@@ -1,5 +1,4 @@
 
-
 :root {
   --primary-color: #ff833e;
   --primary-color-dark: #db6f35;
@@ -16,9 +15,22 @@
     box-sizing: border-box;
 }
 
+#aside-container{
+    position: fixed; /* Lo saca del flujo normal y lo fija a la ventana del navegador */
+  top: 0;          /* Lo posiciona en la parte superior de la ventana */
+  left: 0;         /* Lo posiciona en la parte izquierda de la ventana */
+  width: 115px;     /* Opcional: para que ocupe todo el ancho si es un encabezado flotante */
+  height: auto;    /* Opcional: ajusta la altura automáticamente */
+  background-color: rgba(255, 255, 255, 0.9); /* Fondo para que se vea por encima */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Sombra para destacarlo */
+  z-index: 1000;   /* ¡Clave! Un valor alto lo pone por encima de la mayoría de los elementos */
+
+}
+
 .containerSidebar{
     width: 100%;
     height: 100vh;
+    align-items: self-start;
     background: var(--white);
     color: var(--text-dark);
 }
@@ -32,6 +44,11 @@
     background-color: var(--primary-color);
     transition: width 0.6s;
     color: var(--white);
+    
+}
+
+label {
+    margin-left: 40px;
 }
 
 label .close-btn{
@@ -46,29 +63,8 @@ label .close-btn{
     pointer-events: none;
     transition: 0.3s ease;
 }
-.sidenav .search_bar{
-    margin-top: 32px;
-    position: relative;
-}
 
-.sidenav .search_bar i{
-    position: absolute;
-    color: #000;
-    font-size: 24px;
-    left: 38px;
-    top: 50%;
-    transform: translate(-50%, -50%);
-}
 
-.sidenav .search_bar input{
-    width: 50%;
-    padding: 11px;
-    padding-left: 40px;
-    border-radius: 5px;
-    border: none;
-    outline: none;
-    margin-left: 15px;
-}
 
 .sidenav .menu_text{
     margin-top: 24px;
@@ -145,14 +141,6 @@ label .close-btn{
     pointer-events: auto;
 }
 
-#click:checked ~ .sidenav .search_bar input{
-    width: 100%;
-    margin-left: 0;
-}
-
-#click:checked ~ .sidenav .search_bar i{
-    left: 20px;
-}
 
 #click:checked ~ label{
     left: 1%;

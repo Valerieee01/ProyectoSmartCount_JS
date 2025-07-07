@@ -1,9 +1,16 @@
 // src/routes/router.js
 
 import { loadView } from "../helpers/loadView.js";
-import { inicioController } from "../views/inicio/inicioController.js";
+import { clienteController } from "../views/cliente/clienteController.js";
+import { empleadoController } from "../views/empleado/EmpleadoController.js";
+import { equiposController } from "../views/equipos/equiposController.js";
+import { inicioController } from "../views/inicio/inicioAuthController.js";
 import { loginRegisterController } from "../views/login_register/loginRegisterController.js"; // Importa el nuevo controlador
-// import { estaAutenticado } from "../helpers/auth.js"; // Descomenta si lo usas para rutas privadas
+import { mantenimientoController } from "../views/mantenimiento/mtoController.js";
+import { pagosController } from "../views/pagos/pagosController.js";
+import { reportesController } from "../views/reportes/reportesController.js";
+import { estaAutenticado } from "../helpers/auth.js"; // Descomenta si lo usas para rutas privadas
+import { proveedoresController } from "../views/proveedores/proveedoresController.js";
 
 const routes = {
     "home": {
@@ -26,6 +33,41 @@ const routes = {
         controlador: inicioController,
         private: true,
     },
+     "cliente": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "cliente/index.html", // Misma vista HTML
+        controlador: clienteController,
+        private: true,
+    },
+     "empleado": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "empleado/index.html", // Misma vista HTML
+        controlador: empleadoController,
+        private: true,
+    }, 
+    "equipos": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "equipos/index.html", // Misma vista HTML
+        controlador: equiposController,
+        private: true,
+    }, 
+    "mantenimiento": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "mantenimiento/index.html", // Misma vista HTML
+        controlador: mantenimientoController,
+        private: true,
+    }, 
+    "pagos": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "pagos/index.html", // Misma vista HTML
+        controlador: pagosController,
+        private: true,
+    }, 
+    "proveedores": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "proveedores/index.html", // Misma vista HTML
+        controlador: proveedoresController,
+        private: true,
+    },
+    "reportes": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "reportes/index.html", // Misma vista HTML
+        controlador: reportesController,
+        private: true,
+    },
     // Agrega más rutas aquí si es necesario
 };
 
@@ -35,10 +77,14 @@ export const router = async (appContainer) => {
 
     const headerContainer = document.getElementById('header-container'); 
 
-    if (!rutas) {
+    if (!rutas && !estaAutenticado()) {
         // Si no hay ruta, o si la ruta es inválida, redirige a 'home'
         location.hash = "#home";
         return; // Salir para que el hashchange vuelva a llamar al router con la ruta correcta
+    } else if(!rutas && estaAutenticado())  {
+        location.hash = "#inicio";
+        return; // Salir para que el hashchange vuelva a llamar al router con la ruta correcta
+
     }
 
     // Lógica para mostrar/ocultar el header
@@ -54,10 +100,10 @@ export const router = async (appContainer) => {
     
     }
 
-    // if (rutas.private && !estaAutenticado()) {
-    //     location.hash = "#login";
-    //     return;
-    // }
+     if (rutas.private && !estaAutenticado()) {
+         location.hash = "#login";
+         return;
+     }
 
     // Carga la vista
     await loadView(appContainer, rutas.template);

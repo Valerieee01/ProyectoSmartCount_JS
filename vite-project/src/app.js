@@ -4,6 +4,9 @@ import "./style.css";
 import { router } from "./routes/router.js";
 import { estaAutenticado } from "./helpers/auth.js";
 
+  
+
+
 const headerContainer = document.getElementById("header-container");
 const asideContainer = document.getElementById("aside-container");
 const nav = document.querySelector(".nav_menu");
@@ -58,7 +61,7 @@ window.addEventListener("modificandoHeader", (e) => {
             // Limpia el aside antes de re-renderizarlo para evitar duplicados si asideBar
             // no maneja el vaciado interno.
             asideContainer.innerHTML = '';
-            asideBar(asideContainer);
+            asideBar(asideContainer, headerContainer);
         }
     } else {
         // Si ya no está autenticado, muestra el header y limpia el aside
