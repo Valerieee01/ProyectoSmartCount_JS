@@ -2,7 +2,7 @@ import eliminar_clientes_por_id from "../../casos_de_uso/Clientes/eliminarClient
 import listarClientes from "../../casos_de_uso/Clientes/listarClientes.js";
 
 // --- Variables para la paginación ---
-const ITEMS_PER_PAGE = 6; // Define cuántos clientes mostrar por página
+const ITEMS_PER_PAGE = 5; // Define cuántos clientes mostrar por página
 let currentPage = 1;      // Página actual, inicia en la primera
 let allClients = [];      // Almacenará todos los clientes obtenidos de la API
 

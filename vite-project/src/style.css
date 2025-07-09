@@ -12,10 +12,11 @@
   --white: #ffffff;
   --max-width: 1200px;
   --header-font: "Bebas Neue", sans-serif;
-  --background-body: linear-gradient(90deg, #FFDAB9, #FFA07A); /* Durazno a Salmón claro */
+  --background-body: linear-gradient(90deg, #FFDAB9, #FFA07A);
+  /* Durazno a Salmón claro */
   --color-letters: #333;
   --color-white: #fff;
-  --color-ligth-white: #eee; 
+  --color-ligth-white: #eee;
   --color-ligth-gray: #888;
   --background-containers: #FFA07A;
 }
@@ -49,53 +50,146 @@ a {
   /* Asegúrate de que #contenido ocupe todo el ancho disponible */
 }
 
-.buscadorContenedor {
+/* Contenedor principal de la vista, si tiene algún max-width o centrado */
+#contenido {
   display: flex;
-  justify-content: center;
-  /* Centra el contenido (la tabla, el título, el paginador) */
+  flex-direction: column;
+  justify-content: flex-start;
+  /* Alinea los elementos al inicio (arriba) */
   align-items: center;
-  /* Centra los elementos flexibles individualmente en el eje cruzado */
+  /* Centra horizontalmente los elementos flexibles */
   width: 100%;
-  /* Asegúrate de que #contenido ocupe todo el ancho disponible */
-}
-
-.buscador {
-  margin-right: 20px;
-  width: 100%;
-}
-
-.buscador input {
-  width: 250px;
-}
-
-.buscador select {
-  width: 250px;
-  padding: 13px 50px 13px;
-  background: var(--color-ligth-white);
-  border-radius: 8px;
-  border: none;
-  outline: none;
-}
-
-.option {
-  font-size: 16px;
-  color: var(--color-letters);
-  font-weight: 500;
-  padding: 10px;
-}
-
-.buscarTabla {
+  max-width: 1200px;
+  /* Define un ancho máximo para el contenido general */
+  margin: 0 auto;
+  /* Centra el div #contenido en la página */
   padding: 20px;
+  box-sizing: border-box;
 }
 
+/* Título de la tabla y buscador - Contenedor general */
 .tituloTable {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  /* Centra el contenido (la tabla, el título, el paginador) */
   align-items: center;
-  /* Centra los elementos flexibles individualmente en el eje cruzado */
+  width: 100%;
+  /* Ocupa todo el ancho disponible dentro de #contenido */
+  margin-bottom: 30px;
+  /* Espacio entre el título/buscador y la tabla */
 }
+
+.tituloTable h1 {
+  color: var(--primary-color-dark);
+  font-size: 2.5em;
+  font-weight: 700;
+  margin-bottom: 20px;
+  /* Espacio entre el título H1 y el buscador */
+}
+
+/* Contenedor de los campos de búsqueda y botón */
+.buscadorContenedor {
+  display: flex;
+  flex-wrap: column;
+  /* Permite que los elementos se envuelvan si no hay espacio */
+  gap: 15px;
+  /* Espacio entre los elementos del buscador */
+  justify-content: center;
+  /* Centra los elementos horizontalmente */
+  align-items: center;
+  width: 100%;
+  /* Ocupa todo el ancho dentro de .tituloTable */
+  padding: 15px;
+  background-color: #f9f9f9;
+  /* Un fondo ligeramente diferente para el buscador */
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  /* Sombra más suave */
+}
+
+/* Estilo para el input-box (general para campos con icono) */
+.buscador {
+  position: relative;
+  /* width: 250px; Si quieres que todos los campos tengan el mismo ancho */
+  flex-grow: 1;
+  /* Permite que el buscador crezca y ocupe espacio */
+  min-width: 200px;
+  /* Ancho mínimo para la responsividad */
+  max-width: 280px;
+  /* Ancho máximo para no desbordar */
+}
+
+.buscador input,
+.buscador select {
+  width: 100%;
+  /* Ocupa todo el ancho de su contenedor .buscador */
+  padding: 12px 15px;
+  /* Padding ajustado */
+  padding-left: 40px;
+  /* Espacio para el icono */
+  background: var(--color-light-white, #ffffff);
+  /* Usa tu variable o un blanco por defecto */
+  border-radius: 8px;
+  border: 1px solid #d0d0d0;
+  /* Borde suave */
+  outline: none;
+  font-size: 1em;
+  color: var(--color-letters, #333);
+  /* Color de letra */
+  transition: border-color 0.3s ease;
+}
+.buscador option {
+  color: var(--color-letters);
+}
+
+.buscador input:focus,
+.buscador select:focus {
+  border-color: var(--primary-color);
+  /* Resalta el borde al enfocar */
+}
+
+/* Icono dentro del buscador */
+.buscador i {
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  /* Color del icono */
+  font-size: 1.1em;
+}
+
+/* Estilos específicos para el select, ajustando el padding si no hay icono a la izquierda */
+.buscador select {
+  padding-left: 15px;
+  /* Si no lleva icono, ajusta este padding */
+  /* Si todos tus selects tienen icono, mantén el padding-left de 40px */
+}
+
+/* Estilos para el botón de búsqueda */
+.buscarTabla {
+  padding: 12px 25px;
+  /* Padding ajustado para un botón */
+  background-color: var(--primary-color);
+  /* Usa tu color primario */
+  color: #ffffff;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  width: 300px;
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  display: inline-block;
+  border: none;
+  /* Asegura que no tenga bordes indeseados */
+}
+
+.buscarTabla:hover {
+  background-color: var(--primary-color-dark);
+  /* Variante más oscura al pasar el mouse */
+  transform: translateY(-1px);
+}
+
 
 * Estilos generales de la tabla */ .table {
   width: 100%;
@@ -711,6 +805,28 @@ nav {
   background-color: var(--primary-color-dark);
 }
 
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .buscadorContenedor {
+    flex-direction: column;
+    /* Apila los elementos en pantallas pequeñas */
+    align-items: stretch;
+    /* Estira los elementos para ocupar el ancho completo */
+  }
+
+  .input-box {
+    width: 100%;
+    /* Ocupa todo el ancho disponible */
+    max-width: none;
+    /* Elimina el max-width para pantallas pequeñas */
+  }
+
+  .buscador {
+    /* Ya no necesitaríamos este .buscador si .input-box ya es flex-grow */
+    margin-right: 0;
+    /* Elimina el margen derecho si se apilan */
+  }
+}
 
 
 @media (width > 768px) {
