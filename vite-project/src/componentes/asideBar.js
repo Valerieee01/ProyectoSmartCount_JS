@@ -22,7 +22,7 @@ const asideBar = (asideContainer) => {
     const liCliente = document.createElement('li');
     const liEmpleado = document.createElement('li');
     const liMantenimiento = document.createElement('li');
-    const liEquipos= document.createElement('li');
+    const liEquipos = document.createElement('li');
     const liProveedores = document.createElement('li');
     const liPagos = document.createElement('li');
     const liReportes = document.createElement('li');
@@ -34,7 +34,7 @@ const asideBar = (asideContainer) => {
     const iCiente = document.createElement('i');
     const iEmpleado = document.createElement('i');
     const iMantenimiento = document.createElement('i');
-    const iEquipos= document.createElement('i');
+    const iEquipos = document.createElement('i');
     const iProveedores = document.createElement('i');
     const iPagos = document.createElement('i');
     const iReportes = document.createElement('i');
@@ -46,11 +46,11 @@ const asideBar = (asideContainer) => {
     const aCiente = document.createElement('a');
     const aEmpleado = document.createElement('a');
     const aMantenimiento = document.createElement('a');
-    const aEquipos= document.createElement('a');
+    const aEquipos = document.createElement('a');
     const aProveedores = document.createElement('a');
     const aPagos = document.createElement('a');
     const aReportes = document.createElement('a');
-    const aCerrarSesion  = document.createElement('a');
+    const aCerrarSesion = document.createElement('a');
 
 
     divIconItems.classList.add('icon_items');
@@ -77,8 +77,8 @@ const asideBar = (asideContainer) => {
 
     inputCheckBox.setAttribute('id', 'click');
     inputCheckBox.setAttribute('type', 'checkbox');
-    form.setAttribute('action','#');
-    labelClick.setAttribute('for', 'click'); 
+    form.setAttribute('action', '#');
+    labelClick.setAttribute('for', 'click');
 
     aHome.setAttribute('href', '#inicio');
     aUsuario.setAttribute('href', '#usuario');
@@ -89,7 +89,7 @@ const asideBar = (asideContainer) => {
     aProveedores.setAttribute('href', '#proveedores');
     aPagos.setAttribute('href', '#pagos');
     aReportes.setAttribute('href', '#reportes');
-    aCerrarSesion.setAttribute('href', '#cerrarSesion');
+    aCerrarSesion.setAttribute('href', '#cerrarSesion'); 
 
     aHome.textContent = 'Inicio';
     aUsuario.textContent = 'Usuario';
@@ -99,7 +99,7 @@ const asideBar = (asideContainer) => {
     aEquipos.textContent = 'Equipos';
     aProveedores.textContent = 'Proveedores';
     aPagos.textContent = 'Pagos';
-    aReportes.text = 'Reportes'
+    aReportes.textContent = 'Reportes' 
     aCerrarSesion.textContent = 'Cerrar Sesion';
 
     liHome.append(iHome, aHome);
@@ -117,16 +117,41 @@ const asideBar = (asideContainer) => {
     divIconItems.appendChild(ulIconItems);
     divSideNav.append(divLogo, title, divIconItems);
     labelClick.append(iconSearch, iconClose);
-    divContainer.append(inputCheckBox,labelClick , divSideNav);
+    divContainer.append(inputCheckBox, labelClick, divSideNav);
     asideContainer.append(divContainer);
 
-     aCerrarSesion.addEventListener('click', (e) => {
-       e.preventDefault();
-       cleanLocalStorage()
-       location.hash = "#home";
-       asideContainer.remove(divContainer);
-    })
+   
+    const menuItems = [
+        { element: liHome, hash: '#inicio' },
+        { element: liUsuario, hash: '#usuario' },
+        { element: liCliente, hash: '#cliente' },
+        { element: liEmpleado, hash: '#empleado' },
+        { element: liMantenimiento, hash: '#mantenimiento' },
+        { element: liEquipos, hash: '#equipos' },
+        { element: liProveedores, hash: '#proveedores' },
+        { element: liPagos, hash: '#pagos' },
+        { element: liReportes, hash: '#reportes' },
+    ];
 
+    menuItems.forEach(item => {
+        item.element.addEventListener('click', (e) => {
+            // Previene el comportamiento por defecto del <a> si el click fue directamente en él
+            // Aunque estamos añadiendo el listener al LI, es una buena práctica.
+            e.preventDefault();
+            location.hash = item.hash; // Establece el hash de la URL
+          
+        });
+    });
+
+    // Manejo específico para cerrar sesión (ya lo tenías, lo mantengo separado para claridad)
+    liCerrarSesion.addEventListener('click', (e) => {
+        e.preventDefault();
+        cleanLocalStorage();
+        location.hash = "#home";
+        
+        // Dispara el evento personalizado para que app.js sepa que el estado de autenticación ha cambiado
+        window.dispatchEvent(new Event('modificandoHeader'));
+    });
 }
 
 export default asideBar;

@@ -4,7 +4,8 @@ class Empleado {
     
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT * FROM empleados");
+            const [rows] = await connection.query("SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
+      "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona");
             return rows; 
         } catch (error) {
             throw new Error("Error al obtener los empleados");
@@ -28,8 +29,8 @@ class Empleado {
 
     return rows[0]; // Retorna el primer (y único) resultado encontrado, asumiendo que id_cliente es único
   } catch (error) {
-    console.error("Error al obtener el cliente por ID:", error); // Usa console.error para errores
-    throw new Error("Error al obtener el cliente.");
+    console.error("Error al obtener el empleado por ID:", error); // Usa console.error para errores
+    throw new Error("Error al obtener el empleado.");
   }
 }
 
@@ -49,13 +50,14 @@ class Empleado {
 
       // Verificar si la persona ya es un cliente
       const [existingEmpleado] = await connection.query(
-        "SELECT id_cliente FROM clientes WHERE id_persona = ?",
+        "SELECT id_empleado FROM empleados WHERE id_persona = ?",
         [id_persona]
       );
 
       if (existingEmpleado.length > 0) {
-        throw new Error("La persona ya es un cliente.");
+        throw new Error("La persona ya es un empleado.");
       }
+      
       
       const [result] = await connection.query(
         "INSERT INTO empleados (id_empleado) VALUES (?)",

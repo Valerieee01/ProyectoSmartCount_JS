@@ -12,12 +12,19 @@
   --white: #ffffff;
   --max-width: 1200px;
   --header-font: "Bebas Neue", sans-serif;
+  --background-body: linear-gradient(90deg, #FFDAB9, #FFA07A); /* Durazno a Salmón claro */
+  --color-letters: #333;
+  --color-white: #fff;
+  --color-ligth-white: #eee; 
+  --color-ligth-gray: #888;
+  --background-containers: #FFA07A;
 }
 
 * {
   padding: 0;
   margin: 0;
   box-sizing: border-box;
+  font-family: Poppins;
 }
 
 img {
@@ -30,6 +37,244 @@ a {
   transition: 0.3s;
 }
 
+#contenido {
+  display: flex;
+  flex-direction: column;
+  /* Esto es clave para que los elementos se apilen verticalmente */
+  justify-content: center;
+  /* Centra el contenido (la tabla, el título, el paginador) */
+  align-items: center;
+  /* Centra los elementos flexibles individualmente en el eje cruzado */
+  width: 100%;
+  /* Asegúrate de que #contenido ocupe todo el ancho disponible */
+}
+
+.buscadorContenedor {
+  display: flex;
+  justify-content: center;
+  /* Centra el contenido (la tabla, el título, el paginador) */
+  align-items: center;
+  /* Centra los elementos flexibles individualmente en el eje cruzado */
+  width: 100%;
+  /* Asegúrate de que #contenido ocupe todo el ancho disponible */
+}
+
+.buscador {
+  margin-right: 20px;
+  width: 100%;
+}
+
+.buscador input {
+  width: 250px;
+}
+
+.buscador select {
+  width: 250px;
+  padding: 13px 50px 13px;
+  background: var(--color-ligth-white);
+  border-radius: 8px;
+  border: none;
+  outline: none;
+}
+
+.option {
+  font-size: 16px;
+  color: var(--color-letters);
+  font-weight: 500;
+  padding: 10px;
+}
+
+.buscarTabla {
+  padding: 20px;
+}
+
+.tituloTable {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  /* Centra el contenido (la tabla, el título, el paginador) */
+  align-items: center;
+  /* Centra los elementos flexibles individualmente en el eje cruzado */
+}
+
+* Estilos generales de la tabla */ .table {
+  width: 100%;
+  border-collapse: collapse;
+  /* Para eliminar el espacio entre celdas */
+  margin-bottom: 1.5rem;
+  /* Espacio debajo de la tabla */
+  background-color: #f5f5f5;
+  /* Fondo blanco para la tabla */
+  border-radius: 8px;
+  /* Bordes ligeramente redondeados */
+  overflow: hidden;
+  /* Asegura que el radio de borde se aplique a los hijos */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  /* Sombra suave para darle profundidad */
+}
+
+/* Encabezado de la tabla */
+.table thead {
+  background-color: var(--primary-color);
+  /* Un azul oscuro o gris oscuro para el encabezado */
+  color: #ffffff;
+  /* Texto blanco para contraste */
+}
+
+.table th {
+  padding: 12px 15px;
+  /* Espaciado interno */
+  text-align: left;
+  /* Alineación del texto a la izquierda */
+  font-weight: 600;
+  /* Un poco más de negrita */
+  border: 2px solid var(--primary-color-dark);
+  /* Borde inferior más oscuro para separar */
+  text-transform: uppercase;
+  /* Texto en mayúsculas */
+  font-size: 0.9em;
+  /* Un poco más pequeño */
+  letter-spacing: 0.5px;
+  /* Pequeño espacio entre letras */
+  border-radius: 10px;
+}
+
+/* Filas y celdas del cuerpo */
+.table tbody tr {
+  border-bottom: 1px solid #e0e0e0;
+  /* Divisor suave entre filas */
+  transition: background-color 0.3s ease;
+  /* Transición suave al pasar el mouse */
+}
+
+.table tbody tr:last-child {
+  border-bottom: none;
+  /* Eliminar el borde inferior de la última fila */
+}
+
+.table tbody tr:hover {
+  background-color: #f5f5f5;
+  /* Cambio de color al pasar el mouse */
+}
+
+.table td {
+  padding: 10px 15px;
+  /* Espaciado interno */
+  vertical-align: middle;
+  /* Alineación vertical */
+  color: #333333;
+  /* Color de texto oscuro */
+  font-size: 0.95em;
+  /* Tamaño de fuente ligeramente más pequeño */
+}
+
+/* Estilo para el divisor de grupo (si usas Bootstrap) */
+.table-group-divider {
+  border-top: 2px solid #dee2e6;
+  /* Un divisor más prominente si lo necesitas */
+}
+
+/* Contenedor de botones en las acciones */
+.botonera {
+  display: flex;
+  gap: 8px;
+  /* Espacio entre los botones */
+  justify-content: center;
+  /* Centrar los botones en la celda */
+  align-items: center;
+}
+
+
+
+/* Botón Editar */
+.btn.editar {
+  background-color: #dbb433;
+  /* Un verde de éxito */
+}
+
+.btn.editar:hover {
+  background-color: #c7991b;
+  transform: translateY(-1px);
+  /* Efecto de "levantar" */
+}
+
+/* Botón Eliminar */
+.btn.btn--danger.eliminar {
+  background-color: #d86733;
+  /* Un rojo de peligro */
+}
+
+.btn.btn--danger.eliminar:hover {
+  background-color: #e28154;
+  transform: translateY(-1px);
+}
+
+/* Botones pequeños (corregido 'samall' a 'small') */
+.btn--small {
+  padding: 4px 8px;
+  font-size: 0.75em;
+}
+
+
+/* Contenedor del paginador */
+#paginator {
+  display: flex;
+  justify-content: center;
+  /* Centrar los botones de paginación */
+  align-items: center;
+  margin-top: 25px;
+  gap: 10px;
+  /* Espacio entre los botones del paginador */
+}
+
+/* Botones del paginador */
+.paginator-btn {
+  padding: 10px 15px;
+  border: 1px solid var(--primary-color);
+  /* Borde azul */
+  background-color: #ffffff;
+  /* Fondo blanco */
+  color: var(--primary-color-dark);
+  /* Texto azul */
+  cursor: pointer;
+  border-radius: 5px;
+  /* Bordes redondeados */
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.paginator-btn:hover:not([disabled]) {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  /* Texto blanco al pasar el mouse */
+  transform: translateY(-2px);
+  /* Pequeño efecto de levantamiento */
+}
+
+.paginator-btn.active {
+  background-color: var(--primary-color);
+  color: #ffffff;
+  /* Texto blanco para la página activa */
+  border-color: var(--primary-color-dark);
+  cursor: default;
+  /* No hay cursor de puntero en la activa */
+}
+
+.paginator-btn[disabled] {
+  opacity: 0.6;
+  /* Menos opacidad para deshabilitados */
+  cursor: not-allowed;
+  background-color: #e9ecef;
+  /* Fondo gris claro */
+  color: #6c757d;
+  /* Texto gris oscuro */
+  border-color: #ced4da;
+}
+
+
+/*
+Header menu
+*/
 
 nav {
   position: fixed;
@@ -234,7 +479,7 @@ nav {
   color: var(--text-light);
 }
 
-.header__content .input__group > div {
+.header__content .input__group>div {
   display: flex;
   align-items: center;
   gap: 10px;
@@ -288,7 +533,7 @@ nav {
 .section__container {
   max-width: var(--max-width);
   margin: auto;
-  padding-block: 4rem 2rem; 
+  padding-block: 4rem 2rem;
   padding-inline: 1rem;
 }
 
@@ -443,7 +688,8 @@ nav {
 }
 
 .contact__form .full-width {
-  grid-column: 1 / -1; /* Makes the textarea span full width on larger screens */
+  grid-column: 1 / -1;
+  /* Makes the textarea span full width on larger screens */
 }
 
 .contact__form .submit__button {
@@ -577,7 +823,8 @@ nav {
   }
 
   .about__image {
-    margin: 0; /* Reset margin for larger screens */
+    margin: 0;
+    /* Reset margin for larger screens */
   }
 
   /* Responsible Section Media Queries */
@@ -592,16 +839,20 @@ nav {
 
   /* Contacto Section Media Queries */
   .contact__form {
-    grid-template-columns: repeat(2, 1fr); /* Two columns for inputs */
+    grid-template-columns: repeat(2, 1fr);
+    /* Two columns for inputs */
   }
 
   .contact__form .full-width {
-    grid-column: 1 / -1; /* Keeps textarea full width */
+    grid-column: 1 / -1;
+    /* Keeps textarea full width */
   }
 
   .contact__form .submit__button {
-    width: fit-content; /* Adjust button width */
-    justify-self: end; /* Align button to the right */
+    width: fit-content;
+    /* Adjust button width */
+    justify-self: end;
+    /* Align button to the right */
   }
 }
 

@@ -4,7 +4,7 @@ class Proveedor {
     
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT * FROM proveedores");
+            const [rows] = await connection.query("SELECT p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono FROM personas p JOIN proveedores pr ON pr.id_proveedor = p.id_persona");
             return rows; 
         } catch (error) {
             throw new Error("Error al obtener las proveedores");
@@ -13,7 +13,9 @@ class Proveedor {
 
     async getById() {
         try {
-            const [rows] = await connection.query( "SELECT * FROM proveedores WHERE id = ?",[id]);
+            const [rows] = await connection.query(  "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
+      "FROM personas p JOIN proveedores pr ON pr.id_proveedor = p.id_persona " +
+      "WHERE e.id_empleado = ?",[id]);
             if (rows.length === 0) {
                 return []; // Retorna un array vacío si no se encuentra la categoría
             }
@@ -26,6 +28,27 @@ class Proveedor {
     // Método para crear una nueva categoría
   async create(id_persona) {
     try {
+
+       // Verificar si la persona ya existe
+      const [existingPersona] = await connection.query(
+        "SELECT id_persona FROM personas WHERE id_persona = ?",
+        [id_persona]
+      );
+
+      if (existingPersona.length === 0) {
+        throw new Error("La persona con el ID proporcionado no existe.");
+      }
+
+       // Verificar si la persona ya es un cliente
+      const [existingProveedor] = await connection.query(
+        "SELECT id_proveedor FROM proveedores WHERE id_persona = ?",
+        [id_persona]
+      );
+
+         if (existingProveedor.length > 0) {
+        throw new Error("La persona ya es un Proveedor.");
+      }
+
       const [result] = await connection.query(
         "INSERT INTO personas (id_proveedor) VALUES (?)",
         [id_persona]
@@ -60,7 +83,7 @@ class Proveedor {
       const [result] = await connection.query(query, params);
       return result.affectedRows > 0 ? { id, ...campos } : null;
     } catch (error) {
-      throw new Error("Error al actualizar la proveedor");
+      throw new Error("Error al actualizar el proveedor");
     }
   }
 

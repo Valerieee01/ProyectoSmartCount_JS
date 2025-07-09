@@ -5,14 +5,7 @@
     box-sizing: border-box;
 }
 
-:root{
-    --background-body: linear-gradient(90deg, #FFDAB9, #FFA07A); /* Durazno a Salmón claro */
-    --color-letters: #333;
-    --color-white: #fff;
-    --color-ligth-white: #eee; 
-    --color-ligth-gray: #888;
-    --background-containers: #FFA07A;
-}
+
 
 .body {
     display: flex;
