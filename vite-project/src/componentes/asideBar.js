@@ -15,6 +15,8 @@ const asideBar = (asideContainer) => {
 
     const form = document.createElement('form');
 
+    const br = document.createElement('br');
+
     const divIconItems = document.createElement('div');
     const ulIconItems = document.createElement('ul');
     const liHome = document.createElement('li');
@@ -113,7 +115,7 @@ const asideBar = (asideContainer) => {
     liReportes.append(iReportes, aReportes);
     liCerrarSesion.append(iCerrarSesion, aCerrarSesion);
 
-    ulIconItems.append(liHome, liUsuario, liCliente, liEmpleado, liMantenimiento, liEquipos, liProveedores, liPagos, liReportes, liCerrarSesion);
+    ulIconItems.append(liHome, liUsuario, liCliente, liEmpleado, liMantenimiento, liEquipos, liProveedores, liPagos, liReportes, br, liCerrarSesion);
     divIconItems.appendChild(ulIconItems);
     divSideNav.append(divLogo, title, divIconItems);
     labelClick.append(iconSearch, iconClose);

@@ -1,6 +1,22 @@
 <div id="contenidoVista">
     <div id="contenido">
-        <h1>Empleados</h1>
+        <div class="tituloTable">
+            <h1>Gestión de Empleados</h1>
+            <div class="buscadorContenedor">
+                <div class="input-box buscador">
+                    <input type="text" placeholder="Nombre Empleado" id="nombre">
+                    <i class="ri-user-5-line"></i>
+                </div>
+                 <div class="input-box buscador">
+                    <select name="option" id="estado">
+                        <option  value="activo">Seleccione Estado...</option>
+                        <option  value="activo">Activo</option>
+                        <option  value="inactivo">Inactivo</option>
+                    </select>
+                </div>
+                <a href="" class="btn buscarTabla">Buscar</a>
+            </div>
+        </div>
         <table class="table" id="tableEmpleados">
             <thead>
                 <tr>
@@ -17,5 +33,8 @@
 
             </tbody>
         </table>
+        
+        <div id="paginator" style="margin-top: 20px; text-align: center;">
+        </div>
     </div>
 </div>

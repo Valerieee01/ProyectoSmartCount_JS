@@ -1,3 +1,93 @@
 #contenidoVista {
     margin-left: 150px;
 }
+
+/* Estilos generales para el contenedor de las tarjetas si las tienes en una cuadrícula */
+/* Por ejemplo, si tienes un div que contiene varias cards */
+.cards-container {
+    display: flex;
+    flex-wrap: wrap; /* Permite que las tarjetas se envuelvan a la siguiente línea */
+    gap: 20px; /* Espacio entre las tarjetas */
+    justify-content: center; /* Centra las tarjetas en el contenedor */
+    padding: 20px; /* Espaciado interno del contenedor */
+}
+
+/* Estilos para la tarjeta individual */
+.card {
+    width: 200px; /* Ancho fijo que ya tienes, puedes ajustarlo o usar un max-width */
+    height: 300px;
+    background-color: #ffffff; /* Fondo blanco */
+    border: none; /* Eliminar el borde predeterminado si lo hay */
+    border-radius: 12px; /* Bordes más redondeados */
+    overflow: hidden; /* Asegura que la imagen y el contenido se ajusten al border-radius */
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Sombra más pronunciada para un efecto flotante */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Transición suave para efectos hover */
+    display: flex; /* Para controlar la disposición interna si es necesario */
+    flex-direction: column; /* Apila el contenido verticalmente */
+    align-items: center;
+}
+
+/* Efecto al pasar el mouse sobre la tarjeta */
+.card:hover {
+    transform: translateY(-5px); /* Ligeramente hacia arriba */
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15); /* Sombra más intensa */
+}
+
+/* Estilos para la imagen de la tarjeta */
+.card-img-top {
+    width: 90%; /* Asegura que la imagen ocupe todo el ancho de la tarjeta */
+    height: 180px; /* Altura fija para la imagen (ajusta según tus necesidades) */
+    padding: 10px;
+    object-fit: cover; /* Recorta la imagen para que cubra el área sin distorsionarse */
+    border-top-left-radius: 12px; /* Redondea las esquinas superiores de la imagen */
+    border-top-right-radius: 12px;
+}
+
+/* Estilos para el cuerpo de la tarjeta */
+.card-body {
+    padding: 20px; /* Espaciado interno del cuerpo */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* Empuja el botón hacia abajo si hay espacio */
+    flex-grow: 1; /* Permite que el body ocupe el espacio restante */
+}
+
+/* Estilos para el título de la tarjeta */
+.card-title {
+    font-size: 1.2em; /* Tamaño de fuente del título */
+    font-weight: 700; /* Negrita */
+    color: var(--primary-color-dark, #333333); /* Usa tu color primario oscuro o un gris oscuro */
+    margin-bottom: 10px; /* Espacio debajo del título */
+    text-align: center;
+}
+
+/* Estilos para el texto de la tarjeta */
+.card-text {
+    font-size: 0.95em; /* Tamaño de fuente del texto */
+    color: #666666; /* Un gris más suave para el texto */
+    line-height: 1.5; /* Espaciado entre líneas para mejor legibilidad */
+    margin-bottom: 15px; /* Espacio debajo del texto */
+    flex-grow: 1; /* Permite que el texto ocupe el espacio disponible */
+}
+
+/* Estilos para el botón de la tarjeta */
+.card-body .btn { /* Selector más específico para el botón dentro de la card */
+    display: inline-block; /* Para que el padding y margin funcionen */
+    width: auto; /* Ancho automático, no 100% */
+    font-size: 15px;
+    padding: 10px 10px; /* Padding para el botón */
+    background-color: var(--primary-color, #007bff); /* Usa tu color primario */
+    color: #ffffff; /* Texto blanco */
+    text-decoration: none; /* Elimina el subrayado si es un <a> */
+    border-radius: 8px; /* Bordes redondeados para el botón */
+    font-weight: 600; /* Negrita */
+    text-align: center;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    border: none; /* Eliminar cualquier borde predeterminado */
+    align-self:center; /* Alinea el botón a la izquierda dentro del flex container */
+}
+
+.card-body .btn:hover {
+    background-color: var(--primary-color-dark, #0056b3); /* Variante más oscura al pasar el mouse */
+    transform: translateY(-1px); /* Efecto de "levantar" */
+}

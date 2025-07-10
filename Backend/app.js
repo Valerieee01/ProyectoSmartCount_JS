@@ -12,7 +12,9 @@ import empleadosRoutes  from "./src/routes/empleadosRoutes.js";
 import equiposRoutes  from "./src/routes/equiposRoutes.js";
 import mantenimientosRoutes  from "./src/routes/mantenimientosRoutes.js";
 import proveedoresRoutes  from "./src/routes/proveedoresRoutes.js";
-import pagosRoutes from "./src/routes/PagosRoutes.js";
+import pagosRoutes  from "./src/routes/pagosRoutes.js";
+
+
 
 dotenv.config();
 

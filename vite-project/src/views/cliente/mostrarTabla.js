@@ -36,7 +36,7 @@ export const cargar_tabla = async (tabla) => {
     }
 };
 
-export const crearFila = ({id, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono }, tabla) => {
+export const crearFila = ({id_persona, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono }, tabla) => {
     // ... (Tu código actual de crearFila, sin cambios)
     const tBody = tabla.querySelector("tbody");
     const tr = tBody.insertRow(); // insertRow() sin argumento inserta al final, que es lo común en tablas
@@ -61,10 +61,10 @@ export const crearFila = ({id, nombre_completo_razon_social, id_tipo_identificac
     const btnEliminar = document.createElement("a");
     const btnEditar = document.createElement("a");
  
-    btnEditar.setAttribute("data-id", id);
-    btnEditar.setAttribute("href", `#editarcliente/${id}`); // Cambiado a #editarcliente si es de clientes
+    btnEditar.setAttribute("data-id", id_persona);
+    btnEditar.setAttribute("href", `#editarcliente/${id_persona}`); // Cambiado a #editarcliente si es de clientes
 
-    btnEliminar.setAttribute("data-id", id);
+    btnEliminar.setAttribute("data-id", id_persona);
  
     btnEditar.textContent = "Editar";
     btnEliminar.textContent = "Eliminar";
@@ -75,7 +75,7 @@ export const crearFila = ({id, nombre_completo_razon_social, id_tipo_identificac
     div.append(btnEditar, btnEliminar);
     tdBotonera.append(div);
  
-    tr.setAttribute("id", `client_${id}`); // Cambiado a client_${id} para ser específico
+    tr.setAttribute("id", `client_${id_persona}`); // Cambiado a client_${id} para ser específico
 };
 
 // --- Función para renderizar el paginador ---

@@ -2,7 +2,7 @@ import header from "./componentes/header.js";
 import asideBar from "./componentes/asideBar.js";
 import "./style.css";
 import { router } from "./routes/router.js";
-import { estaAutenticado } from "./helpers/auth.js"; // Asegúrate de que esta función lea de localStorage
+import { estaAutenticado } from "./helpers/auth.js"; 
 
 const headerContainer = document.getElementById("header-container");
 const asideContainer = document.getElementById("aside-container");

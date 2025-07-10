@@ -2,6 +2,8 @@
 @import url('./views/login_register/loginRegister.css');
 @import url('./componentes/style.css');
 @import url('./views/inicio/incio.css');
+@import url('./views/cliente/cliente.css');
+
 
 
 :root {

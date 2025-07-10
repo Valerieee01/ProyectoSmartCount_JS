@@ -1,3 +1,3 @@
-export const inicioController = () => {
 
+export const inicioController = () => {
 }
