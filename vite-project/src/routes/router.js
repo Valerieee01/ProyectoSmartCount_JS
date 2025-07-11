@@ -68,6 +68,11 @@ const routes = {
         controlador: reportesController,
         private: true,
     },
+    "usuario": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "user/index.html", // Misma vista HTML
+        controlador: reportesController,
+        private: true,
+    },
     // Agrega más rutas aquí si es necesario
 };
 

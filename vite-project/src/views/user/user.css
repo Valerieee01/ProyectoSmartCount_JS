@@ -1,0 +1,81 @@
+/* Estilos para la tarjeta de perfil de usuario */
+.user-profile-card {
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+    padding: 30px;
+    margin: 40px auto; /* Centra la tarjeta y da espacio */
+    max-width: 600px; /* Ancho máximo de la tarjeta */
+    text-align: center;
+}
+
+.user-profile-card h1 {
+    color: var(--primary-color-dark);
+    font-size: 2.2em;
+    margin-bottom: 25px;
+    border-bottom: 2px solid #eee;
+    padding-bottom: 15px;
+}
+
+.profile-info p {
+    font-size: 1.1em;
+    color: #555;
+    margin-bottom: 10px;
+    text-align: left; /* Alinea el texto de info a la izquierda */
+}
+
+.profile-info strong {
+    color: var(--primary-color);
+    display: inline-block; /* Para que el strong tenga un ancho y no rompa la línea */
+    min-width: 150px; /* Asegura que las etiquetas se alineen */
+}
+
+.profile-info span {
+    color: #333;
+}
+
+.profile-actions {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Espacio entre los botones */
+}
+
+/* Estilo para el botón de eliminar con borde (si no tienes btn-danger-outline) */
+.btn-danger-outline {
+    background-color: transparent;
+    color: #dc3545; /* Rojo de peligro */
+    border: 1px solid #dc3545;
+    padding: 10px 20px;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: all 0.3s ease;
+}
+
+.btn-danger-outline:hover {
+    background-color: #dc3545;
+    color: #ffffff;
+    transform: translateY(-1px);
+}
+
+/* Mensajes de feedback (éxito/error) */
+.message {
+    margin-top: 20px;
+    padding: 10px 15px;
+    border-radius: 5px;
+    font-weight: 600;
+    text-align: center;
+}
+
+.message.success {
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
+}
+
+.message.error {
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
+}
