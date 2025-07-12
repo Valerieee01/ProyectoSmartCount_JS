@@ -1,3 +1,17 @@
-export const mantenimientoController = () => {
+import { agregarEventosBotones, cargar_tabla } from "./mostrarTabla.js";
 
+export const mantenimientoController = async () => {
+    const tabla = document.querySelector("#tableMantenimientos");
+        
+        if (!tabla) {
+            console.error("No se encontró la tabla");
+            return;
+        }
+    
+        try {
+            await cargar_tabla(tabla);
+            await agregarEventosBotones();
+        } catch (error) {
+            console.error("Error en productoController:", error);
+        }
 }

@@ -1,3 +1,17 @@
-export const equiposController = () => {
+import { agregarEventosBotones, cargar_tabla } from "./mostrarTabla.js";
 
+export const equiposController = async () => {
+    const tabla = document.querySelector("#tableEquipos");
+        
+        if (!tabla) {
+            console.error("No se encontró la tabla");
+            return;
+        }
+    
+        try {
+            await cargar_tabla(tabla);
+            await agregarEventosBotones();
+        } catch (error) {
+            console.error("Error en productoController:", error);
+        }
 }

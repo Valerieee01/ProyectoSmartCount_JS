@@ -2,7 +2,7 @@ import eliminar_clientes_por_id from "../../casos_de_uso/Clientes/eliminarClient
 import listarClientes from "../../casos_de_uso/Clientes/listarClientes.js";
 
 // --- Variables para la paginación ---
-const ITEMS_PER_PAGE = 5; // Define cuántos clientes mostrar por página
+const ITEMS_PER_PAGE = 4; // Define cuántos clientes mostrar por página
 let currentPage = 1;      // Página actual, inicia en la primera
 let allClients = [];      // Almacenará todos los clientes obtenidos de la API
 
@@ -152,9 +152,9 @@ export const agregarEventosBotones = async () => {
         // Puedes añadir aquí la lógica para el botón de editar
         if (e.target.classList.contains('editar')) {
             // El href ya maneja la navegación, pero si necesitas JS adicional:
-            // const clienteId = e.target.dataset.id;
-            // console.log("Editar cliente con ID:", clienteId);
-            // location.hash = `#editarcliente/${clienteId}`; // Ya se maneja con el href
+             const clienteId = e.target.dataset.id;
+             console.log("Editar cliente con ID:", clienteId);
+             location.hash = `#editarcliente/${clienteId}`; // Ya se maneja con el href
         }
     });
 };

@@ -3,7 +3,7 @@ import listarEmpleados from "../../casos_de_uso/Empleados/listarEmpleados.js";
 
 
 // --- Variables para la paginación ---
-const ITEMS_PER_PAGE = 5; // Define cuántos clientes mostrar por página
+const ITEMS_PER_PAGE = 4; // Define cuántos clientes mostrar por página
 let currentPage = 1;      // Página actual, inicia en la primera
 let allEmpleados = [];      // Almacenará todos los clientes obtenidos de la API
 

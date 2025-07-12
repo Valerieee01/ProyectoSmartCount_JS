@@ -32,7 +32,6 @@ export const loginController = (container) => {
       location.hash = "#inicio";
       window.dispatchEvent(new CustomEvent("modificandoHeader", {}));
     } else {
-      console.log(response);
       error(response);
     }
   };

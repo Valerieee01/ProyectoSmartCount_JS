@@ -1,5 +1,4 @@
 import express from "express";
-// import multer from "multer";
 import dotenv from "dotenv"; // trabajar con el archivo de configuracion 
 import cors from "cors";// para trabajar fuera del dominio
 import bodyParser from "body-parser"; //parsear de lo que recibire en la informacion
@@ -13,7 +12,6 @@ import equiposRoutes  from "./src/routes/equiposRoutes.js";
 import mantenimientosRoutes  from "./src/routes/mantenimientosRoutes.js";
 import proveedoresRoutes  from "./src/routes/proveedoresRoutes.js";
 import pagosRoutes  from "./src/routes/pagosRoutes.js";
-
 
 
 dotenv.config();

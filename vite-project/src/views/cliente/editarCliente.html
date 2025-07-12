@@ -1,0 +1,94 @@
+<div id="contenidoVista">
+    <div class="contentForm">
+        <div class="form-container">
+            <h1 class="form-title">Formulario de Cliente</h1>
+            <form id="clientForm">
+                <div class="form-grid">
+                    <!-- Nombre Completo / Razón Social -->
+                    <div class="form-group">
+                        <label for="nombre_completo_razon_social" class="form-label">Nombre Completo / Razón
+                            Social</label>
+                        <input type="text" id="nombre_completo_razon_social" name="nombre_completo_razon_social"
+                            class="form-input" placeholder="Ej: Juan Pérez o Empresa S.A.S." >
+                    </div>
+
+                    <!-- Tipo de Identificación -->
+                    <div class="form-group">
+                        <label for="id_tipo_identificacion" class="form-label">Tipo de Identificación</label>
+                        <select id="id_tipo_identificacion" name="id_tipo_identificacion" class="form-select" >
+                            <option value="">Seleccione un tipo</option>
+                            <!-- Opciones cargadas dinámicamente o desde el backend -->
+                            <option value="1">CC (Cédula de Ciudadanía)</option>
+                            <option value="2">TI (Tarjeta de Identidad)</option>
+                            <option value="3">CE (Cédula de Extranjería)</option>
+                            <option value="4">PAS (Pasaporte)</option>
+                        </select>
+                    </div>
+
+                    <!-- Número de Identificación -->
+                    <div class="form-group">
+                        <label for="numero_identificacion" class="form-label">Número de Identificación</label>
+                        <input type="text" id="numero_identificacion" name="numero_identificacion" class="form-input"
+                            placeholder="Ej: 1234567890" >
+                    </div>
+
+                    <!-- Correo -->
+                    <div class="form-group">
+                        <label for="correo" class="form-label">Correo Electrónico</label>
+                        <input type="email" id="correo" name="correo" class="form-input"
+                            placeholder="Ej: correo@example.com" >
+                    </div>
+
+                    <!-- Teléfono -->
+                    <div class="form-group">
+                        <label for="telefono" class="form-label">Teléfono</label>
+                        <input type="tel" id="telefono" name="telefono" class="form-input" placeholder="Ej: 3001234567">
+                    </div>
+
+                    <!-- Dirección -->
+                    <div class="form-group">
+                        <label for="direccion" class="form-label">Dirección</label>
+                        <input type="text" id="direccion" name="direccion" class="form-input"
+                            placeholder="Ej: Calle 10 # 5-15">
+                    </div>
+
+                    <!-- Ciudad -->
+                    <div class="form-group">
+                        <label for="id_ciudad" class="form-label">Ciudad</label>
+                        <select id="id_ciudad" name="id_ciudad" class="form-select" >
+                            <option value="">Seleccione una ciudad</option>
+                            <!-- Opciones cargadas dinámicamente o desde el backend -->
+                            <option value="1">Bogotá D.C.</option>
+                            <option value="2">Medellín</option>
+                            <option value="3">Cali</option>
+                            <option value="4">Bucaramanga</option>
+                            <option value="5">Barranquilla</option>
+                            <option value="6">Cartagena</option>
+                            <option value="7">Cúcuta</option>
+                            <option value="8">Pereira</option>
+                            <option value="9">Manizales</option>
+                            <option value="10">Villavicencio</option>
+                            <!-- Agrega más ciudades según tu tabla 'ciudades' -->
+                        </select>
+                    </div>
+
+                    <!-- Estado -->
+                    <div class="form-group">
+                        <label for="estado" class="form-label">Estado</label>
+                        <select id="estado" name="estado" class="form-select" >
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary">Guardar Cliente</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+
+    </div>
+</div>

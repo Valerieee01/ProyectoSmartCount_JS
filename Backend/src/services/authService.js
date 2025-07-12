@@ -1,7 +1,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import { Usuario } from "../models/Usuario.js";
+import  Usuario  from "../models/Usuario.js";
 
 dotenv.config();
 
@@ -31,8 +31,6 @@ class AuthService {
       // Retornamos la respuesta
       return { error: false, code: 201, message: "Usuario creado" };
     } catch (error) {
-      console.log(error);
-
       return { error: true, code: 500, message: "Error al crear el usuario" };
     }
   }
@@ -82,7 +80,6 @@ class AuthService {
         },
       };
     } catch (error) {
-      console.log(error);      
       return { error: true, code: 500, message: "Error en el servidor" };
     }
   }

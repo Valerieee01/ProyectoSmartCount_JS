@@ -1,27 +1,54 @@
-export const getUserProfile = async () => {
+// GET /api/user/me
+export const getAuthenticatedUserProfile = async () => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    const response = await fetch(`http://localhost:3000/api/user/me`, {
+        method: 'GET',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}` // Esto reemplaza el uso de req.user en frontend
+        }
+    });
+
+    if (!response.ok) throw new Error('Error al obtener el perfil');
+    const data = await response.json();
+    return data.data;
+};
+
+
+// PUT /api/user/me
+export const updateAuthenticatedUserProfile = async (userData) => {
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
     try {
-        const token = localStorage.getItem('token'); // Asume que guardas el token JWT aquí
-        if (!token) {
-            throw new Error('No hay token de autenticación.');
+        const response = await UsuarioService.updateUsuario(req.user.id_usuario, campos);
+        if (response.error) {
+            return ResponseProvider.error(res, response.message, response.code);
         }
-
-        const response = await fetch(`${API_BASE_URL}/me`, {
-            method: 'GET',
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}` // Envía el token en el header de autorización
-            }
-        });
-
-        if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.message || 'No se pudo obtener el perfil del usuario.');
-        }
-
-        const data = await response.json();
-        return data.data; // Asume que la respuesta está formateada con { success: true, data: userObject }
+        return ResponseProvider.success(res, response.data, response.message, response.code);
     } catch (error) {
-        console.error("Error en getUserProfile:", error);
-        throw error;
+        console.error("Error en updateAuthenticatedUser:", error);
+        return ResponseProvider.error(res, "Error al actualizar perfil.", 500);
+    }
+};
+
+// DELETE /api/user/me
+export const deleteAuthenticatedUserProfile = async () => {
+
+
+    const token = localStorage.getItem('accessToken');
+    if (!token) throw new Error('No autenticado');
+
+    try {
+        const response = await UsuarioService.deleteUsuario(req.user.id_usuario);
+        if (response.error) {
+            return ResponseProvider.error(res, response.message, response.code);
+        }
+        return ResponseProvider.success(res, response.data, response.message, response.code);
+    } catch (error) {
+        console.error("Error en deleteAuthenticatedUser:", error);
+        return ResponseProvider.error(res, "Error al eliminar cuenta.", 500);
     }
 };

@@ -11,6 +11,8 @@ import { pagosController } from "../views/pagos/pagosController.js";
 import { reportesController } from "../views/reportes/reportesController.js";
 import { estaAutenticado } from "../helpers/auth.js"; // Descomenta si lo usas para rutas privadas
 import { proveedoresController } from "../views/proveedores/proveedoresController.js";
+import { initUserProfile } from "../views/user/userController.js";
+import { editarControllerProveedor } from "../views/proveedores/editarProveedor.js";
 
 const routes = {
     "home": {
@@ -38,9 +40,19 @@ const routes = {
         controlador: clienteController,
         private: true,
     },
+    "editarcliente/:id": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "cliente/editarCliente.html", // Misma vista HTML
+        controlador: clienteController,
+        private: true,
+    },
      "empleado": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
         template: "empleado/index.html", // Misma vista HTML
         controlador: empleadoController,
+        private: true,
+    },
+    "editarEmpleado/:id": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "empleado/editarEmpleado.html", // Misma vista HTML
+        controlador: editarControllerProveedor,
         private: true,
     }, 
     "equipos": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
@@ -63,6 +75,11 @@ const routes = {
         controlador: proveedoresController,
         private: true,
     },
+    "editarProveedor/:id": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
+        template: "proveedor/editarProveedor.html", // Misma vista HTML
+        controlador: editarControllerProveedor,
+        private: true,
+    },
     "reportes": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
         template: "reportes/index.html", // Misma vista HTML
         controlador: reportesController,
@@ -70,7 +87,7 @@ const routes = {
     },
     "usuario": { // Ruta para el registro (puede apuntar a la misma vista de login/registro)
         template: "user/index.html", // Misma vista HTML
-        controlador: reportesController,
+        controlador: initUserProfile,
         private: true,
     },
     // Agrega más rutas aquí si es necesario

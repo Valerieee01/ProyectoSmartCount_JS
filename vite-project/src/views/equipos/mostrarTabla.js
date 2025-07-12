@@ -1,88 +1,85 @@
-import eliminar_proveedores_por_id from "../../casos_de_uso/Proveedores/eliminarProveedores";
-import listarProveedores from "../../casos_de_uso/Proveedores/listarProveedores";
-
+import eliminar_equipos_por_id from "../../casos_de_uso/Equipos/eliminarEquipos.js";
+import listarEquipos from "../../casos_de_uso/Equipos/listarEquipos.js";
 
 
 // --- Variables para la paginación ---
-const ITEMS_PER_PAGE = 4; // Define cuántos proveedores mostrar por página
+const ITEMS_PER_PAGE = 4; // Define cuántos equipos mostrar por página
 let currentPage = 1;      // Página actual, inicia en la primera
-let allProveedores = [];      // Almacenará todos los proveedores obtenidos de la API
+let allEquipos = [];      // Almacenará todos los equipos obtenidos de la API
 
 export const cargar_tabla = async (tabla) => {
     try {
-        // Solo lista los proveedores una vez y los guarda
-        if (allProveedores.length === 0) { // Si aún no se han cargado, cárgalos
-            const response = await listarProveedores();
-            allProveedores = response.data; // Asume que los datos están en 'response.data'
-            console.log("Todos los proveedores cargados:", allProveedores);
+        // Solo lista los equipos una vez y los guarda
+        if (allEquipos.length === 0) { // Si aún no se han cargado, cárgalos
+            const response = await listarEquipos();
+            allEquipos = response.data; // Asume que los datos están en 'response.data'
+            console.log("Todos los equipos cargados:", allEquipos);
         }
 
         const tBody = tabla.querySelector("tbody");
         tBody.innerHTML = ''; // Limpia el cuerpo de la tabla
 
-        // Calcular qué proveedores mostrar en la página actual
+        // Calcular qué equipos mostrar en la página actual
         const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
         const endIndex = startIndex + ITEMS_PER_PAGE;
-        const proveedorToDisplay = allProveedores.slice(startIndex, endIndex);
+        const equiposToDisplay = allEquipos.slice(startIndex, endIndex);
 
-        proveedorToDisplay.forEach(proveedor => {
-            crearFila(proveedor, tabla);
+        equiposToDisplay.forEach(equipo => {
+            crearFila(equipo, tabla);
         });
 
         // Crear y actualizar los controles del paginador
         renderPaginator(tabla);
 
     } catch (error) {
-        console.error("Error al cargar la tabla de proveedores:", error);
+        console.error("Error al cargar la tabla de equipos:", error);
         // Podrías añadir un mensaje al usuario aquí
     }
 };
 
-export const crearFila = ({ id_persona, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono }, tabla) => {
+export const crearFila = ({id_equipo, numero_equipo, placa ,descripcion, id_cliente}, tabla) => {
     // ... (Tu código actual de crearFila, sin cambios)
     const tBody = tabla.querySelector("tbody");
     const tr = tBody.insertRow(); // insertRow() sin argumento inserta al final, que es lo común en tablas
-    const tdNobre = tr.insertCell(0);
-    const tdTipoId = tr.insertCell(1);
-    const tdNumId = tr.insertCell(2);
-    const tdCorreo = tr.insertCell(3);
-    const tdtelefono = tr.insertCell(4);
-    const tdBotonera = tr.insertCell(5);
+    const tdnUmEquipo = tr.insertCell(0);
+    const tdPlaca = tr.insertCell(1);
+    const tdDescripcion = tr.insertCell(2);
+    const tdIdCliente = tr.insertCell(3);
+    const tdBotonera = tr.insertCell(4);
 
     // Agregar el contenido a las celdas
-    tdNobre.textContent = nombre_completo_razon_social;
+    tdnUmEquipo.textContent = numero_equipo;
     // Aquí es importante que id_tipo_identificacion muestre el nombre del tipo, no el ID
     // Si id_tipo_identificacion es solo un ID numérico, necesitarías mapearlo a un nombre.
     // Por ahora, lo dejo como está:
-    tdTipoId.textContent = id_tipo_identificacion;
-    tdNumId.textContent = numero_identificacion;
-    tdCorreo.textContent = correo;
-    tdtelefono.textContent = telefono;
-
+    tdPlaca.textContent = placa; 
+    tdDescripcion.textContent = descripcion;
+    tdIdCliente.textContent = id_cliente;
+    
     const div = document.createElement("div");
     const btnEliminar = document.createElement("a");
     const btnEditar = document.createElement("a");
+ 
+    btnEditar.setAttribute("data-id", id_equipo);
+    btnEditar.setAttribute("href", `#editarcliente/${id_equipo}`); // Cambiado a #editarcliente si es de equipos
 
-    btnEditar.setAttribute("data-id", id_persona);
-    btnEditar.setAttribute("href", `#editarProveedor/${id_persona}`); // Cambiado a #editarproveedor si es de proveedores
-
-    btnEliminar.setAttribute("data-id", id_persona);
-
+    btnEliminar.setAttribute("data-id", id_equipo);
+ 
     btnEditar.textContent = "Editar";
     btnEliminar.textContent = "Eliminar";
-
+ 
     div.classList.add("botonera");
     btnEditar.classList.add("btn", "btn--small", "editar"); // Corregido 'samall' a 'small'
     btnEliminar.classList.add("btn", "btn--small", "btn--danger", "eliminar"); // Corregido 'samall' a 'small'
     div.append(btnEditar, btnEliminar);
     tdBotonera.append(div);
-
-    tr.setAttribute("id", `client_${id_persona}`); // Cambiado a client_${id} para ser específico
+ 
+    tr.setAttribute("id", `client_${id_equipo}`); // Cambiado a client_${id} para ser específico
 };
 
 // --- Función para renderizar el paginador ---
 const renderPaginator = (tabla) => {
-    const totalPages = Math.ceil(allProveedores.length / ITEMS_PER_PAGE);
+    const totalPages = Math.ceil(allEquipos.length / ITEMS_PER_PAGE);
     const paginatorContainer = document.querySelector("#paginator"); // Asegúrate de tener este div en tu HTML
 
     if (!paginatorContainer) {
@@ -140,23 +137,23 @@ const renderPaginator = (tabla) => {
 
 
 export const agregarEventosBotones = async () => {
-    const tabla = document.querySelector("#tableProveedores");
+    const tabla = document.querySelector("#tableEquipos");
     tabla.addEventListener('click', async (e) => {
         if (e.target.classList.contains('eliminar')) {
-            if (confirm("¿Estás seguro de eliminar este proveedor?")) {
-                await eliminar_proveedores_por_id(e.target.dataset.id);
-                // Si eliminas, debes recargar TODOS los proveedores para que el paginador sea preciso
-                allProveedores = []; // Vacía la lista de proveedores para forzar una recarga completa
+            if (confirm("¿Estás seguro de eliminar este emleado?")) {
+                await eliminar_equipos_por_id(e.target.dataset.id);
+                // Si eliminas, debes recargar TODOS los equipos para que el paginador sea preciso
+                allClients = []; // Vacía la lista de equipos para forzar una recarga completa
                 currentPage = 1; // Vuelve a la primera página después de eliminar
-                await cargar_tabla(tabla);
+                await cargar_tabla(tabla); 
             }
         }
         // Puedes añadir aquí la lógica para el botón de editar
         if (e.target.classList.contains('editar')) {
             // El href ya maneja la navegación, pero si necesitas JS adicional:
-            // const proveedorId = e.target.dataset.id;
-            // console.log("Editar proveedor con ID:", proveedorId);
-            // location.hash = `#editarproveedor/${proveedorId}`; // Ya se maneja con el href
+            // const clienteId = e.target.dataset.id;
+            // console.log("Editar cliente con ID:", clienteId);
+            // location.hash = `#editarcliente/${clienteId}`; // Ya se maneja con el href
         }
     });
 };
