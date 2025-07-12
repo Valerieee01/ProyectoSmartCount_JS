@@ -1,4 +1,4 @@
-// src/controllers/empleadoController.js
+// src/controllers/personasController.js
 
 import {
     agregarEventosBotones,
@@ -7,11 +7,11 @@ import {
     setCurrentPage
 } from "./mostrarTabla.js";
 
-export const empleadoController = async () => {
-    const tabla = document.querySelector("#tableEmpleados");
+export const personasController = async () => {
+    const tabla = document.querySelector("#tablePersonas");
 
     if (!tabla) {
-        console.error("[empleadoController] Error: No se encontró el elemento HTML con ID 'tableEmpleados'.");
+        console.error("[personasController] Error: No se encontró el elemento HTML con ID 'tableClientes'.");
         return;
     }
 
@@ -26,30 +26,30 @@ export const empleadoController = async () => {
         if (buscarBtn) {
             buscarBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-                console.log("[empleadoController] Botón 'Buscar' clickeado. Aplicando filtros...");
+                console.log("[personasController] Botón 'Buscar' clickeado. Aplicando filtros...");
 
                 const nombreBusqueda = nombreInput.value.trim();
                 const estadoBusqueda = estadoSelect.value;
 
                 // --- NUEVO LOG: Valores capturados del input y select ---
-                console.log(`[empleadoController] Valor capturado del input Nombre: '${nombreBusqueda}'`);
-                console.log(`[empleadoController] Valor capturado del select Estado: '${estadoBusqueda}'`);
+                console.log(`[personasController] Valor capturado del input Nombre: '${nombreBusqueda}'`);
+                console.log(`[personasController] Valor capturado del select Estado: '${estadoBusqueda}'`);
 
                 await applyClientFilters(tabla, nombreBusqueda, estadoBusqueda);
             });
         }
 
-        const crearEmpleadoBtn = document.querySelector('a[href="#crearEmpleado"]');
+        const crearPeronateBtn = document.querySelector('a[href="#crearPersona"]');
 
-        crearEmpleadoBtn.addEventListener('click', (e) => {
+        crearPeronateBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            alert("crear Empleado clikeado")
-            location.hash = '#crearEmpleado';
+            alert("crear cliente clikeado")
+            location.hash = '#crearPersona';
         });
 
 
     } catch (error) {
-        console.error("Error en empleadoController durante la inicialización:", error);
+        console.error("Error en personasController durante la inicialización:", error);
     }
 };
 

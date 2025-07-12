@@ -1,7 +1,7 @@
-import { encabezados } from "../../helpers/solicitudes";
-import { editarClienteController } from "./editarClienteController.js";
+import { encabezados } from "../../helpers/solicitudes.js";
+import { editarPersonaController } from "./editarPersonaController.js";
 
-export const editarControllerCat = async (a) => {
+export const editarControllerPer = async (a) => {
     // declaracion de variables
     const form = document.querySelector('form');
     const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
@@ -20,6 +20,8 @@ export const editarControllerCat = async (a) => {
     });
     const { data } = await request.json();
 
+        console.log(data);
+
     //Llenando los campos
     nombre_completo_razon_social.value = data.nombre_completo_razon_social;
     id_tipo_identificacion.value = data.id_tipo_identificacion;
@@ -30,6 +32,6 @@ export const editarControllerCat = async (a) => {
     id_ciudad.value = data.id_ciudad;
     estado.value = data.estado;
 
-    editarClienteController(a)
+    editarPersonaController(a)
 
 }

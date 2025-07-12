@@ -4,7 +4,7 @@ class Proveedor {
     
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT  p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono FROM personas p JOIN proveedores pr ON pr.id_proveedor = p.id_persona");
+            const [rows] = await connection.query("SELECT  p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado FROM personas p JOIN proveedores pr ON pr.id_proveedor = p.id_persona");
             return rows; 
         } catch (error) {
             throw new Error("Error al obtener las proveedores");
@@ -13,7 +13,7 @@ class Proveedor {
 
     async getById(id) {
         try {
-            const [rows] = await connection.query(  "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
+            const [rows] = await connection.query(  "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
       "FROM personas p JOIN proveedores pr ON pr.id_proveedor = p.id_persona " +
       "WHERE e.id_empleado = ?",[id]);
             if (rows.length === 0) {

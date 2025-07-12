@@ -1,11 +1,12 @@
 // src/controllers/mostrarTabla.js
 
-import eliminar_empleados_por_id from "../../casos_de_uso/Empleados/eliminarEmpleados.js"; 
-import listarEmpleados from "../../casos_de_uso/Empleados/listarEmpleados.js"; 
+import eliminar_clientes_por_id from "../../casos_de_uso/Clientes/eliminarClientes.js"; 
+import listarPersonas from "../../casos_de_uso/Personas/listarPersonas.js"; 
+import eliminar_personas_por_id from "../../casos_de_uso/Personas/eliminarPersonas.js";
 
 export const ITEMS_PER_PAGE = 4; 
 export let currentPage = 1;       
-export let allEmpleados = [];       
+export let allClients = [];       
 
 let currentNameFilter = null; // Variable global para persistir el filtro de nombre
 let currentStateFilter = null; // Variable global para persistir el filtro de estado
@@ -18,15 +19,15 @@ export const setCurrentPage = (newPage) => {
 
 export const cargar_tabla = async (tabla) => {
     try {
-        if (allEmpleados.length === 0) { 
-            const response = await listarEmpleados(); 
-            allEmpleados = response.data; 
-            console.log("[mostrarTabla] Datos iniciales de todos los empleados cargados (allEmpleados):", allEmpleados);
-            if (allEmpleados.length > 0) {
-                // --- NUEVO LOG: Estructura de un empleado ---
-                console.log("[mostrarTabla] Ejemplo de un objeto empleado:", allEmpleados[0]);
-                console.log("[mostrarTabla] Propiedad 'nombre_completo_razon_social' del primer empleado:", allEmpleados[0].nombre_completo_razon_social);
-                console.log("[mostrarTabla] Propiedad 'estado' del primer empleado:", allEmpleados[0].estado); // <-- ¡VERIFICA ESTE LOG!
+        if (allClients.length === 0) { 
+            const response = await listarPersonas(); 
+            allClients = response.data; 
+            console.log("[mostrarTabla] Datos iniciales de todos los clientes cargados (allClients):", allClients);
+            if (allClients.length > 0) {
+                // --- NUEVO LOG: Estructura de un cliente ---
+                console.log("[mostrarTabla] Ejemplo de un objeto cliente:", allClients[0]);
+                console.log("[mostrarTabla] Propiedad 'nombre_completo_razon_social' del primer cliente:", allClients[0].nombre_completo_razon_social);
+                console.log("[mostrarTabla] Propiedad 'estado' del primer cliente:", allClients[0].estado); // <-- ¡VERIFICA ESTE LOG!
             }
         }
 
@@ -36,11 +37,11 @@ export const cargar_tabla = async (tabla) => {
         await cargar_tabla_con_filtros(tabla, null, null); // Llama sin filtros iniciales, que usarán los nulos
 
     } catch (error) {
-        console.error("[mostrarTabla] Error al cargar la tabla de empleados inicialmente (desde API):", error);
+        console.error("[mostrarTabla] Error al cargar la tabla de clientes inicialmente (desde API):", error);
         const tBody = tabla.querySelector("tbody");
         const numCols = tabla.querySelectorAll('th').length;
         tBody.innerHTML = `<tr><td colspan="${numCols}" style="text-align: center; padding: 20px; color: red;">
-                            Error al cargar los empleados. Inténtalo de nuevo más tarde.</td></tr>`;
+                            Error al cargar los clientes. Inténtalo de nuevo más tarde.</td></tr>`;
     }
 };
 
@@ -61,40 +62,40 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
     const tBody = tabla.querySelector("tbody");
     tBody.innerHTML = ''; 
 
-    let clientsToFilter = [...allEmpleados]; 
+    let clientsToFilter = [...allClients]; 
 
     // --- Lógica de Aplicación de Filtros (Prioridad: Nombre > Estado) ---
     
     if (currentNameFilter && currentNameFilter.trim() !== '') {
         const lowerCaseNameFilter = currentNameFilter.toLowerCase();
-        clientsToFilter = clientsToFilter.filter(empleado =>
-            empleado.nombre_completo_razon_social && 
-            typeof empleado.nombre_completo_razon_social === 'string' &&
-            empleado.nombre_completo_razon_social.toLowerCase().includes(lowerCaseNameFilter)
+        clientsToFilter = clientsToFilter.filter(cliente =>
+            cliente.nombre_completo_razon_social && 
+            typeof cliente.nombre_completo_razon_social === 'string' &&
+            cliente.nombre_completo_razon_social.toLowerCase().includes(lowerCaseNameFilter)
         );
         console.log(`[cargar_tabla_con_filtros] Filtrado solo por nombre ('${currentNameFilter}'): ${clientsToFilter.length} resultados.`);
     } else if (currentStateFilter && currentStateFilter !== '') { // <-- CONDICIÓN MEJORADA: solo verifica que no sea vacío.
         // También captura la opción por defecto ("Seleccione Estado...") si no se cambia.
         const lowerCaseEstadoFilter = currentStateFilter.toLowerCase();
         
-        clientsToFilter = clientsToFilter.filter(empleado => {
-            // --- NUEVO LOG: Comparación de estado para cada empleado ---
-            console.log(`[cargar_tabla_con_filtros] empleado ID: ${empleado.id_persona || 'N/A'}, Estado en datos: '${empleado.estado}', Comparando con filtro: '${lowerCaseEstadoFilter}'`);
+        clientsToFilter = clientsToFilter.filter(cliente => {
+            // --- NUEVO LOG: Comparación de estado para cada cliente ---
+            console.log(`[cargar_tabla_con_filtros] Cliente ID: ${cliente.id_persona || 'N/A'}, Estado en datos: '${cliente.estado}', Comparando con filtro: '${lowerCaseEstadoFilter}'`);
             
-            return empleado.estado && // Verifica que la propiedad 'estado' exista
-                   typeof empleado.estado === 'string' && // Asegura que es un string
-                   empleado.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara
+            return cliente.estado && // Verifica que la propiedad 'estado' exista
+                   typeof cliente.estado === 'string' && // Asegura que es un string
+                   cliente.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara
         });
         console.log(`[cargar_tabla_con_filtros] Filtrado solo por estado ('${currentStateFilter}'): ${clientsToFilter.length} resultados.`);
     } else {
-        console.log("[cargar_tabla_con_filtros] No se aplicó ningún filtro (nombre y/o estado vacíos o nulos). Mostrando todos los empleados.");
+        console.log("[cargar_tabla_con_filtros] No se aplicó ningún filtro (nombre y/o estado vacíos o nulos). Mostrando todos los clientes.");
     }
 
     const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
     const endIndex = startIndex + ITEMS_PER_PAGE;
     const clientsToDisplay = clientsToFilter.slice(startIndex, endIndex);
 
-    console.log(`[cargar_tabla_con_filtros] empleados a mostrar en esta página (${currentPage}): ${clientsToDisplay.length}`);
+    console.log(`[cargar_tabla_con_filtros] Clientes a mostrar en esta página (${currentPage}): ${clientsToDisplay.length}`);
 
     if (clientsToDisplay.length === 0) {
         const numCols = tabla.querySelectorAll('th').length;
@@ -102,13 +103,13 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
         const noResultsRow = tBody.insertRow(); 
         const noResultsCell = noResultsRow.insertCell(0);
         noResultsCell.colSpan = numCols; 
-        noResultsCell.textContent = "No se encontraron empleados con los filtros aplicados.";
+        noResultsCell.textContent = "No se encontraron clientes con los filtros aplicados.";
         noResultsCell.style.textAlign = "center";
         noResultsCell.style.padding = "20px";
         noResultsCell.style.color = "#888";
     } else {
-        clientsToDisplay.forEach(empleado => {
-            crearFila(empleado, tabla);
+        clientsToDisplay.forEach(cliente => {
+            crearFila(cliente, tabla);
         });
     }
 
@@ -136,7 +137,7 @@ export const crearFila = ({id_persona, nombre_completo_razon_social, id_tipo_ide
     
     // Solo aplica la clase si el estado es 'inactivo' y existe la propiedad
     if (estado && typeof estado === 'string' && estado.toLowerCase() === 'inactivo') { 
-        tr.classList.add('empleado-inactivo'); 
+        tr.classList.add('cliente-inactivo'); 
     }
 
     const div = document.createElement("div");
@@ -144,7 +145,7 @@ export const crearFila = ({id_persona, nombre_completo_razon_social, id_tipo_ide
     const btnEditar = document.createElement("a");
  
     btnEditar.setAttribute("data-id", id_persona);
-    btnEditar.setAttribute("href", `#editarEmpleado/${id_persona}`); 
+    btnEditar.setAttribute("href", `#editarPersona/${id_persona}`); 
 
     btnEliminar.setAttribute("data-id", id_persona);
  
@@ -219,44 +220,44 @@ const renderPaginator = (tabla, totalFilteredClients) => {
         }
     });
     paginatorContainer.append(nextButton);
-    console.log(`[Paginador] Renderizado. Total de empleados filtrados: ${totalFilteredClients}, Páginas: ${totalPages}, Página actual: ${currentPage}`);
+    console.log(`[Paginador] Renderizado. Total de clientes filtrados: ${totalFilteredClients}, Páginas: ${totalPages}, Página actual: ${currentPage}`);
 };
 
 
 export const agregarEventosBotones = async () => {
-    const tabla = document.querySelector("#tableEmpleados");
+    const tabla = document.querySelector("#tablePersonas");
     
     if (!tabla) {
-        console.error("Tabla de empleados no encontrada para adjuntar eventos a botones.");
+        console.error("Tabla de clientes no encontrada para adjuntar eventos a botones.");
         return;
     }
 
     tabla.addEventListener('click', async (e) => {
         if (e.target.classList.contains('eliminar')) {
-            const empleadosId = e.target.dataset.id; 
-            if (confirm(`¿Estás seguro de eliminar el empleado con ID ${empleadosId}?`)) {
+            const personaId = e.target.dataset.id; 
+            if (confirm(`¿Estás seguro de eliminar la ppersona con ID ${personaId}?`)) {
                 try {
-                    console.log(`[mostrarTabla] Iniciando eliminación de empleado con ID: ${empleadosId}`);
-                    await eliminar_empleados_por_id(empleadosId); 
+                    console.log(`[mostrarTabla] Iniciando eliminación de persona con ID: ${personaId}`);
+                    await eliminar_personas_por_id(personaId); 
                     
-                    allEmpleados = []; 
+                    allClients = []; 
                     setCurrentPage(1); 
                     
-                    console.log(`[mostrarTabla] empleado ${empleadosId} eliminado. Forzando recarga de datos.`);
+                    console.log(`[mostrarTabla] Persona ${personaId} eliminado. Forzando recarga de datos.`);
                     // Llama con null, null para que se usen los filtros persistidos
-                    await cargar_tabla_con_filtros(tabla, null, null); 
+                    await cargar_tabla(tabla); 
                     
-                    alert("empleado eliminado exitosamente.");
+                    alert("Persona eliminado exitosamente.");
                 } catch (error) {
-                    console.error("Error al eliminar empleado:", error);
-                    alert("Error al eliminar empleado. Inténtalo de nuevo.");
+                    console.error("Error al eliminar persona:", error);
+                    alert("Error al eliminar persona. Inténtalo de nuevo.");
                 }
             }
         }
         if (e.target.classList.contains('editar')) {
-            const empleadosId = e.target.dataset.id;
-            console.log("Editar empleado con ID:", empleadosId);
-            location.hash = `#editarEmpleado/${empleadosId}`; 
+            const personaId = e.target.dataset.id;
+            console.log("Editar persona con ID:", personaId);
+            location.hash = `#editarPersona/${personaId}`; 
         }
     });
 };

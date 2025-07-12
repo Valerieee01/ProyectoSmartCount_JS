@@ -24,11 +24,11 @@ class Persona {
     }
 
     // Método para crear una nueva categoría
-  async create(nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado, id_usuario) {
+  async create(nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) {
     try {
       const [result] = await connection.query(
-        "INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado, id_usuario) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
-        [nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado, id_usuario]
+        "INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        [nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado]
       );
       if (result.affectedRows === 0) {
         return null; // Retorna null si no se pudo crear la persona
@@ -36,6 +36,8 @@ class Persona {
       // Retorna la nueva persona creada
       return { id: result.insertId, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado};
     } catch (error) {
+      console.log(error);
+      
       throw new Error("Error al crear la persona");
     }
   }
@@ -68,14 +70,14 @@ class Persona {
   async delete(personaId) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(
-      "DELETE FROM persona WHERE personaId = ?",
+      "DELETE FROM personas WHERE personaId = ?",
       [personaId]
     );
 
     if (result.affectedRows === 0) {
       return {
         error: true,
-        mensaje: "No se pudo eliminar la categoría, ocurrio un error inesperado.",
+        mensaje: "No se pudo eliminar la Persona, ocurrio un error inesperado.",
       };
     }
 

@@ -79,6 +79,8 @@ class PersonaService {
         data: personas,
       };
     } catch (error) {
+      console.log(error);
+      
       return {
         error: true,
         code: 500,

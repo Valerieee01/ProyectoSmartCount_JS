@@ -4,7 +4,7 @@ class Empleado {
     
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
+            const [rows] = await connection.query("SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
       "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona");
             return rows; 
         } catch (error) {
@@ -17,7 +17,7 @@ class Empleado {
     console.log(id);
 
     const [rows] = await connection.query(
-      "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
+      "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
       "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona " +
       "WHERE e.id_empleado = ?",
       [id]

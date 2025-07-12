@@ -1,6 +1,6 @@
 import Swal from "sweetalert2";
 import { encabezados } from "../../helpers/solicitudes";
-export const editarClienteController = (a) => {
+export const editarPersonaController = (a) => {
 
     // Declaración de variables
     const form = document.querySelector('form');

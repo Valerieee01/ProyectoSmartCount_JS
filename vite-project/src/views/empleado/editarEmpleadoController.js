@@ -1,10 +1,9 @@
 import Swal from "sweetalert2";
 import { encabezados } from "../../helpers/solicitudes";
-export const editarClienteController = (a) => {
-
+export const editarEmpleadoController =  (a) => {
+    
     // Declaración de variables
-    const form = document.querySelector('form');
-    const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
+      const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
     const id_tipo_identificacion = document.querySelector('#id_tipo_identificacion')
     const numero_identificacion = document.querySelector('#numero_identificacion')
     const correo = document.querySelector('#correo')
@@ -35,25 +34,25 @@ export const editarClienteController = (a) => {
         const response = await request.json();
         if (response.success) {
             form.reset()
-            Swal.fire({
+             Swal.fire({
                 title: 'Muy bien!',
                 text: response.message,
                 icon: 'success',
                 confirmButtonText: 'Cool'
             })
             location.hash = "#clientes";
-        } else {
-            console.log(response);
+        }else{
+            console.log(response);   
             Swal.fire({
                 title: 'Error!',
                 text: response.message,
                 icon: 'error',
                 confirmButtonText: 'Cool'
             })
-
-        }
+         
+        }        
     }
 
     // Declaración de eventos
-    form.addEventListener('submit', enviar)
+    form.addEventListener('submit', enviar)    
 }

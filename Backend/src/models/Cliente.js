@@ -4,35 +4,37 @@ class Cliente {
 
   async getAll() {
     try {
-      const [rows] = await connection.query("SELECT  p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona ");
+      const [rows] = await connection.query("SELECT  p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.estado, p.telefono FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona ");
       return rows;
     } catch (error) {
+      console.log(error);
+
       throw new Error("Error al obtener las clientes");
     }
   }
   // Método para buscar un cliente por id
 
   async getById(id) {
-  try {
-    console.log(id);
+    try {
+      console.log(id);
 
-    const [rows] = await connection.query(
-      "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono " +
-      "FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona " +
-      "WHERE c.id_cliente = ?",
-      [id]
-    );
+      const [rows] = await connection.query(
+        "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado" +
+        "FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona " +
+        "WHERE c.id_cliente = ?",
+        [id]
+      );
 
-    if (rows.length === 0) {
-      return []; // retornar un array vacío si prefieres que la ausencia de resultados sea un array vacío
+      if (rows.length === 0) {
+        return []; // retornar un array vacío si prefieres que la ausencia de resultados sea un array vacío
+      }
+
+      return rows[0]; // Retorna el primer (y único) resultado encontrado, asumiendo que id_cliente es único
+    } catch (error) {
+      console.error("Error al obtener el cliente por ID:", error); // Usa console.error para errores
+      throw new Error("Error al obtener el cliente.");
     }
-
-    return rows[0]; // Retorna el primer (y único) resultado encontrado, asumiendo que id_cliente es único
-  } catch (error) {
-    console.error("Error al obtener el cliente por ID:", error); // Usa console.error para errores
-    throw new Error("Error al obtener el cliente.");
   }
-}
 
   // Método para crear  un cliente
   async create(id_persona) {

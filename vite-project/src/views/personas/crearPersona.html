@@ -1,7 +1,7 @@
 <div id="contenidoVista">
     <div class="contentForm">
         <div class="form-container">
-            <h1 class="form-title">Formulario de editar Empleado</h1>
+            <h1 class="form-title">Formulario crear de Persona</h1>
             <form id="clientForm">
                 <div class="form-grid">
                     <!-- Nombre Completo / Razón Social -->
@@ -9,13 +9,13 @@
                         <label for="nombre_completo_razon_social" class="form-label">Nombre Completo / Razón
                             Social</label>
                         <input type="text" id="nombre_completo_razon_social" name="nombre_completo_razon_social"
-                            class="form-input" placeholder="Ej: Juan Pérez o Empresa S.A.S.">
+                            class="form-input" placeholder="Ej: Juan Pérez o Empresa S.A.S." >
                     </div>
 
                     <!-- Tipo de Identificación -->
                     <div class="form-group">
                         <label for="id_tipo_identificacion" class="form-label">Tipo de Identificación</label>
-                        <select id="id_tipo_identificacion" name="id_tipo_identificacion" class="form-select">
+                        <select id="id_tipo_identificacion" name="id_tipo_identificacion" class="form-select" >
                             <option value="">Seleccione un tipo</option>
                             <!-- Opciones cargadas dinámicamente o desde el backend -->
                             <option value="1">CC (Cédula de Ciudadanía)</option>
@@ -29,14 +29,14 @@
                     <div class="form-group">
                         <label for="numero_identificacion" class="form-label">Número de Identificación</label>
                         <input type="text" id="numero_identificacion" name="numero_identificacion" class="form-input"
-                            placeholder="Ej: 1234567890">
+                            placeholder="Ej: 1234567890" >
                     </div>
 
                     <!-- Correo -->
                     <div class="form-group">
                         <label for="correo" class="form-label">Correo Electrónico</label>
                         <input type="email" id="correo" name="correo" class="form-input"
-                            placeholder="Ej: correo@example.com">
+                            placeholder="Ej: correo@example.com" >
                     </div>
 
                     <!-- Teléfono -->
@@ -55,7 +55,7 @@
                     <!-- Ciudad -->
                     <div class="form-group">
                         <label for="id_ciudad" class="form-label">Ciudad</label>
-                        <select id="id_ciudad" name="id_ciudad" class="form-select">
+                        <select id="id_ciudad" name="id_ciudad" class="form-select" >
                             <option value="">Seleccione una ciudad</option>
                             <!-- Opciones cargadas dinámicamente o desde el backend -->
                             <option value="1">Bogotá D.C.</option>
@@ -75,7 +75,7 @@
                     <!-- Estado -->
                     <div class="form-group">
                         <label for="estado" class="form-label">Estado</label>
-                        <select id="estado" name="estado" class="form-select">
+                        <select id="estado" name="estado" class="form-select" >
                             <option value="activo">Activo</option>
                             <option value="inactivo">Inactivo</option>
                         </select>
@@ -89,5 +89,6 @@
                 </div>
             </form>
         </div>
+
     </div>
 </div>

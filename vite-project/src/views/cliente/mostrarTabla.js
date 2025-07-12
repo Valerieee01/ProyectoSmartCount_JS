@@ -1,68 +1,150 @@
-import eliminar_clientes_por_id from "../../casos_de_uso/Clientes/eliminarClientes.js";
-import listarClientes from "../../casos_de_uso/Clientes/listarClientes.js";
+// src/controllers/mostrarTabla.js
 
-// --- Variables para la paginación ---
-const ITEMS_PER_PAGE = 4; // Define cuántos clientes mostrar por página
-let currentPage = 1;      // Página actual, inicia en la primera
-let allClients = [];      // Almacenará todos los clientes obtenidos de la API
+import eliminar_clientes_por_id from "../../casos_de_uso/Clientes/eliminarClientes.js"; 
+import listarClientes from "../../casos_de_uso/Clientes/listarClientes.js"; 
+
+export const ITEMS_PER_PAGE = 4; 
+export let currentPage = 1;       
+export let allClients = [];       
+
+let currentNameFilter = null; // Variable global para persistir el filtro de nombre
+let currentStateFilter = null; // Variable global para persistir el filtro de estado
+
+
+export const setCurrentPage = (newPage) => {
+    currentPage = newPage;
+    console.log(`[mostrarTabla] Página actual establecida a: ${currentPage}`);
+};
 
 export const cargar_tabla = async (tabla) => {
     try {
-        // Solo lista los clientes una vez y los guarda
-        if (allClients.length === 0) { // Si aún no se han cargado, cárgalos
-            const response = await listarClientes();
-            allClients = response.data; // Asume que los datos están en 'response.data'
-            console.log("Todos los clientes cargados:", allClients);
+        if (allClients.length === 0) { 
+            const response = await listarClientes(); 
+            allClients = response.data; 
+            console.log("[mostrarTabla] Datos iniciales de todos los clientes cargados (allClients):", allClients);
+            if (allClients.length > 0) {
+                // --- NUEVO LOG: Estructura de un cliente ---
+                console.log("[mostrarTabla] Ejemplo de un objeto cliente:", allClients[0]);
+                console.log("[mostrarTabla] Propiedad 'nombre_completo_razon_social' del primer cliente:", allClients[0].nombre_completo_razon_social);
+                console.log("[mostrarTabla] Propiedad 'estado' del primer cliente:", allClients[0].estado); // <-- ¡VERIFICA ESTE LOG!
+            }
         }
 
-        const tBody = tabla.querySelector("tbody");
-        tBody.innerHTML = ''; // Limpia el cuerpo de la tabla
-
-        // Calcular qué clientes mostrar en la página actual
-        const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
-        const endIndex = startIndex + ITEMS_PER_PAGE;
-        const clientsToDisplay = allClients.slice(startIndex, endIndex);
-
-        clientsToDisplay.forEach(cliente => {
-            crearFila(cliente, tabla);
-        });
-
-        // Crear y actualizar los controles del paginador
-        renderPaginator(tabla);
+        // Al cargar la tabla inicialmente o si se recarga todo, resetea los filtros globales.
+        currentNameFilter = null;
+        currentStateFilter = null;
+        await cargar_tabla_con_filtros(tabla, null, null); // Llama sin filtros iniciales, que usarán los nulos
 
     } catch (error) {
-        console.error("Error al cargar la tabla de clientes:", error);
-        // Podrías añadir un mensaje al usuario aquí
+        console.error("[mostrarTabla] Error al cargar la tabla de clientes inicialmente (desde API):", error);
+        const tBody = tabla.querySelector("tbody");
+        const numCols = tabla.querySelectorAll('th').length;
+        tBody.innerHTML = `<tr><td colspan="${numCols}" style="text-align: center; padding: 20px; color: red;">
+                            Error al cargar los clientes. Inténtalo de nuevo más tarde.</td></tr>`;
     }
 };
 
-export const crearFila = ({id_persona, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono }, tabla) => {
-    // ... (Tu código actual de crearFila, sin cambios)
+
+export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estadoFilter = null) => {
+    // --- Almacenar/Actualizar los filtros globales ---
+    // Si se pasan filtros nuevos, actualiza las variables globales.
+    // Si se llama sin filtros (ej. desde el paginador), se usarán los valores globales existentes.
+    if (nombreFilter !== null) { 
+        currentNameFilter = nombreFilter;
+    }
+    if (estadoFilter !== null) { 
+        currentStateFilter = estadoFilter;
+    }
+    console.log(`[cargar_tabla_con_filtros] Filtros activos globales: Nombre='${currentNameFilter}', Estado='${currentStateFilter}'`);
+
+
     const tBody = tabla.querySelector("tbody");
-    const tr = tBody.insertRow(); // insertRow() sin argumento inserta al final, que es lo común en tablas
-    const tdNobre = tr.insertCell(0);
+    tBody.innerHTML = ''; 
+
+    let clientsToFilter = [...allClients]; 
+
+    // --- Lógica de Aplicación de Filtros (Prioridad: Nombre > Estado) ---
+    
+    if (currentNameFilter && currentNameFilter.trim() !== '') {
+        const lowerCaseNameFilter = currentNameFilter.toLowerCase();
+        clientsToFilter = clientsToFilter.filter(cliente =>
+            cliente.nombre_completo_razon_social && 
+            typeof cliente.nombre_completo_razon_social === 'string' &&
+            cliente.nombre_completo_razon_social.toLowerCase().includes(lowerCaseNameFilter)
+        );
+        console.log(`[cargar_tabla_con_filtros] Filtrado solo por nombre ('${currentNameFilter}'): ${clientsToFilter.length} resultados.`);
+    } else if (currentStateFilter && currentStateFilter !== '') { // <-- CONDICIÓN MEJORADA: solo verifica que no sea vacío.
+        // También captura la opción por defecto ("Seleccione Estado...") si no se cambia.
+        const lowerCaseEstadoFilter = currentStateFilter.toLowerCase();
+        
+        clientsToFilter = clientsToFilter.filter(cliente => {
+            // --- NUEVO LOG: Comparación de estado para cada cliente ---
+            console.log(`[cargar_tabla_con_filtros] Cliente ID: ${cliente.id_persona || 'N/A'}, Estado en datos: '${cliente.estado}', Comparando con filtro: '${lowerCaseEstadoFilter}'`);
+            
+            return cliente.estado && // Verifica que la propiedad 'estado' exista
+                   typeof cliente.estado === 'string' && // Asegura que es un string
+                   cliente.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara
+        });
+        console.log(`[cargar_tabla_con_filtros] Filtrado solo por estado ('${currentStateFilter}'): ${clientsToFilter.length} resultados.`);
+    } else {
+        console.log("[cargar_tabla_con_filtros] No se aplicó ningún filtro (nombre y/o estado vacíos o nulos). Mostrando todos los clientes.");
+    }
+
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const clientsToDisplay = clientsToFilter.slice(startIndex, endIndex);
+
+    console.log(`[cargar_tabla_con_filtros] Clientes a mostrar en esta página (${currentPage}): ${clientsToDisplay.length}`);
+
+    if (clientsToDisplay.length === 0) {
+        const numCols = tabla.querySelectorAll('th').length;
+        // Corregido: insertRow() para crear la fila y luego insertCell()
+        const noResultsRow = tBody.insertRow(); 
+        const noResultsCell = noResultsRow.insertCell(0);
+        noResultsCell.colSpan = numCols; 
+        noResultsCell.textContent = "No se encontraron clientes con los filtros aplicados.";
+        noResultsCell.style.textAlign = "center";
+        noResultsCell.style.padding = "20px";
+        noResultsCell.style.color = "#888";
+    } else {
+        clientsToDisplay.forEach(cliente => {
+            crearFila(cliente, tabla);
+        });
+    }
+
+    renderPaginator(tabla, clientsToFilter.length); 
+};
+
+
+export const crearFila = ({id_persona, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, estado }, tabla) => {
+    const tBody = tabla.querySelector("tbody");
+    const tr = tBody.insertRow(); 
+    const tdNombre = tr.insertCell(0); 
     const tdTipoId = tr.insertCell(1);
     const tdNumId = tr.insertCell(2);
     const tdCorreo = tr.insertCell(3);
-    const tdtelefono = tr.insertCell(4);
-    const tdBotonera = tr.insertCell(5); 
+    const tdTelefono = tr.insertCell(4);
+    const tdEstado = tr.insertCell(5);
+    const tdBotonera = tr.insertCell(6); 
 
-    // Agregar el contenido a las celdas
-    tdNobre.textContent = nombre_completo_razon_social;
-    // Aquí es importante que id_tipo_identificacion muestre el nombre del tipo, no el ID
-    // Si id_tipo_identificacion es solo un ID numérico, necesitarías mapearlo a un nombre.
-    // Por ahora, lo dejo como está:
+    tdNombre.textContent = nombre_completo_razon_social;
     tdTipoId.textContent = id_tipo_identificacion; 
     tdNumId.textContent = numero_identificacion;
     tdCorreo.textContent = correo;
-    tdtelefono.textContent = telefono;
+    tdTelefono.textContent = telefono;
+    tdEstado.textContent = estado;
     
+    // Solo aplica la clase si el estado es 'inactivo' y existe la propiedad
+    if (estado && typeof estado === 'string' && estado.toLowerCase() === 'inactivo') { 
+        tr.classList.add('cliente-inactivo'); 
+    }
+
     const div = document.createElement("div");
     const btnEliminar = document.createElement("a");
     const btnEditar = document.createElement("a");
  
     btnEditar.setAttribute("data-id", id_persona);
-    btnEditar.setAttribute("href", `#editarcliente/${id_persona}`); // Cambiado a #editarcliente si es de clientes
+    btnEditar.setAttribute("href", `#editarcliente/${id_persona}`); 
 
     btnEliminar.setAttribute("data-id", id_persona);
  
@@ -70,91 +152,111 @@ export const crearFila = ({id_persona, nombre_completo_razon_social, id_tipo_ide
     btnEliminar.textContent = "Eliminar";
  
     div.classList.add("botonera");
-    btnEditar.classList.add("btn", "btn--small", "editar"); // Corregido 'samall' a 'small'
-    btnEliminar.classList.add("btn", "btn--small", "btn--danger", "eliminar"); // Corregido 'samall' a 'small'
+    btnEditar.classList.add("btn", "btn--small", "editar");
+    btnEliminar.classList.add("btn", "btn--small", "btn--danger", "eliminar");
     div.append(btnEditar, btnEliminar);
     tdBotonera.append(div);
  
-    tr.setAttribute("id", `client_${id_persona}`); // Cambiado a client_${id} para ser específico
+    tr.setAttribute("id", `client_${id_persona}`);
 };
 
-// --- Función para renderizar el paginador ---
-const renderPaginator = (tabla) => {
-    const totalPages = Math.ceil(allClients.length / ITEMS_PER_PAGE);
-    const paginatorContainer = document.querySelector("#paginator"); // Asegúrate de tener este div en tu HTML
+
+const renderPaginator = (tabla, totalFilteredClients) => {
+    const totalPages = Math.ceil(totalFilteredClients / ITEMS_PER_PAGE);
+    const paginatorContainer = document.querySelector("#paginator");
 
     if (!paginatorContainer) {
         console.error("Contenedor del paginador (#paginator) no encontrado.");
         return;
     }
 
-    paginatorContainer.innerHTML = ''; // Limpia el paginador existente
+    paginatorContainer.innerHTML = ''; 
 
-    // Botón Anterior
     const prevButton = document.createElement('button');
     prevButton.textContent = 'Anterior';
     prevButton.classList.add('paginator-btn');
     if (currentPage === 1) {
-        prevButton.disabled = true;
+        prevButton.disabled = true; 
     }
     prevButton.addEventListener('click', () => {
         if (currentPage > 1) {
-            currentPage--;
-            cargar_tabla(tabla); // Recarga la tabla con la nueva página
+            currentPage--; 
+            console.log(`[Paginador] Clic en Anterior. Nueva página: ${currentPage}`);
+            // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
+            cargar_tabla_con_filtros(tabla, null, null); 
         }
     });
     paginatorContainer.append(prevButton);
 
-    // Botones de número de página
     for (let i = 1; i <= totalPages; i++) {
         const pageButton = document.createElement('button');
         pageButton.textContent = i;
         pageButton.classList.add('paginator-btn');
         if (i === currentPage) {
-            pageButton.classList.add('active'); // Clase para la página actual
+            pageButton.classList.add('active'); 
         }
         pageButton.addEventListener('click', () => {
-            currentPage = i;
-            cargar_tabla(tabla); // Recarga la tabla con la nueva página
+            currentPage = i; 
+            console.log(`[Paginador] Clic en página ${i}. Nueva página: ${currentPage}`);
+            // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
+            cargar_tabla_con_filtros(tabla, null, null); 
         });
         paginatorContainer.append(pageButton);
     }
 
-    // Botón Siguiente
     const nextButton = document.createElement('button');
     nextButton.textContent = 'Siguiente';
     nextButton.classList.add('paginator-btn');
-    if (currentPage === totalPages) {
+    if (currentPage === totalPages || totalPages === 0) { 
         nextButton.disabled = true;
     }
     nextButton.addEventListener('click', () => {
         if (currentPage < totalPages) {
-            currentPage++;
-            cargar_tabla(tabla); // Recarga la tabla con la nueva página
+            currentPage++; 
+            console.log(`[Paginador] Clic en Siguiente. Nueva página: ${currentPage}`);
+            // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
+            cargar_tabla_con_filtros(tabla, null, null); 
         }
     });
     paginatorContainer.append(nextButton);
+    console.log(`[Paginador] Renderizado. Total de clientes filtrados: ${totalFilteredClients}, Páginas: ${totalPages}, Página actual: ${currentPage}`);
 };
 
 
 export const agregarEventosBotones = async () => {
     const tabla = document.querySelector("#tableClientes");
+    
+    if (!tabla) {
+        console.error("Tabla de clientes no encontrada para adjuntar eventos a botones.");
+        return;
+    }
+
     tabla.addEventListener('click', async (e) => {
         if (e.target.classList.contains('eliminar')) {
-            if (confirm("¿Estás seguro de eliminar este Cliente?")) {
-                await eliminar_clientes_por_id(e.target.dataset.id);
-                // Si eliminas, debes recargar TODOS los clientes para que el paginador sea preciso
-                allClients = []; // Vacía la lista de clientes para forzar una recarga completa
-                currentPage = 1; // Vuelve a la primera página después de eliminar
-                await cargar_tabla(tabla); 
+            const clienteId = e.target.dataset.id; 
+            if (confirm(`¿Estás seguro de eliminar el Cliente con ID ${clienteId}?`)) {
+                try {
+                    console.log(`[mostrarTabla] Iniciando eliminación de cliente con ID: ${clienteId}`);
+                    await eliminar_clientes_por_id(clienteId); 
+                    
+                    allClients = []; 
+                    setCurrentPage(1); 
+                    
+                    console.log(`[mostrarTabla] Cliente ${clienteId} eliminado. Forzando recarga de datos.`);
+                    // Llama con null, null para que se usen los filtros persistidos
+                    await cargar_tabla_con_filtros(tabla, null, null); 
+                    
+                    alert("Cliente eliminado exitosamente.");
+                } catch (error) {
+                    console.error("Error al eliminar cliente:", error);
+                    alert("Error al eliminar cliente. Inténtalo de nuevo.");
+                }
             }
         }
-        // Puedes añadir aquí la lógica para el botón de editar
         if (e.target.classList.contains('editar')) {
-            // El href ya maneja la navegación, pero si necesitas JS adicional:
-             const clienteId = e.target.dataset.id;
-             console.log("Editar cliente con ID:", clienteId);
-             location.hash = `#editarcliente/${clienteId}`; // Ya se maneja con el href
+            const clienteId = e.target.dataset.id;
+            console.log("Editar cliente con ID:", clienteId);
+            location.hash = `#editarcliente/${clienteId}`; 
         }
     });
 };

@@ -1,9 +1,10 @@
 import { encabezados } from "../../helpers/solicitudes";
-import { editarClienteController } from "./editarClienteController.js";
+import { editarEmpleadoController } from "./editarEmpleadoController.js";
 
-export const editarControllerCat = async (a) => {
+export const editarControllerEmp= async (a) => {
+    console.log(a);
+    
     // declaracion de variables
-    const form = document.querySelector('form');
     const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
     const id_tipo_identificacion = document.querySelector('#id_tipo_identificacion')
     const numero_identificacion = document.querySelector('#numero_identificacion')
@@ -14,12 +15,13 @@ export const editarControllerCat = async (a) => {
     const estado = document.querySelector('#estado')
 
     // Solicitud a la API
-    const request = await fetch(`http://localhost:3000/api/personas/${a.id}`, {
+    const request = await fetch(`http://localhost:3000/api/personas/${a.id_persona}`,{
         method: 'GET',
         headers: encabezados
     });
     const { data } = await request.json();
 
+    
     //Llenando los campos
     nombre_completo_razon_social.value = data.nombre_completo_razon_social;
     id_tipo_identificacion.value = data.id_tipo_identificacion;
@@ -29,7 +31,7 @@ export const editarControllerCat = async (a) => {
     direccion.value = data.direccion;
     id_ciudad.value = data.id_ciudad;
     estado.value = data.estado;
-
-    editarClienteController(a)
+    
+    editarEmpleadoController(a)
 
 }

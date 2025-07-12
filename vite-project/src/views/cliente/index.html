@@ -3,19 +3,21 @@
         <div class="tituloTable">
             <h1>Gestión de Clientes</h1>
             <div class="buscadorContenedor">
-                
-                    <div class="input-box buscador">
-                        <input type="text" placeholder="Nombre Cliente" id="nombre">
-                        <i class="ri-user-5-line"></i>
-                    </div>
-                     <div class="input-box buscador">
-                        <select name="option" id="estado">
-                            <option  value="activo">Seleccione Estado...</option>
-                            <option  value="activo">Activo</option>
-                            <option  value="inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <a href="" class="btn buscarTabla">Buscar</a>
+
+                <div class="input-box buscador">
+                    <input type="text" placeholder="Nombre Cliente" id="nombre">
+                    <i class="ri-user-5-line"></i>
+                </div>
+                <div class="input-box buscador">
+                    <select name="option" id="estado">
+                        <option value="activo">Seleccione Estado...</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                </div>
+                <a href="" class="btn buscarTabla">Buscar</a>
+                <a href="#crearCliente" class="btn buscarTabla">Crear Cliente</a>
+
             </div>
         </div>
         <table class="table" id="tableClientes">
@@ -26,6 +28,7 @@
                     <th scope="col">Numero Identificacion</th>
                     <th scope="col">Correo</th>
                     <th scope="col">Telefono</th>
+                    <th scope="col">Estado</th>
                     <th scope="col">Acciones</th>
                 </tr>
             </thead>
