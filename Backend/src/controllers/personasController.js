@@ -34,6 +34,7 @@ class PersonaController {
   // Obtener una categoría por su ID
   static getPersonasById = async (req, res) => {
     const { id } = req.params;
+    
     try {
       // Llamamos al servicio para obtener la categoría por su ID
       const response = await PersonaService.getPersonasById(id);

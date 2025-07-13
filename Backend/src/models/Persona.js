@@ -10,15 +10,17 @@ class Persona {
             throw new Error("Error al obtener las categorías");
         }
     }
-
-    async getById() {
-        try {
-            const [rows] = await connection.query( "SELECT * FROM personas WHERE id = ?",[id]);
-            if (rows.length === 0) {
-                return []; // Retorna un array vacío si no se encuentra la persona
-            }
-        return [];
-        } catch (error) {
+    
+    async getById(id) {
+      try {
+        const [rows] = await connection.query( "SELECT * FROM personas WHERE id_persona = ?",[id]);
+        console.log(rows);
+        
+        if (rows.length === 0) {
+          return []; // Retorna un array vacío si no se encuentra la persona
+        }
+        return rows[0];
+      } catch (error) {
                   throw new Error("Error al obtener la persona");
         }
     }
