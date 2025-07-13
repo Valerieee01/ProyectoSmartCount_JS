@@ -1,43 +1,42 @@
 import connection from "../utils/db.js";
 
 class Empleado {
-    
-    async getAll() {
-        try {
-            const [rows] = await connection.query("SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
-      "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona");
-            return rows; 
-        } catch (error) {
-            throw new Error("Error al obtener los empleados");
-        }
+
+  async getAll() {
+    try {
+      const [rows] = await connection.query("SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
+        "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona");
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener los empleados");
     }
-
-    async getById(id) {
-  try {
-    console.log(id);
-
-    const [rows] = await connection.query(
-      "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
-      "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona " +
-      "WHERE e.id_empleado = ?",
-      [id]
-    );
-
-    if (rows.length === 0) {
-      return []; // retornar un array vacío si prefieres que la ausencia de resultados sea un array vacío
-    }
-
-    return rows[0]; // Retorna el primer (y único) resultado encontrado, asumiendo que id_cliente es único
-  } catch (error) {
-    console.error("Error al obtener el empleado por ID:", error); // Usa console.error para errores
-    throw new Error("Error al obtener el empleado.");
   }
-}
 
-    // Método para crear una nueva categoría
+  async getById(id) {
+    try {
+
+      const [rows] = await connection.query(
+        "SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
+        "FROM personas p JOIN empleados e ON e.id_empleado = p.id_persona " +
+        "WHERE e.id_empleado = ?",
+        [id]
+      );
+
+      if (rows.length === 0) {
+        return []; // retornar un array vacío si prefieres que la ausencia de resultados sea un array vacío
+      }
+
+      return rows[0]; // Retorna el primer (y único) resultado encontrado, asumiendo que id_cliente es único
+    } catch (error) {
+      console.error("Error al obtener el empleado por ID:", error); // Usa console.error para errores
+      throw new Error("Error al obtener el empleado.");
+    }
+  }
+
+  // Método para crear una nueva categoría
   async create(id_persona) {
     try {
-      
+
       // Verificar si la persona ya existe
       const [existingPersona] = await connection.query(
         "SELECT id_persona FROM personas WHERE id_persona = ?",
@@ -57,8 +56,8 @@ class Empleado {
       if (existingEmpleado.length > 0) {
         throw new Error("La persona ya es un empleado.");
       }
-      
-      
+
+
       const [result] = await connection.query(
         "INSERT INTO empleados (id_empleado) VALUES (?)",
         [id_persona]
@@ -70,12 +69,12 @@ class Empleado {
       return { id: result.insertId, id_persona };
     } catch (error) {
       console.log(error);
-      
+
       throw new Error("Error al crear el empleado");
     }
   }
 
-   async update(id, campos) {
+  async update(id, campos) {
     try {
       let query = "UPDATE empleados SET ";
       let params = [];
@@ -99,11 +98,11 @@ class Empleado {
     }
   }
 
-   // Método para eliminar una Persona
+  // Método para eliminar una Persona
   async delete(id_empleado) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(
-      "DELETE FROM empleado WHERE id_empleado = ?",
+      "DELETE FROM empleados WHERE id_empleado = ?",
       [id_empleado]
     );
 

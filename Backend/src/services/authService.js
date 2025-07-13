@@ -18,19 +18,22 @@ class AuthService {
    * @returns
    */
   static async register(nombre, email, id_rol, password) {
+
+    const UsuarioInstance = new Usuario();
+
     try {
       // Verificar si el usuario ya existe
-      const userExists = await Usuario.findByEmail(email);
+      const userExists = await UsuarioInstance.findByEmail(email);
       // Validamos si el correo ya esta registrado en la base de datos
       if (userExists)
         return { error: true, code: 401, message: "El corre ya se encuentra registrado en el sistema" };
       // Hashear la contraseña || encriptar la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
       // Registramos el usuario en la base de datos
-      const userId = await Usuario.create(nombre, email, id_rol,hashedPassword);
+      const userId = await UsuarioInstance.create(nombre, email, id_rol,hashedPassword);
       // Retornamos la respuesta
       return { error: false, code: 201, message: "Usuario creado" };
-    } catch (error) {
+    } catch (error) {      
       return { error: true, code: 500, message: "Error al crear el usuario" };
     }
   }
@@ -43,9 +46,10 @@ class AuthService {
   static async login(email, password) {
     
     try {
+      const UsuarioInstance = new Usuario();
+
       // Consultamos el usuario por el email
-      const user = await Usuario.findByEmail(email);
-      console.log(user.contrasena);
+      const user = await UsuarioInstance.findByEmail(email);
       // Validamos si el usuario esta registrado en la base de datos      
       if (!user)
         return {
@@ -68,7 +72,7 @@ class AuthService {
       // Generamos el refresh token
       const refreshToken = this.generateRefreshToken(user);
       // Actualizamos el refreshToken en la base de datos
-      await Usuario.updateRefreshToken(user.id_usuario, refreshToken);
+      await UsuarioInstance.updateRefreshToken(user.id_usuario, refreshToken);
       // Retornamos los datos de validación del usuario
       return {
         error: false,
@@ -80,6 +84,8 @@ class AuthService {
         },
       };
     } catch (error) {
+      console.log(error);
+      
       return { error: true, code: 500, message: "Error en el servidor" };
     }
   }

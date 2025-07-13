@@ -12,7 +12,9 @@ import equiposRoutes  from "./src/routes/equiposRoutes.js";
 import mantenimientosRoutes  from "./src/routes/mantenimientosRoutes.js";
 import proveedoresRoutes  from "./src/routes/proveedoresRoutes.js";
 import pagosRoutes  from "./src/routes/pagosRoutes.js";
-import personasRoutes  from "./src/routes/personasRoutes.js";
+import personasRoutes from "./src/routes/personasRoutes.js";
+import usuariosRoutes from "./src/routes/usuariosRoutes.js";
+
 
 
 dotenv.config();
@@ -37,6 +39,7 @@ app.use("/api/proveedores", proveedoresRoutes);
 app.use("/api/mantenimientos", mantenimientosRoutes);
 app.use("/api/pagos", pagosRoutes);
 app.use("/api/personas", personasRoutes);
+app.use("/api/user", usuariosRoutes);
 
 
 app.use("/api/auth", authRoutes);

@@ -1,4 +1,5 @@
-// GET /api/user/me
+import { encabezados } from "../../helpers/solicitudes";
+
 export const getAuthenticatedUserProfile = async () => {
     const token = localStorage.getItem('accessToken');
     if (!token) throw new Error('No autenticado');
@@ -7,7 +8,7 @@ export const getAuthenticatedUserProfile = async () => {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
-            'Authorization': `Bearer ${token}` // Esto reemplaza el uso de req.user en frontend
+            headers: encabezados
         }
     });
 

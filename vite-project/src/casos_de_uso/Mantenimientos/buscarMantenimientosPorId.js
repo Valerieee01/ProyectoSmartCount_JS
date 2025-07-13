@@ -1,5 +1,9 @@
+import { encabezados } from "../../helpers/solicitudes";
+
 const buscar_mantenimientos_por_id = async (id) => {
-    const solicitud = await fetch(`http://localhost:3000/api/mantenimientos/${id}`);
+  const solicitud = await fetch(`http://localhost:3000/api/mantenimientos/${id}`, {
+    headers: encabezados
+    });
     const respuesta = await solicitud.json();
     return respuesta;
 }

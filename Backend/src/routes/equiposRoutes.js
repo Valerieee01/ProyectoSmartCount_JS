@@ -9,21 +9,21 @@ const router = express.Router();
 // Creamos una instancia del controlador
 
 // Obtener todas las clientes
-router.get("/", EquiposController.getAllEquipos);
+router.get("/", verifyToken,EquiposController.getAllEquipos);
 
 // Obtener una cliente por ID
-router.get("/:id",  EquiposController.getEquiposById);
+router.get("/:id",verifyToken, EquiposController.getEquiposById);
 
 // Crear una nueva cliente
-router.post("/",  camposEquipos, EquiposController.createEquipos);
+router.post("/",verifyToken, camposEquipos, EquiposController.createEquipos);
 
 // Actualizar una cliente
-router.put("/:id",  camposEquipos, EquiposController.updateEquipos);
+router.put("/:id",verifyToken, camposEquipos, EquiposController.updateEquipos);
 
 // Actualizar parcialmente una cliente
-router.patch("/:id",  parcialesEquipos, EquiposController.updateEquipos);
+router.patch("/:id",verifyToken, parcialesEquipos, EquiposController.updateEquipos);
 
 // Eliminar una cliente
-router.delete("/:id",  EquiposController.deleteEquipos);
+router.delete("/:id",verifyToken,EquiposController.deleteEquipos);
 
 export default router;

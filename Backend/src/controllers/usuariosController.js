@@ -39,11 +39,10 @@ class UsuarioController {
         }
     };
 
-    // --- ¡NUEVO MÉTODO! ---
+ 
     // Método para obtener el perfil del usuario AUTENTICADO.
     // Este es el método clave para la vista "Mi Perfil" en el frontend.
     static getMe = async (req, res) => {
-        // Asume que el middleware `verifyToken` ya ha adjuntado la información del usuario
         // autenticado a `req.user` (ej. `req.user.id_usuario`).
         if (!req.user || !req.user.id_usuario) {
             // Si no hay información de usuario en la request, significa que no está autenticado o el token es inválido.

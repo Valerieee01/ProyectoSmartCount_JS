@@ -128,8 +128,10 @@ class ProveedorService {
   static async deleteProveedor(id) { 
     try {
       const ProveedorInstance = new Proveedor();
+      
       // Consultamos el Proveedor por id
       const ProveedorExistente = await ProveedorInstance.getById(id);
+      
       // Validamos si no existe el Proveedor
       if (ProveedorExistente.length === 0) {
         return {

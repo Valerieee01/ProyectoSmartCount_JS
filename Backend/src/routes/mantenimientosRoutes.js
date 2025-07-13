@@ -9,21 +9,21 @@ const router = express.Router();
 // Creamos una instancia del controlador
 
 // Obtener todas las clientes
-router.get("/", MantenimientosController.getAllMantenimientos);
+router.get("/", verifyToken,MantenimientosController.getAllMantenimientos);
 
 // Obtener una cliente por ID
-router.get("/:id",  MantenimientosController.getMantenimientosById);
+router.get("/:id",  verifyToken,MantenimientosController.getMantenimientosById);
 
 // Crear una nueva cliente
-router.post("/",  camposMantenimiento, MantenimientosController.createMantenimiento);
+router.post("/", verifyToken, camposMantenimiento, MantenimientosController.createMantenimiento);
 
 // Actualizar una cliente
-router.put("/:id",  camposMantenimiento, MantenimientosController.updateMantenimiento);
+router.put("/:id", verifyToken, camposMantenimiento, MantenimientosController.updateMantenimiento);
 
 // Actualizar parcialmente una cliente
-router.patch("/:id",  parcialesMantenimiento, MantenimientosController.updateMantenimiento);
+router.patch("/:id", verifyToken, parcialesMantenimiento, MantenimientosController.updateMantenimiento);
 
 // Eliminar una cliente
-router.delete("/:id",  MantenimientosController.deleteMantenimiento);
+router.delete("/:id", verifyToken, MantenimientosController.deleteMantenimiento);
 
 export default router;

@@ -60,7 +60,8 @@ export const initCrearEmpleadoForm = async () => {
             // Elimina los campos de 'persona' si el backend solo espera el ID para asociar.
             // (Asumo que 'id_persona' es la FK en tu tabla clientes que apunta a personas/usuarios).
             data.id_persona = idPersonaSeleccionada; 
-
+            console.log(data);
+            
        
             console.log("[initCreaEmpleadoeForm] Datos para crear cliente con persona existente (solo FK):", data);
         } else {
@@ -70,7 +71,7 @@ export const initCrearEmpleadoForm = async () => {
         }
 
         try {
-            const request = await fetch('http://localhost:3000/api/clientes', { 
+            const request = await fetch('http://localhost:3000/api/empleados', { 
                 method: 'POST',
                 body: JSON.stringify(data), 
                 headers: {

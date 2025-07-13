@@ -11,21 +11,21 @@ const router = express.Router();
 // Creamos una instancia del controlador
 
 // Obtener todas los pagos
-router.get("/",  PagoController.getAllPagos);
+router.get("/", verifyToken, PagoController.getAllPagos);
 
 // Obtener un pago por ID
-router.get("/:id",  PagoController.getPagosById);
+router.get("/:id", verifyToken, PagoController.getPagosById);
 
 // Crear un nueva pago
-router.post("/",  camposPagos, PagoController.createPago);
+router.post("/", verifyToken, camposPagos, PagoController.createPago);
 
 // Actualizar un pago
-router.put("/:id",  camposPagos, PagoController.updatePago);
+router.put("/:id", verifyToken, camposPagos, PagoController.updatePago);
 
 // Actualizar parcialmente un pago
-router.patch("/:id",  parcialesPagos, PagoController.updatePago);
+router.patch("/:id", verifyToken, parcialesPagos, PagoController.updatePago);
 
 // Eliminar un pago
-router.delete("/:id",  PagoController.deletePago);
+router.delete("/:id", verifyToken, PagoController.deletePago);
 
 export default router;

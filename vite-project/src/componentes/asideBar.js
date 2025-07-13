@@ -27,7 +27,7 @@ const asideBar = (asideContainer) => {
     const liEquipos = document.createElement('li');
     const liProveedores = document.createElement('li');
     const liPagos = document.createElement('li');
-    const liReportes = document.createElement('li');
+    // const liReportes = document.createElement('li');
     const liPersonas = document.createElement('li');
     const liCerrarSesion = document.createElement('li');
 
@@ -41,7 +41,7 @@ const asideBar = (asideContainer) => {
     const iProveedores = document.createElement('i');
     const iPagos = document.createElement('i');
     const iPersonas = document.createElement('i');
-    const iReportes = document.createElement('i');
+    // const iReportes = document.createElement('i');
 
     const iCerrarSesion = document.createElement('i');
 
@@ -54,7 +54,7 @@ const asideBar = (asideContainer) => {
     const aEquipos = document.createElement('a');
     const aProveedores = document.createElement('a');
     const aPagos = document.createElement('a');
-    const aReportes = document.createElement('a');
+    // const aReportes = document.createElement('a');
     const aPersonas = document.createElement('a');
     const aCerrarSesion = document.createElement('a');
 
@@ -68,7 +68,7 @@ const asideBar = (asideContainer) => {
     iEquipos.classList.add("ri-truck-line");
     iProveedores.classList.add("ri-shopping-bag-3-line");
     iPagos.classList.add("ri-wallet-3-line");
-    iReportes.classList.add("ri-file-chart-line");
+    // iReportes.classList.add("ri-file-chart-line");
     iPersonas.classList.add("ri-team-line");
     iCerrarSesion.classList.add("ri-logout-box-r-line");
 
@@ -95,7 +95,7 @@ const asideBar = (asideContainer) => {
     aEquipos.setAttribute('href', '#equipos');
     aProveedores.setAttribute('href', '#proveedores');
     aPagos.setAttribute('href', '#pagos');
-    aReportes.setAttribute('href', '#reportes');
+    // aReportes.setAttribute('href', '#reportes');
     aPersonas.setAttribute('href', '#personas');
     aCerrarSesion.setAttribute('href', '#cerrarSesion');
 
@@ -107,7 +107,7 @@ const asideBar = (asideContainer) => {
     aEquipos.textContent = 'Equipos';
     aProveedores.textContent = 'Proveedores';
     aPagos.textContent = 'Pagos';
-    aReportes.textContent = 'Reportes';
+    // aReportes.textContent = 'Reportes';
     aPersonas.textContent = 'Personas'
 
     aCerrarSesion.textContent = 'Cerrar Sesion';
@@ -120,11 +120,11 @@ const asideBar = (asideContainer) => {
     liEquipos.append(iEquipos, aEquipos);
     liProveedores.append(iProveedores, aProveedores);
     liPagos.append(iPagos, aPagos);
-    liReportes.append(iReportes, aReportes);
+    // liReportes.append(iReportes, aReportes);
     liPersonas.append(iPersonas, aPersonas);
     liCerrarSesion.append(iCerrarSesion, aCerrarSesion);
 
-    ulIconItems.append(liHome, liUsuario, liCliente, liEmpleado, liMantenimiento, liEquipos, liProveedores, liPagos, liReportes, liPersonas, br, liCerrarSesion);
+    ulIconItems.append(liHome, liUsuario, liCliente, liEmpleado, liMantenimiento, liEquipos, liProveedores, liPagos, /*liReportes*/ liPersonas, br, liCerrarSesion);
     divIconItems.appendChild(ulIconItems);
     divSideNav.append(divLogo, title, divIconItems);
     labelClick.append(iconSearch, iconClose);
@@ -141,7 +141,7 @@ const asideBar = (asideContainer) => {
         { element: liEquipos, hash: '#equipos' },
         { element: liProveedores, hash: '#proveedores' },
         { element: liPagos, hash: '#pagos' },
-        { element: liReportes, hash: '#reportes' },
+        // { element: liReportes, hash: '#reportes' },
         { element: liPersonas, hash: '#personas' },
 
     ];
