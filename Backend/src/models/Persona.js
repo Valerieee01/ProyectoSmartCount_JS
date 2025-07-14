@@ -27,9 +27,10 @@ class Persona {
 
     // Método para crear una nueva categoría
   async create(nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) {
+    
     try {
       const [result] = await connection.query(
-        "INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) VALUES (?, ?, ?, ?, ?, ?, ?)",
+        "INSERT INTO personas (nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)",
         [nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado]
       );
       if (result.affectedRows === 0) {
@@ -59,7 +60,7 @@ class Persona {
       query = query.slice(0, -2);
 
       // Añadimos la condición WHERE para seleccionar el producto por su ID
-      query += " WHERE id = ?";
+      query += " WHERE id_persona = ?";
       params.push(id);
       const [result] = await connection.query(query, params);
       return result.affectedRows > 0 ? { id, ...campos } : null;
@@ -72,7 +73,7 @@ class Persona {
   async delete(personaId) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(
-      "DELETE FROM personas WHERE personaId = ?",
+      "DELETE FROM personas WHERE id_persona = ?",
       [personaId]
     );
 

@@ -73,10 +73,7 @@ export const initCrearClienteForm = async () => {
             const request = await fetch('http://localhost:3000/api/clientes', { 
                 method: 'POST',
                 body: JSON.stringify(data), 
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...encabezados 
-                },
+                headers: encabezados
             });
             const response = await request.json();
 

@@ -10,6 +10,19 @@ export let allClients = [];
 let currentNameFilter = null; // Variable global para persistir el filtro de nombre
 let currentStateFilter = null; // Variable global para persistir el filtro de estado
 
+export const forceReloadAllClientes= async () => {
+    console.log("[mostrarTabla] Forzando recarga de todas las desde el backend.");
+    allClients = []; // Vacía la caché de clientes.
+    currentPage = 1; // Resetea a la primera página.
+
+    const tabla = document.querySelector("#tableClientes");
+    if (tabla) {
+        await cargar_tabla(tabla);
+    } else {
+        console.warn("[mostrarTabla] No se encontró la tabla de personas para recargar.");
+    }
+};
+
 
 export const setCurrentPage = (newPage) => {
   currentPage = newPage;

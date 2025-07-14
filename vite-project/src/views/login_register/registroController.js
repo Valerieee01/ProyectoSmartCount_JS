@@ -9,6 +9,8 @@ export const registroController = (container) => {
   const rol = divForm.querySelector("#rol");
   const contrasena = divForm.querySelector("#contrasena");
 
+  
+
   // Declaración de métodos
   const enviar = async (e) => {
     e.preventDefault();

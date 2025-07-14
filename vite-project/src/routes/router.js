@@ -21,6 +21,7 @@ import { crearPersonaController } from "../views/personas/crearPersonaController
 import { initCrearEmpleadoForm } from "../views/empleado/crearEmpleadoController.js";
 import { initCrearProveedoresForm } from "../views/proveedores/crearProveedoresController.js";
 import { editarControllerEqu } from "../views/equipos/editarController.js";
+import { editarControllerCat } from "../views/cliente/editarController.js";
 
 const routes = {
   "home": {
@@ -50,7 +51,7 @@ const routes = {
   },
   "editarcliente/:id": {
     template: "cliente/editarCliente.html",
-    controlador: clienteController,
+    controlador: editarControllerCat,
     private: true,
   },
   "crearCliente": {

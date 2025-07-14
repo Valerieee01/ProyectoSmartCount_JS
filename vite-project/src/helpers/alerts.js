@@ -1,10 +1,10 @@
 import Swal from "sweetalert2";
 
 export const success = (response) => {
- 
+
   Swal.fire({
     title: "¡Muy bien!",
-    text: response.message || "Operación realizada con éxito.", 
+    text: response.message || "Operación realizada con éxito.",
     icon: "success",
     confirmButtonText: "Ok",
   });
@@ -27,7 +27,7 @@ export const error = (response) => {
 
   Swal.fire({
     title: "¡Error!",
-    html: errorMessage, 
+    html: errorMessage,
     icon: "error",
     confirmButtonText: "Entendido",
   });

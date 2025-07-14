@@ -27,7 +27,7 @@ class PersonaController {
        }
     } catch (error) {
       // Llamamos el persona para centralizar los mensajes de respuesta
-      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+      return ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }
   };
 
@@ -56,16 +56,17 @@ class PersonaController {
       }
     } catch (error) {
       // Llamamos el persona para centralizar los mensajes de respuesta
-      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+      return ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }
   };
 
   // Crear una nueva persona
   static createPersona = async (req, res) => {
-    const { numero_persona, placa, descripcion, id_cliente } = req.body;
+    const { nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado } = req.body;
+    
     try {
       const response = await PersonaService.createPersona(
-        numero_persona, placa, descripcion, id_cliente
+       nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado
       );
       if (response.error) {
         // Llamamos el persona para centralizar los mensajes de respuesta
@@ -85,7 +86,7 @@ class PersonaController {
       }
     } catch (error) {
       // Llamamos el persona para centralizar los mensajes de respuesta
-      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+      return ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }
   };
 
@@ -94,19 +95,20 @@ class PersonaController {
     const { id } = req.params;
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
     const campos = req.body;
+    
     try {
       // Crear una instancia de la clase Categoria
       const clientes = await PersonaService.updatePersona(id, campos);
       // Validamos si no se pudo actualizar la categoría
       if (clientes.error) {
-        ResponseProvider.error(
+        return ResponseProvider.error(
           res,
           clientes.message,
           clientes.code
         );
       }
       // Retornamos la respuesta cuando se actualiza correctamente
-      ResponseProvider.success(
+      return ResponseProvider.success(
         res,
         clientes.data,
         clientes.message,
@@ -114,7 +116,7 @@ class PersonaController {
       );
     } catch (error) {
       // Llamamos el persona para centralizar los mensajes de respuesta
-      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+      return ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }
   };
 
@@ -126,14 +128,14 @@ class PersonaController {
       const response = await PersonaService.deletePersona(id);
       if (response.error) {
         // Llamamos el persona para centralizar los mensajes de respuesta
-        ResponseProvider.error(
+        return ResponseProvider.error(
           res,
           response.message,
           response.code
         );
       } else {
         // Llamamos el persona para centralizar los mensajes de respuesta
-        ResponseProvider.success(
+        return ResponseProvider.success(
           res,
           response.data,
           response.message,
@@ -142,7 +144,7 @@ class PersonaController {
       }
     } catch (error) {
       // Llamamos el persona para centralizar los mensajes de respuesta
-      ResponseProvider.error(res, "Error al interno en el servidor", 500);
+      return ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }
   };
 

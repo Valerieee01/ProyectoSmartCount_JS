@@ -1,5 +1,7 @@
 import Swal from "sweetalert2";
-import { encabezados } from "../../helpers/solicitudes";
+import { encabezados } from "../../helpers/solicitudes.js";
+import { forceReloadAllPeople } from "./mostrarTabla.js";
+import { error, success } from "../../helpers/alerts.js";
 export const editarPersonaController = (a) => {
 
     // Declaración de variables
@@ -33,24 +35,17 @@ export const editarPersonaController = (a) => {
             headers: encabezados,
         });
         const response = await request.json();
-        if (response.success) {
-            form.reset()
-            Swal.fire({
-                title: 'Muy bien!',
-                text: response.message,
-                icon: 'success',
-                confirmButtonText: 'Cool'
-            })
-            location.hash = "#clientes";
-        } else {
-            console.log(response);
-            Swal.fire({
-                title: 'Error!',
-                text: response.message,
-                icon: 'error',
-                confirmButtonText: 'Cool'
-            })
 
+
+        // --- Paso 4: Manejar la respuesta del servidor ---
+        if (response.success) {
+            form.reset();
+            success(response);
+            forceReloadAllPeople()
+            location.hash = "#personas";
+        } else {
+            console.error("Error de la API:", response);
+            error(response);
         }
     }
 

@@ -1,16 +1,28 @@
 // src/controllers/mostrarTabla.js
 
-import eliminar_clientes_por_id from "../../casos_de_uso/Clientes/eliminarClientes.js"; 
-import listarPersonas from "../../casos_de_uso/Personas/listarPersonas.js"; 
+import eliminar_clientes_por_id from "../../casos_de_uso/Clientes/eliminarClientes.js";
+import listarPersonas from "../../casos_de_uso/Personas/listarPersonas.js";
 import eliminar_personas_por_id from "../../casos_de_uso/Personas/eliminarPersonas.js";
 
-export const ITEMS_PER_PAGE = 4; 
-export let currentPage = 1;       
-export let allClients = [];       
+export const ITEMS_PER_PAGE = 4;
+export let currentPage = 1;
+export let allPeople = [];
 
 let currentNameFilter = null; // Variable global para persistir el filtro de nombre
 let currentStateFilter = null; // Variable global para persistir el filtro de estado
 
+export const forceReloadAllPeople = async () => {
+    console.log("[mostrarTabla] Forzando recarga de todas las desde el backend.");
+    allPeople = []; // Vacía la caché de clientes.
+    currentPage = 1; // Resetea a la primera página.
+
+    const tabla = document.querySelector("#tablePersonas");
+    if (tabla) {
+        await cargar_tabla(tabla);
+    } else {
+        console.warn("[mostrarTabla] No se encontró la tabla de personas para recargar.");
+    }
+};
 
 export const setCurrentPage = (newPage) => {
     currentPage = newPage;
@@ -19,15 +31,15 @@ export const setCurrentPage = (newPage) => {
 
 export const cargar_tabla = async (tabla) => {
     try {
-        if (allClients.length === 0) { 
-            const response = await listarPersonas(); 
-            allClients = response.data; 
-            console.log("[mostrarTabla] Datos iniciales de todos los clientes cargados (allClients):", allClients);
-            if (allClients.length > 0) {
+        if (allPeople.length === 0) {
+            const response = await listarPersonas();
+            allPeople = response.data;
+            console.log("[mostrarTabla] Datos iniciales de todos los clientes cargados (allPeople):", allPeople);
+            if (allPeople.length > 0) {
                 // --- NUEVO LOG: Estructura de un cliente ---
-                console.log("[mostrarTabla] Ejemplo de un objeto cliente:", allClients[0]);
-                console.log("[mostrarTabla] Propiedad 'nombre_completo_razon_social' del primer cliente:", allClients[0].nombre_completo_razon_social);
-                console.log("[mostrarTabla] Propiedad 'estado' del primer cliente:", allClients[0].estado); // <-- ¡VERIFICA ESTE LOG!
+                console.log("[mostrarTabla] Ejemplo de un objeto cliente:", allPeople[0]);
+                console.log("[mostrarTabla] Propiedad 'nombre_completo_razon_social' del primer cliente:", allPeople[0].nombre_completo_razon_social);
+                console.log("[mostrarTabla] Propiedad 'estado' del primer cliente:", allPeople[0].estado); // <-- ¡VERIFICA ESTE LOG!
             }
         }
 
@@ -50,26 +62,26 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
     // --- Almacenar/Actualizar los filtros globales ---
     // Si se pasan filtros nuevos, actualiza las variables globales.
     // Si se llama sin filtros (ej. desde el paginador), se usarán los valores globales existentes.
-    if (nombreFilter !== null) { 
+    if (nombreFilter !== null) {
         currentNameFilter = nombreFilter;
     }
-    if (estadoFilter !== null) { 
+    if (estadoFilter !== null) {
         currentStateFilter = estadoFilter;
     }
     console.log(`[cargar_tabla_con_filtros] Filtros activos globales: Nombre='${currentNameFilter}', Estado='${currentStateFilter}'`);
 
 
     const tBody = tabla.querySelector("tbody");
-    tBody.innerHTML = ''; 
+    tBody.innerHTML = '';
 
-    let clientsToFilter = [...allClients]; 
+    let clientsToFilter = [...allPeople];
 
     // --- Lógica de Aplicación de Filtros (Prioridad: Nombre > Estado) ---
-    
+
     if (currentNameFilter && currentNameFilter.trim() !== '') {
         const lowerCaseNameFilter = currentNameFilter.toLowerCase();
         clientsToFilter = clientsToFilter.filter(cliente =>
-            cliente.nombre_completo_razon_social && 
+            cliente.nombre_completo_razon_social &&
             typeof cliente.nombre_completo_razon_social === 'string' &&
             cliente.nombre_completo_razon_social.toLowerCase().includes(lowerCaseNameFilter)
         );
@@ -77,14 +89,14 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
     } else if (currentStateFilter && currentStateFilter !== '') { // <-- CONDICIÓN MEJORADA: solo verifica que no sea vacío.
         // También captura la opción por defecto ("Seleccione Estado...") si no se cambia.
         const lowerCaseEstadoFilter = currentStateFilter.toLowerCase();
-        
+
         clientsToFilter = clientsToFilter.filter(cliente => {
             // --- NUEVO LOG: Comparación de estado para cada cliente ---
             console.log(`[cargar_tabla_con_filtros] Cliente ID: ${cliente.id_persona || 'N/A'}, Estado en datos: '${cliente.estado}', Comparando con filtro: '${lowerCaseEstadoFilter}'`);
-            
+
             return cliente.estado && // Verifica que la propiedad 'estado' exista
-                   typeof cliente.estado === 'string' && // Asegura que es un string
-                   cliente.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara
+                typeof cliente.estado === 'string' && // Asegura que es un string
+                cliente.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara
         });
         console.log(`[cargar_tabla_con_filtros] Filtrado solo por estado ('${currentStateFilter}'): ${clientsToFilter.length} resultados.`);
     } else {
@@ -100,9 +112,9 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
     if (clientsToDisplay.length === 0) {
         const numCols = tabla.querySelectorAll('th').length;
         // Corregido: insertRow() para crear la fila y luego insertCell()
-        const noResultsRow = tBody.insertRow(); 
+        const noResultsRow = tBody.insertRow();
         const noResultsCell = noResultsRow.insertCell(0);
-        noResultsCell.colSpan = numCols; 
+        noResultsCell.colSpan = numCols;
         noResultsCell.textContent = "No se encontraron clientes con los filtros aplicados.";
         noResultsCell.style.textAlign = "center";
         noResultsCell.style.padding = "20px";
@@ -113,51 +125,51 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
         });
     }
 
-    renderPaginator(tabla, clientsToFilter.length); 
+    renderPaginator(tabla, clientsToFilter.length);
 };
 
 
-export const crearFila = ({id_persona, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, estado }, tabla) => {
+export const crearFila = ({ id_persona, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, estado }, tabla) => {
     const tBody = tabla.querySelector("tbody");
-    const tr = tBody.insertRow(); 
-    const tdNombre = tr.insertCell(0); 
+    const tr = tBody.insertRow();
+    const tdNombre = tr.insertCell(0);
     const tdTipoId = tr.insertCell(1);
     const tdNumId = tr.insertCell(2);
     const tdCorreo = tr.insertCell(3);
     const tdTelefono = tr.insertCell(4);
     const tdEstado = tr.insertCell(5);
-    const tdBotonera = tr.insertCell(6); 
+    const tdBotonera = tr.insertCell(6);
 
     tdNombre.textContent = nombre_completo_razon_social;
-    tdTipoId.textContent = id_tipo_identificacion; 
+    tdTipoId.textContent = id_tipo_identificacion;
     tdNumId.textContent = numero_identificacion;
     tdCorreo.textContent = correo;
     tdTelefono.textContent = telefono;
     tdEstado.textContent = estado;
-    
+
     // Solo aplica la clase si el estado es 'inactivo' y existe la propiedad
-    if (estado && typeof estado === 'string' && estado.toLowerCase() === 'inactivo') { 
-        tr.classList.add('cliente-inactivo'); 
+    if (estado && typeof estado === 'string' && estado.toLowerCase() === 'inactivo') {
+        tr.classList.add('cliente-inactivo');
     }
 
     const div = document.createElement("div");
     const btnEliminar = document.createElement("a");
     const btnEditar = document.createElement("a");
- 
+
     btnEditar.setAttribute("data-id", id_persona);
-    btnEditar.setAttribute("href", `#editarPersona/${id_persona}`); 
+    btnEditar.setAttribute("href", `#editarPersona/${id_persona}`);
 
     btnEliminar.setAttribute("data-id", id_persona);
- 
+
     btnEditar.textContent = "Editar";
     btnEliminar.textContent = "Eliminar";
- 
+
     div.classList.add("botonera");
     btnEditar.classList.add("btn", "btn--small", "editar");
     btnEliminar.classList.add("btn", "btn--small", "btn--danger", "eliminar");
     div.append(btnEditar, btnEliminar);
     tdBotonera.append(div);
- 
+
     tr.setAttribute("id", `client_${id_persona}`);
 };
 
@@ -171,20 +183,20 @@ const renderPaginator = (tabla, totalFilteredClients) => {
         return;
     }
 
-    paginatorContainer.innerHTML = ''; 
+    paginatorContainer.innerHTML = '';
 
     const prevButton = document.createElement('button');
     prevButton.textContent = 'Anterior';
     prevButton.classList.add('paginator-btn');
     if (currentPage === 1) {
-        prevButton.disabled = true; 
+        prevButton.disabled = true;
     }
     prevButton.addEventListener('click', () => {
         if (currentPage > 1) {
-            currentPage--; 
+            currentPage--;
             console.log(`[Paginador] Clic en Anterior. Nueva página: ${currentPage}`);
             // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
-            cargar_tabla_con_filtros(tabla, null, null); 
+            cargar_tabla_con_filtros(tabla, null, null);
         }
     });
     paginatorContainer.append(prevButton);
@@ -194,13 +206,13 @@ const renderPaginator = (tabla, totalFilteredClients) => {
         pageButton.textContent = i;
         pageButton.classList.add('paginator-btn');
         if (i === currentPage) {
-            pageButton.classList.add('active'); 
+            pageButton.classList.add('active');
         }
         pageButton.addEventListener('click', () => {
-            currentPage = i; 
+            currentPage = i;
             console.log(`[Paginador] Clic en página ${i}. Nueva página: ${currentPage}`);
             // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
-            cargar_tabla_con_filtros(tabla, null, null); 
+            cargar_tabla_con_filtros(tabla, null, null);
         });
         paginatorContainer.append(pageButton);
     }
@@ -208,15 +220,15 @@ const renderPaginator = (tabla, totalFilteredClients) => {
     const nextButton = document.createElement('button');
     nextButton.textContent = 'Siguiente';
     nextButton.classList.add('paginator-btn');
-    if (currentPage === totalPages || totalPages === 0) { 
+    if (currentPage === totalPages || totalPages === 0) {
         nextButton.disabled = true;
     }
     nextButton.addEventListener('click', () => {
         if (currentPage < totalPages) {
-            currentPage++; 
+            currentPage++;
             console.log(`[Paginador] Clic en Siguiente. Nueva página: ${currentPage}`);
             // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
-            cargar_tabla_con_filtros(tabla, null, null); 
+            cargar_tabla_con_filtros(tabla, null, null);
         }
     });
     paginatorContainer.append(nextButton);
@@ -226,7 +238,7 @@ const renderPaginator = (tabla, totalFilteredClients) => {
 
 export const agregarEventosBotones = async () => {
     const tabla = document.querySelector("#tablePersonas");
-    
+
     if (!tabla) {
         console.error("Tabla de clientes no encontrada para adjuntar eventos a botones.");
         return;
@@ -234,30 +246,19 @@ export const agregarEventosBotones = async () => {
 
     tabla.addEventListener('click', async (e) => {
         if (e.target.classList.contains('eliminar')) {
-            const personaId = e.target.dataset.id; 
-            if (confirm(`¿Estás seguro de eliminar la ppersona con ID ${personaId}?`)) {
-                try {
-                    console.log(`[mostrarTabla] Iniciando eliminación de persona con ID: ${personaId}`);
-                    await eliminar_personas_por_id(personaId); 
-                    
-                    allClients = []; 
-                    setCurrentPage(1); 
-                    
-                    console.log(`[mostrarTabla] Persona ${personaId} eliminado. Forzando recarga de datos.`);
-                    // Llama con null, null para que se usen los filtros persistidos
-                    await cargar_tabla(tabla); 
-                    
-                    alert("Persona eliminado exitosamente.");
-                } catch (error) {
-                    console.error("Error al eliminar persona:", error);
-                    alert("Error al eliminar persona. Inténtalo de nuevo.");
-                }
-            }
+            const personaId = e.target.dataset.id;
+
+            await eliminar_personas_por_id(personaId);
+            allPeople = [];
+            setCurrentPage(1);
+            await cargar_tabla(tabla);
+
+
         }
         if (e.target.classList.contains('editar')) {
             const personaId = e.target.dataset.id;
             console.log("Editar persona con ID:", personaId);
-            location.hash = `#editarPersona/${personaId}`; 
+            location.hash = `#editarPersona/${personaId}`;
         }
     });
 };

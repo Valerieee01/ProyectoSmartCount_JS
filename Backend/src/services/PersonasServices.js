@@ -1,9 +1,8 @@
 import Persona from "../models/Persona.js";
 
-class PersonaService { 
+class PersonaService {
 
-  static async getPersonas()
-  { 
+  static async getPersonas() {
     try {
       const personaInstance = new Persona();
       const personas = await personaInstance.getAll();
@@ -14,7 +13,7 @@ class PersonaService {
           code: 404,
           message: "No hay personas registrados",
         };
-      }      
+      }
       // Retornamos las personas obtenidas
       return {
         error: false,
@@ -22,7 +21,7 @@ class PersonaService {
         message: "personas obtenidos correctamente",
         data: personas,
       };
-    } catch (error) {      
+    } catch (error) {
       return {
         error: true,
         code: 500,
@@ -59,10 +58,10 @@ class PersonaService {
     }
   }
 
-  static async createPersona(id_persona) {
+  static async createPersona(nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado) {
     try {
       const personaInstance = new Persona();
-      const personas = await personaInstance.create(id_persona);
+      const personas = await personaInstance.create(nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, direccion, id_ciudad, estado);
       // Validamos si no se pudo crear la persona      
       if (personas === null) {
         return {
@@ -70,7 +69,7 @@ class PersonaService {
           code: 400,
           message: "Error al crear la persona",
         };
-      }   
+      }
       // Retornamos la nueva persona creada
       return {
         error: false,
@@ -80,7 +79,7 @@ class PersonaService {
       };
     } catch (error) {
       console.log(error);
-      
+
       return {
         error: true,
         code: 500,
@@ -89,11 +88,11 @@ class PersonaService {
     }
   }
 
-  static async updatePersona(id, campos) { 
+  static async updatePersona(id, campos) {
+    const personaInstance = new Persona();
     try {
-      const PersonaInstance = new Persona();
       // Consultamos la persona por id
-      const PersonaExistente = await PersonaInstance.getById(id);
+      const PersonaExistente = await personaInstance.getById(id);
       // Validamos si no existe la persona
       if (PersonaExistente.length === 0) {
         return {
@@ -102,7 +101,7 @@ class PersonaService {
           message: "persona no encontrada",
         };
       }
-      const Persona = await PersonaInstance.update(id, campos); 
+      const Persona = await personaInstance.update(id, campos);
       // Validamos si no se pudo actualizar la persona
       if (Persona === null) {
         return {
@@ -110,7 +109,7 @@ class PersonaService {
           code: 400,
           message: "Error al actualizar la persona",
         };
-      }      
+      }
       // Retornamos la persona actualizada
       return {
         error: false,
@@ -119,15 +118,17 @@ class PersonaService {
         data: Persona,
       };
     } catch (error) {
+      console.log(error);
+      
       return {
         error: true,
         code: 500,
         message: "Error interno al actualizar la persona",
       };
-    } 
+    }
   }
 
-  static async deletePersona(id) { 
+  static async deletePersona(id) {
     try {
       const PersonaInstance = new Persona();
       // Consultamos el persona por id
@@ -140,9 +141,9 @@ class PersonaService {
           message: "persona no encontrada",
         };
       }
-   
+
       // Procedemos a eliminar el persona      
-      const resultado = await PersonaInstance.delete(id); 
+      const resultado = await PersonaInstance.delete(id);
       // Validamos si no se pudo eliminar el persona
       if (resultado.error) {
         return {
@@ -150,7 +151,7 @@ class PersonaService {
           code: 400,
           message: resultado.mensaje,
         };
-      }      
+      }
       // Retornamos la respuesta de eliminación
       return {
         error: false,
@@ -160,7 +161,7 @@ class PersonaService {
       };
     } catch (error) {
       console.log(error);
-      
+
       return {
         error: true,
         code: 500,

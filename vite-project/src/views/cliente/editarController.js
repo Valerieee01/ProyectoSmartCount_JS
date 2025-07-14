@@ -2,16 +2,17 @@ import { encabezados } from "../../helpers/solicitudes";
 import { editarClienteController } from "./editarClienteController.js";
 
 export const editarControllerCat = async (a) => {
+    alert("entrando a editar cliente")
     // declaracion de variables
-    const form = document.querySelector('form');
-    const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
-    const id_tipo_identificacion = document.querySelector('#id_tipo_identificacion')
-    const numero_identificacion = document.querySelector('#numero_identificacion')
-    const correo = document.querySelector('#correo')
-    const telefono = document.querySelector('#telefono')
-    const direccion = document.querySelector('#direccion')
-    const id_ciudad = document.querySelector('#id_ciudad')
-    const estado = document.querySelector('#estado')
+    const form = document.querySelector('#clientForm');
+    const nombre_completo_razon_social = form.querySelector('#nombre_completo_razon_social')
+    const id_tipo_identificacion = form.querySelector('#id_tipo_identificacion')
+    const numero_identificacion = form.querySelector('#numero_identificacion')
+    const correo = form.querySelector('#correo')
+    const telefono = form.querySelector('#telefono')
+    const direccion = form.querySelector('#direccion')
+    const id_ciudad = form.querySelector('#id_ciudad')
+    const estado = form.querySelector('#estado')
 
     // Solicitud a la API
     const request = await fetch(`http://localhost:3000/api/personas/${a.id}`, {
@@ -19,6 +20,8 @@ export const editarControllerCat = async (a) => {
         headers: encabezados
     });
     const { data } = await request.json();
+    console.log(data);
+    
 
     //Llenando los campos
     nombre_completo_razon_social.value = data.nombre_completo_razon_social;
