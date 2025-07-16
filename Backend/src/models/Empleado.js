@@ -49,12 +49,13 @@ class Empleado {
 
       // Verificar si la persona ya es un cliente
       const [existingEmpleado] = await connection.query(
-        "SELECT id_empleado FROM empleados WHERE id_persona = ?",
+        "SELECT id_empleado FROM empleados WHERE id_empleado = ?",
         [id_persona]
       );
 
       if (existingEmpleado.length > 0) {
         throw new Error("La persona ya es un empleado.");
+        
       }
 
 

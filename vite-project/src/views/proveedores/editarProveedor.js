@@ -13,7 +13,7 @@ export const editarControllerProveedor = async (a) => {
     const estado = document.querySelector('#estado')
 
     // Solicitud a la API
-    const request = await fetch(`http://localhost:3000/api/proveedores/${a.id}`,{
+    const request = await fetch(`http://localhost:3000/api/personas/${a.id}`,{
         method: 'GET',
         headers: encabezados
     });

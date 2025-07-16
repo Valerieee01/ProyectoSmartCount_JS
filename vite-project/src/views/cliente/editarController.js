@@ -2,7 +2,6 @@ import { encabezados } from "../../helpers/solicitudes";
 import { editarClienteController } from "./editarClienteController.js";
 
 export const editarControllerCat = async (a) => {
-    alert("entrando a editar cliente")
     // declaracion de variables
     const form = document.querySelector('#clientForm');
     const nombre_completo_razon_social = form.querySelector('#nombre_completo_razon_social')

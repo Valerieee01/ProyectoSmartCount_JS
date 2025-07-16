@@ -79,10 +79,11 @@ class ProveedorService {
         data: proveedores,
       };
     } catch (error) {
+      console.log(error);
       return {
         error: true,
         code: 500,
-        message: "Error interno al crear la Proveedor",
+        message: "Error interno al crear la Proveedor, verifica si la persona existe o si ya es un empleado ",
       };
     }
   }

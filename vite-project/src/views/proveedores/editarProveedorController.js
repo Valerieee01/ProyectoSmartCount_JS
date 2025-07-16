@@ -1,9 +1,13 @@
 import Swal from "sweetalert2";
 import { encabezados } from "../../helpers/solicitudes";
-export const editarProveedorController =  (a) => {
-    
+import { error, success } from "../../helpers/alerts";
+import { forceReloadAllProveedores } from "./mostrarTabla";
+export const editarProveedorController = (a) => {
+
     // Declaración de variables
-      const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
+    const form = document.querySelector('#proveedoresForm');
+
+    const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
     const id_tipo_identificacion = document.querySelector('#id_tipo_identificacion')
     const numero_identificacion = document.querySelector('#numero_identificacion')
     const correo = document.querySelector('#correo')
@@ -26,33 +30,24 @@ export const editarProveedorController =  (a) => {
             id_ciudad: id_ciudad.value,
             estado: estado.value
         }
-        const request = await fetch(`http://localhost:3000/api/proveedores/${a.id}`, {
+        const request = await fetch(`http://localhost:3000/api/personas/${a.id}`, {
             method: 'PATCH',
             body: JSON.stringify(data),
             headers: encabezados,
         });
         const response = await request.json();
+        // --- Paso 4: Manejar la respuesta del servidor ---
         if (response.success) {
-            form.reset()
-             Swal.fire({
-                title: 'Muy bien!',
-                text: response.message,
-                icon: 'success',
-                confirmButtonText: 'Cool'
-            })
-            location.hash = "#clientes";
-        }else{
-            console.log(response);   
-            Swal.fire({
-                title: 'Error!',
-                text: response.message,
-                icon: 'error',
-                confirmButtonText: 'Cool'
-            })
-         
-        }        
+            form.reset();
+            success(response);
+            forceReloadAllProveedores()
+            location.hash = "#empleado";
+        } else {
+            console.error("Error de la API:", response);
+            error(response);
+        }
     }
 
     // Declaración de eventos
-    form.addEventListener('submit', enviar)    
+    form.addEventListener('submit', enviar)
 }

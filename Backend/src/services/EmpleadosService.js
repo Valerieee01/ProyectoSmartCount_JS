@@ -86,7 +86,7 @@ class EmpleadoService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al crear la empleado",
+        message: "Error interno al crear la empleado, verifica si la persona existe o si ya es un empleado",
       };
     }
   }

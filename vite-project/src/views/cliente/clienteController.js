@@ -26,14 +26,9 @@ export const clienteController = async () => {
         if (buscarBtn) {
             buscarBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-                console.log("[clienteController] Botón 'Buscar' clickeado. Aplicando filtros...");
 
                 const nombreBusqueda = nombreInput.value.trim();
                 const estadoBusqueda = estadoSelect.value;
-
-                // --- NUEVO LOG: Valores capturados del input y select ---
-                console.log(`[clienteController] Valor capturado del input Nombre: '${nombreBusqueda}'`);
-                console.log(`[clienteController] Valor capturado del select Estado: '${estadoBusqueda}'`);
 
                 await applyClientFilters(tabla, nombreBusqueda, estadoBusqueda);
             });
@@ -43,7 +38,6 @@ export const clienteController = async () => {
 
         crearClienteBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            alert("crear cliente clikeado")
             location.hash = '#crearCliente';
         });
 
@@ -54,8 +48,6 @@ export const clienteController = async () => {
 };
 
 const applyClientFilters = async (tabla, nombre, estado) => {
-    // --- NUEVO LOG: Valores que llegan a applyClientFilters ---
-    console.log(`[applyClientFilters] Aplicando filtros - Nombre: '${nombre}', Estado: '${estado}'`);
 
     setCurrentPage(1);
 

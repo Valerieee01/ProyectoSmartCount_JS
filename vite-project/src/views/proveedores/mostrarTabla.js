@@ -11,6 +11,18 @@ let currentNameFilter = null; // Variable global para persistir el filtro de nom
 let currentStateFilter = null; // Variable global para persistir el filtro de estado
 
 
+export const forceReloadAllProveedores = async () => {
+    allProveedores = []; // Vacía la caché de Empleados.
+    currentPage = 1; // Resetea a la primera página.
+
+    const tabla = document.querySelector("#tableProveedores");
+    if (tabla) {
+        await cargar_tabla(tabla);
+    } else {
+        console.warn("[mostrarTabla] No se encontró la tabla de personas para recargar.");
+    }
+};
+
 export const setCurrentPage = (newPage) => {
   currentPage = newPage;
   console.log(`[mostrarTabla] Página actual establecida a: ${currentPage}`);

@@ -33,7 +33,6 @@ export const cargar_tabla = async (tabla) => {
 
     } catch (error) {
         console.error("Error al cargar la tabla de equipos:", error);
-        // Podrías añadir un mensaje al usuario aquí
     }
 };
 
@@ -143,21 +142,18 @@ const renderPaginator = (tabla) => {
 export const agregarEventosBotones = async () => {
     const tabla = document.querySelector("#tableMantenimientos");
     tabla.addEventListener('click', async (e) => {
-        if (e.target.classList.contains('eliminar')) {
-            if (confirm("¿Estás seguro de eliminar este emleado?")) {
+       
                 await eliminar_equipos_por_id(e.target.dataset.id);
-                // Si eliminas, debes recargar TODOS los equipos para que el paginador sea preciso
                 allClients = []; // Vacía la lista de equipos para forzar una recarga completa
                 currentPage = 1; // Vuelve a la primera página después de eliminar
                 await cargar_tabla(tabla); 
-            }
-        }
+    
         // Puedes añadir aquí la lógica para el botón de editar
         if (e.target.classList.contains('editar')) {
             // El href ya maneja la navegación, pero si necesitas JS adicional:
-            // const clienteId = e.target.dataset.id;
-            // console.log("Editar cliente con ID:", clienteId);
-            // location.hash = `#editarcliente/${clienteId}`; // Ya se maneja con el href
+             const clienteId = e.target.dataset.id;
+             console.log("Editar Mantenimiento con ID:", clienteId);
+             location.hash = `#editarMantenimiento/${clienteId}`; // Ya se maneja con el href
         }
     });
 };

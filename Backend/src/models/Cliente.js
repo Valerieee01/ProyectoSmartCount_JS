@@ -36,15 +36,6 @@ class Cliente {
   async create(id_persona) {
     try {
 
-      // Verificar si la persona ya existe
-      const [existingPersona] = await connection.query(
-        "SELECT id_persona FROM personas WHERE id_persona = ?",
-        [id_persona]
-      );
-
-      if (existingPersona.length === 0) {
-        throw new Error("La persona con el ID proporcionado no existe.");
-      }
 
       // Verificar si la persona ya es un cliente
       const [existingClient] = await connection.query(

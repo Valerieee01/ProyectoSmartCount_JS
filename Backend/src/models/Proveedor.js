@@ -12,7 +12,7 @@ class Proveedor {
   }
 
   async getById(id) {
-    
+
     try {
       const [rows] = await connection.query("SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono, p.estado " +
         "FROM personas p JOIN proveedores pr ON pr.id_proveedor = p.id_persona " +
@@ -31,19 +31,9 @@ class Proveedor {
   async create(id_persona) {
     try {
 
-      // Verificar si la persona ya existe
-      const [existingPersona] = await connection.query(
-        "SELECT id_persona FROM personas WHERE id_persona = ?",
-        [id_persona]
-      );
-
-      if (existingPersona.length === 0) {
-        throw new Error("La persona con el ID proporcionado no existe.");
-      }
-
       // Verificar si la persona ya es un cliente
       const [existingProveedor] = await connection.query(
-        "SELECT id_proveedor FROM proveedores WHERE id_persona = ?",
+        "SELECT id_proveedor FROM proveedores WHERE id_proveedor = ?",
         [id_persona]
       );
 
@@ -52,7 +42,7 @@ class Proveedor {
       }
 
       const [result] = await connection.query(
-        "INSERT INTO personas (id_proveedor) VALUES (?)",
+        "INSERT INTO proveedores (id_proveedor) VALUES (?)",
         [id_persona]
       );
       if (result.affectedRows === 0) {
@@ -61,7 +51,7 @@ class Proveedor {
       // Retorna la nueva persona creada
       return { id: result.insertId, id_persona };
     } catch (error) {
-      throw new Error("Error al crear la proveedor");
+        throw new Error("Error al crear la proveedor");
     }
   }
 

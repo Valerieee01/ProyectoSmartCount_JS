@@ -10,15 +10,13 @@ export const eliminar_clientes_por_id = async (id) => {
   });
   const response = await request.json();
   if (response.success) {
-    const tr = document.querySelector(`#user_${id}`)
-    tr.remove();
     Swal.fire({
       title: 'Muy bien!',
       text: response.message,
       icon: 'success',
       confirmButtonText: 'Cool'
     })
-    location.hash = "#clientes";
+    location.hash = "#cliente";
   } else {
     console.log(response);
     Swal.fire({

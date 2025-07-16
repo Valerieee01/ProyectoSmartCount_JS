@@ -2,14 +2,14 @@
 
 import Swal from "sweetalert2";
 import { encabezados } from "../../helpers/solicitudes.js";
-import { cargar_tabla } from "./mostrarTabla.js"; 
+import { cargar_tabla, forceReloadAllProveedores } from "./mostrarTabla.js";
 import listarPersonas from "../../casos_de_uso/Personas/listarPersonas.js";
+import { error, success } from "../../helpers/alerts.js";
 
-export const initCrearProveedoresForm = async () => { 
-    console.log("[initCreaProveedoresForm] Inicializando envío de formulario para nuevo cliente...");
+export const initCrearProveedoresForm = async () => {
 
     const form = document.querySelector('#proveedoresForm');
-    const selectPersonaExistente = document.getElementById('id_persona_existente'); 
+    const selectPersonaExistente = document.getElementById('id_persona_existente');
 
     if (!form) {
         console.error("[initCreaProveedoresForm] Error: Formulario '#proveedoresForm' no encontrado en el DOM.");
@@ -18,14 +18,14 @@ export const initCrearProveedoresForm = async () => {
 
     if (selectPersonaExistente) {
         try {
-            const response = await listarPersonas(); 
-            const personas = response.data; 
+            const response = await listarPersonas();
+            const personas = response.data;
 
             if (personas && personas.length > 0) {
                 personas.forEach(persona => {
                     const option = document.createElement('option');
-                    option.value = persona.id_persona; 
-                    option.textContent = persona.nombre_completo_razon_social; 
+                    option.value = persona.id_persona;
+                    option.textContent = persona.nombre_completo_razon_social;
                     selectPersonaExistente.appendChild(option);
                 });
                 console.log("[initCreaProveedoresForm] Select 'id_persona_existente' cargado con", personas.length, "personas.");
@@ -43,63 +43,31 @@ export const initCrearProveedoresForm = async () => {
     }
 
     const enviar = async (e) => {
-        e.preventDefault(); 
-        console.log("[initCreaProveedoresForm] Formulario de creación enviado.");
+        e.preventDefault();
 
-        const formData = new FormData(form);
-        const data = {};
-        for (let [key, value] of formData.entries()) {
-            data[key] = value;
+          const data = {
+            id_proveedor: selectPersonaExistente.value
         }
 
-        const idPersonaSeleccionada = selectPersonaExistente ? selectPersonaExistente.value : '';
-        
-        // --- Lógica crucial: Cómo construir 'data' ---
-        if (idPersonaSeleccionada) {
-            // Si se seleccionó una persona existente, ajusta 'data' para el backend.
-            // Elimina los campos de 'persona' si el backend solo espera el ID para asociar.
-            // (Asumo que 'id_persona' es la FK en tu tabla proveedores que apunta a personas/usuarios).
-            data.id_persona = idPersonaSeleccionada; 
-
-       
-            console.log("[initCreaProveedoresForm] Datos para crear cliente con persona existente (solo FK):", data);
-        } else {
-            console.log("[initCreaProveedoresForm] Datos para crear nuevo proveedor/persona:", data);
-            // Si no se selecciona una persona existente, 'data' contendrá todos los campos
-            // para que el backend cree la persona y luego el cliente.
-        }
 
         try {
-            const request = await fetch('http://localhost:3000/api/proveedores', { 
+            const request = await fetch('http://localhost:3000/api/proveedores', {
                 method: 'POST',
-                body: JSON.stringify(data), 
-                headers: {
-                    'Content-Type': 'application/json',
-                    ...encabezados 
-                },
+                body: JSON.stringify(data),
+                headers: encabezados
             });
             const response = await request.json();
 
+            // --- Paso 4: Manejar la respuesta del servidor ---
             if (response.success) {
-                form.reset(); 
-                Swal.fire({
-                    title: '¡Muy bien!',
-                    text: response.message || 'Cliente creado exitosamente.',
-                    icon: 'success',
-                    confirmButtonText: 'Ok'
-                });
-
-                await cargar_tabla(); 
-                location.hash = "#cliente"; 
+                form.reset();
+                success(response);
+                forceReloadAllProveedores()
+                location.hash = "#proveedores";
             } else {
-                console.error("[initCreaProveedoresForm] Error de la API:", response);   
-                Swal.fire({
-                    title: '¡Error!',
-                    text: response.message || 'Ocurrió un error al crear el cliente.',
-                    icon: 'error',
-                    confirmButtonText: 'Ok'
-                });
-            }        
+                console.error("Error de la API:", response);
+                error(response);
+            }
         } catch (error) {
             console.error("[initCreaProveedoresForm] Error al enviar el formulario (fetch):", error);
             Swal.fire({
@@ -111,5 +79,5 @@ export const initCrearProveedoresForm = async () => {
         }
     };
 
-    form.addEventListener('submit', enviar); 
+    form.addEventListener('submit', enviar);
 };

@@ -11,7 +11,6 @@ let currentNameFilter = null; // Variable global para persistir el filtro de nom
 let currentStateFilter = null; // Variable global para persistir el filtro de estado
 
 export const forceReloadAllClientes= async () => {
-    console.log("[mostrarTabla] Forzando recarga de todas las desde el backend.");
     allClients = []; // Vacía la caché de clientes.
     currentPage = 1; // Resetea a la primera página.
 
@@ -26,7 +25,6 @@ export const forceReloadAllClientes= async () => {
 
 export const setCurrentPage = (newPage) => {
   currentPage = newPage;
-  console.log(`[mostrarTabla] Página actual establecida a: ${currentPage}`);
 };
 
 export const cargar_tabla = async (tabla) => {
@@ -34,7 +32,6 @@ export const cargar_tabla = async (tabla) => {
     if (allClients.length === 0) {
       const response = await listarClientes();
       allClients = response.data;
-      console.log("[mostrarTabla] Datos iniciales de todos los clientes cargados (allClients):", allClients);
       if (allClients.length > 0) {
         // --- NUEVO LOG: Estructura de un cliente ---
         console.log("[mostrarTabla] Ejemplo de un objeto cliente:", allClients[0]);
@@ -68,7 +65,6 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
   if (estadoFilter !== null) {
     currentStateFilter = estadoFilter;
   }
-  console.log(`[cargar_tabla_con_filtros] Filtros activos globales: Nombre='${currentNameFilter}', Estado='${currentStateFilter}'`);
 
 
   const tBody = tabla.querySelector("tbody");
@@ -85,20 +81,17 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
       typeof cliente.nombre_completo_razon_social === 'string' &&
       cliente.nombre_completo_razon_social.toLowerCase().includes(lowerCaseNameFilter)
     );
-    console.log(`[cargar_tabla_con_filtros] Filtrado solo por nombre ('${currentNameFilter}'): ${clientsToFilter.length} resultados.`);
   } else if (currentStateFilter && currentStateFilter !== '') { // <-- CONDICIÓN MEJORADA: solo verifica que no sea vacío.
     // También captura la opción por defecto ("Seleccione Estado...") si no se cambia.
     const lowerCaseEstadoFilter = currentStateFilter.toLowerCase();
 
     clientsToFilter = clientsToFilter.filter(cliente => {
-      // --- NUEVO LOG: Comparación de estado para cada cliente ---
-      console.log(`[cargar_tabla_con_filtros] Cliente ID: ${cliente.id_persona || 'N/A'}, Estado en datos: '${cliente.estado}', Comparando con filtro: '${lowerCaseEstadoFilter}'`);
+    
 
       return cliente.estado && // Verifica que la propiedad 'estado' exista
         typeof cliente.estado === 'string' && // Asegura que es un string
         cliente.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara
     });
-    console.log(`[cargar_tabla_con_filtros] Filtrado solo por estado ('${currentStateFilter}'): ${clientsToFilter.length} resultados.`);
   } else {
     console.log("[cargar_tabla_con_filtros] No se aplicó ningún filtro (nombre y/o estado vacíos o nulos). Mostrando todos los clientes.");
   }
@@ -107,7 +100,6 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
   const endIndex = startIndex + ITEMS_PER_PAGE;
   const clientsToDisplay = clientsToFilter.slice(startIndex, endIndex);
 
-  console.log(`[cargar_tabla_con_filtros] Clientes a mostrar en esta página (${currentPage}): ${clientsToDisplay.length}`);
 
   if (clientsToDisplay.length === 0) {
     const numCols = tabla.querySelectorAll('th').length;
@@ -179,7 +171,7 @@ const renderPaginator = (tabla, totalFilteredClients) => {
   const paginatorContainer = document.querySelector("#paginator");
 
   if (!paginatorContainer) {
-    console.error("Contenedor del paginador (#paginator) no encontrado.");
+    console.error("Contenedor del  (#paginator) no encontrado.");
     return;
   }
 
@@ -194,7 +186,6 @@ const renderPaginator = (tabla, totalFilteredClients) => {
   prevButton.addEventListener('click', () => {
     if (currentPage > 1) {
       currentPage--;
-      console.log(`[Paginador] Clic en Anterior. Nueva página: ${currentPage}`);
       // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
       cargar_tabla_con_filtros(tabla, null, null);
     }
@@ -210,7 +201,6 @@ const renderPaginator = (tabla, totalFilteredClients) => {
     }
     pageButton.addEventListener('click', () => {
       currentPage = i;
-      console.log(`[Paginador] Clic en página ${i}. Nueva página: ${currentPage}`);
       // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
       cargar_tabla_con_filtros(tabla, null, null);
     });
@@ -226,13 +216,10 @@ const renderPaginator = (tabla, totalFilteredClients) => {
   nextButton.addEventListener('click', () => {
     if (currentPage < totalPages) {
       currentPage++;
-      console.log(`[Paginador] Clic en Siguiente. Nueva página: ${currentPage}`);
-      // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
       cargar_tabla_con_filtros(tabla, null, null);
     }
   });
   paginatorContainer.append(nextButton);
-  console.log(`[Paginador] Renderizado. Total de clientes filtrados: ${totalFilteredClients}, Páginas: ${totalPages}, Página actual: ${currentPage}`);
 };
 
 
@@ -257,13 +244,11 @@ export const agregarEventosBotones = async () => {
 
       } catch (error) {
         console.error("Error al eliminar cliente:", error);
-        alert("Error al eliminar cliente. Inténtalo de nuevo.");
       }
 
     }
     if (e.target.classList.contains('editar')) {
       const clienteId = e.target.dataset.id;
-      console.log("Editar cliente con ID:", clienteId);
       location.hash = `#editarEquipos/${clienteId}`;
     }
   });

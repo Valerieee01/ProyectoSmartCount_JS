@@ -19,23 +19,18 @@ export const empleadoController = async () => {
         await cargar_tabla(tabla);
         await agregarEventosBotones();
 
-        const nombreInput = document.getElementById("nombre");
-        const estadoSelect = document.getElementById("estado");
+        const nombreInput = document.querySelector("#nombre");
+        const estadoSelect = document.querySelector("#estado");
         const buscarBtn = document.querySelector(".buscarTabla");
 
         if (buscarBtn) {
             buscarBtn.addEventListener('click', async (e) => {
                 e.preventDefault();
-                console.log("[empleadoController] Botón 'Buscar' clickeado. Aplicando filtros...");
 
                 const nombreBusqueda = nombreInput.value.trim();
                 const estadoBusqueda = estadoSelect.value;
 
-                // --- NUEVO LOG: Valores capturados del input y select ---
-                console.log(`[empleadoController] Valor capturado del input Nombre: '${nombreBusqueda}'`);
-                console.log(`[empleadoController] Valor capturado del select Estado: '${estadoBusqueda}'`);
-
-                await applyClientFilters(tabla, nombreBusqueda, estadoBusqueda);
+                await applyEmpleadosFilters(tabla, nombreBusqueda, estadoBusqueda);
             });
         }
 
@@ -43,19 +38,18 @@ export const empleadoController = async () => {
 
         crearEmpleadoBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            alert("crear Empleado clikeado")
             location.hash = '#crearEmpleado';
         });
 
 
     } catch (error) {
+        console.log(error);
+        
         console.error("Error en empleadoController durante la inicialización:", error);
     }
 };
 
-const applyClientFilters = async (tabla, nombre, estado) => {
-    // --- NUEVO LOG: Valores que llegan a applyClientFilters ---
-    console.log(`[applyClientFilters] Aplicando filtros - Nombre: '${nombre}', Estado: '${estado}'`);
+const applyEmpleadosFilters = async (tabla, nombre, estado) => {
 
     setCurrentPage(1);
 

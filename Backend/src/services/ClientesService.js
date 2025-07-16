@@ -83,7 +83,7 @@ class ClienteService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al crear la cliente",
+        message: "Error interno al crear la cliente, verifica si la persona existe o si ya es un empleado",
       };
     }
   }

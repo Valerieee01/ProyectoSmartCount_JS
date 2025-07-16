@@ -17,12 +17,14 @@ export const error = (response) => {
   if (response.message) {
     errorMessage = response.message;
   }
-
+  console.log(errorMessage);
+  
   // Luego, verifica si existe el array de errores (erros con una sola 'r')
   // y si contiene elementos.
   if (response.erros && Array.isArray(response.erros) && response.erros.length > 0) {
     // Si hay un array de errores, construimos un mensaje detallado.
     errorMessage = response.erros.map(err => err.message).join('<br>');
+    
   }
 
   Swal.fire({

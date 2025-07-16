@@ -61,10 +61,10 @@ class ProveedorController {
 
   // Crear una nueva categoría
   static createProveedor = async (req, res) => {
-    const { numero_mantenimiento, placa, descripcion, id_cliente } = req.body;
+    const { id_proveedor } = req.body;
     try {
       const response = await ProveedorService.createProveedor(
-        numero_mantenimiento, placa, descripcion, id_cliente
+        id_proveedor
       );
       if (response.error) {
         // Llamamos el mantenimiento para centralizar los mensajes de respuesta

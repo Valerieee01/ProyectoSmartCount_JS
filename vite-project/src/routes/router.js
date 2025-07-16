@@ -69,7 +69,7 @@ const routes = {
     controlador: editarControllerEmp,
     private: true,
   },
-  "crearEmpleados": {
+  "crearEmpleado": {
     template: "empleado/crearEmpleado.html",
     controlador: initCrearEmpleadoForm,
     private: true,
@@ -91,6 +91,17 @@ const routes = {
   },
   "mantenimiento": {
     template: "mantenimiento/index.html",
+    controlador: mantenimientoController,
+    private: true,
+  },
+  
+  "editarMantenimiento/:id": {
+    template: "mantenimiento/editarMantenimiento.html",
+    controlador: mantenimientoController,
+    private: true,
+  },
+  "crearMantenimiento": {
+    template: "mantenimiento/crearMantenimientos.html",
     controlador: mantenimientoController,
     private: true,
   },

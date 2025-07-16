@@ -1,9 +1,12 @@
 import Swal from "sweetalert2";
-import { encabezados } from "../../helpers/solicitudes";
-export const editarEmpleadoController =  (a) => {
-    
+import { encabezados } from "../../helpers/solicitudes.js";
+import { forceReloadAllEmpleados } from "./mostrarTabla.js";
+import { error, success } from "../../helpers/alerts.js";
+export const editarEmpleadoController = (a) => {
+
     // Declaración de variables
-      const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
+    const form = document.querySelector('form');
+    const nombre_completo_razon_social = document.querySelector('#nombre_completo_razon_social')
     const id_tipo_identificacion = document.querySelector('#id_tipo_identificacion')
     const numero_identificacion = document.querySelector('#numero_identificacion')
     const correo = document.querySelector('#correo')
@@ -32,27 +35,18 @@ export const editarEmpleadoController =  (a) => {
             headers: encabezados,
         });
         const response = await request.json();
+        // --- Paso 4: Manejar la respuesta del servidor ---
         if (response.success) {
-            form.reset()
-             Swal.fire({
-                title: 'Muy bien!',
-                text: response.message,
-                icon: 'success',
-                confirmButtonText: 'Cool'
-            })
-            location.hash = "#clientes";
-        }else{
-            console.log(response);   
-            Swal.fire({
-                title: 'Error!',
-                text: response.message,
-                icon: 'error',
-                confirmButtonText: 'Cool'
-            })
-         
-        }        
+            form.reset();
+            success(response);
+            forceReloadAllEmpleados()
+            location.hash = "#empleado";
+        } else {
+            console.error("Error de la API:", response);
+            error(response);
+        }
     }
 
     // Declaración de eventos
-    form.addEventListener('submit', enviar)    
+    form.addEventListener('submit', enviar)
 }

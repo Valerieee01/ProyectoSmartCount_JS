@@ -10,10 +10,20 @@ export let allEmpleados = [];
 let currentNameFilter = null; // Variable global para persistir el filtro de nombre
 let currentStateFilter = null; // Variable global para persistir el filtro de estado
 
+export const forceReloadAllEmpleados= async () => {
+    allEmpleados = []; // Vacía la caché de Empleados.
+    currentPage = 1; // Resetea a la primera página.
+
+    const tabla = document.querySelector("#tableEmpleados");
+    if (tabla) {
+        await cargar_tabla(tabla);
+    } else {
+        console.warn("[mostrarTabla] No se encontró la tabla de personas para recargar.");
+    }
+};
 
 export const setCurrentPage = (newPage) => {
   currentPage = newPage;
-  console.log(`[mostrarTabla] Página actual establecida a: ${currentPage}`);
 };
 
 export const cargar_tabla = async (tabla) => {
@@ -21,7 +31,6 @@ export const cargar_tabla = async (tabla) => {
     if (allEmpleados.length === 0) {
       const response = await listarEmpleados();
       allEmpleados = response.data;
-      console.log("[mostrarTabla] Datos iniciales de todos los empleados cargados (allEmpleados):", allEmpleados);
       if (allEmpleados.length > 0) {
         // --- NUEVO LOG: Estructura de un empleado ---
         console.log("[mostrarTabla] Ejemplo de un objeto empleado:", allEmpleados[0]);
@@ -55,7 +64,6 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
   if (estadoFilter !== null) {
     currentStateFilter = estadoFilter;
   }
-  console.log(`[cargar_tabla_con_filtros] Filtros activos globales: Nombre='${currentNameFilter}', Estado='${currentStateFilter}'`);
 
 
   const tBody = tabla.querySelector("tbody");
@@ -72,15 +80,12 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
       typeof empleado.nombre_completo_razon_social === 'string' &&
       empleado.nombre_completo_razon_social.toLowerCase().includes(lowerCaseNameFilter)
     );
-    console.log(`[cargar_tabla_con_filtros] Filtrado solo por nombre ('${currentNameFilter}'): ${clientsToFilter.length} resultados.`);
   } else if (currentStateFilter && currentStateFilter !== '') { // <-- CONDICIÓN MEJORADA: solo verifica que no sea vacío.
     // También captura la opción por defecto ("Seleccione Estado...") si no se cambia.
     const lowerCaseEstadoFilter = currentStateFilter.toLowerCase();
 
     clientsToFilter = clientsToFilter.filter(empleado => {
-      // --- NUEVO LOG: Comparación de estado para cada empleado ---
-      console.log(`[cargar_tabla_con_filtros] empleado ID: ${empleado.id_persona || 'N/A'}, Estado en datos: '${empleado.estado}', Comparando con filtro: '${lowerCaseEstadoFilter}'`);
-
+ 
       return empleado.estado && // Verifica que la propiedad 'estado' exista
         typeof empleado.estado === 'string' && // Asegura que es un string
         empleado.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara
@@ -111,7 +116,6 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
       crearFila(empleado, tabla);
     });
   }
-
   renderPaginator(tabla, clientsToFilter.length);
 };
 
@@ -181,7 +185,6 @@ const renderPaginator = (tabla, totalFilteredClients) => {
   prevButton.addEventListener('click', () => {
     if (currentPage > 1) {
       currentPage--;
-      console.log(`[Paginador] Clic en Anterior. Nueva página: ${currentPage}`);
       // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
       cargar_tabla_con_filtros(tabla, null, null);
     }
@@ -197,7 +200,6 @@ const renderPaginator = (tabla, totalFilteredClients) => {
     }
     pageButton.addEventListener('click', () => {
       currentPage = i;
-      console.log(`[Paginador] Clic en página ${i}. Nueva página: ${currentPage}`);
       // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
       cargar_tabla_con_filtros(tabla, null, null);
     });
@@ -213,13 +215,11 @@ const renderPaginator = (tabla, totalFilteredClients) => {
   nextButton.addEventListener('click', () => {
     if (currentPage < totalPages) {
       currentPage++;
-      console.log(`[Paginador] Clic en Siguiente. Nueva página: ${currentPage}`);
       // Usa null, null para que cargar_tabla_con_filtros use los filtros globales persistidos
       cargar_tabla_con_filtros(tabla, null, null);
     }
   });
   paginatorContainer.append(nextButton);
-  console.log(`[Paginador] Renderizado. Total de empleados filtrados: ${totalFilteredClients}, Páginas: ${totalPages}, Página actual: ${currentPage}`);
 };
 
 

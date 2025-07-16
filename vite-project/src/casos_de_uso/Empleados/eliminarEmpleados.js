@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { refrescarAccessToken } from "../../helpers/solicitudesRefresh.js";
 import { encabezados } from "../../helpers/solicitudes.js"
+import { forceReloadAllEmpleados } from "../../views/empleado/mostrarTabla.js";
 
 export const eliminar_empleados_por_id = async (id) => {
   const request = await fetch(`http://localhost:3000/api/empleados/${id}`, {
@@ -16,7 +17,8 @@ export const eliminar_empleados_por_id = async (id) => {
       icon: 'success',
       confirmButtonText: 'Cool'
     })
-    location.hash = "#empleados";
+    forceReloadAllEmpleados();
+    location.hash = "#empleado";
   } else {
     console.log(response);
     Swal.fire({

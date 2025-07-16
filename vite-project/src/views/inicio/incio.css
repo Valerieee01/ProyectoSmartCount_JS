@@ -1,5 +1,9 @@
 #contenidoVista {
     margin-left: 150px;
+    display: flex;
+     justify-content: center;
+     align-items: center;
+     min-height: 100vh;
 }
 
 /* Estilos generales para el contenedor de las tarjetas si las tienes en una cuadrícula */
