@@ -4,17 +4,20 @@
             <h1>Gestión de Pagos</h1>
             <div class="buscadorContenedor">
                 <div class="input-box buscador">
-                    <input type="text" placeholder="Nombre Empleado" id="nombre">
+                    <input type="text" placeholder="Nombre Cliente" id="nombreCliente">
                     <i class="ri-user-5-line"></i>
                 </div>
                 <div class="input-box buscador">
-                    <select name="option" id="estado">
-                        <option value="activo">Seleccione Estado...</option>
-                        <option value="activo">Activo</option>
-                        <option value="inactivo">Inactivo</option>
+                    <select name="option" id="estadoPago">
+                        <option value="">Seleccione Estado...</option>
+                        <option value="pendiente">Pendiente</option>
+                        <option value="pagado">Pagado</option>
+                        <option value="vencido">Vencido</option>
+
                     </select>
                 </div>
                 <a href="" class="btn buscarTabla">Buscar</a>
+                <a href="#crearPagos" class="btn buscarTabla">Crear Empleado</a>
             </div>
         </div>
         <table class="table" id="tablePagos">
@@ -40,5 +43,6 @@
 
         <div id="paginator" style="margin-top: 20px; text-align: center;">
         </div>
+
     </div>
 </div>

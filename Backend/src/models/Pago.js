@@ -4,8 +4,12 @@ class Pago {
     // Método para obtener todos los pagos
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT * FROM pagos");
-            return rows;
+            const [rows] = await connection.query("SELECT  p.nombre_completo_razon_social, pa.id_mantenimiento, pa.detalle,  pa.valor_trabajo, " +
+                " pa.valor_pagado, pa.valor_mora, pa.estado_pago, pa.dias_plazo, pa.fecha_vencimiento " + 
+                "FROM pagos pa " +
+                "JOIN clientes c ON c.id_cliente = pa.id_cliente " +
+                "JOIN personas p ON p.id_persona = c.id_cliente");
+           return rows;
         } catch (error) {
             console.error("Error al obtener todos los pagos:", error);
             throw new Error("Error al obtener los pagos.");

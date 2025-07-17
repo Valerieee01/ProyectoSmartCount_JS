@@ -1,0 +1,85 @@
+<!-- src/views/pagos/create.html -->
+
+<div id="contenidoVista">
+    <div class="contentForm">
+        <div class="form-container">
+            <h1 class="form-title">Registrar Nuevo Pago</h1>
+            <form id="pagoForm"> <!-- ID del formulario para JavaScript -->
+                <div class="form-grid">
+                    <!-- Cliente Asociado (REQUIRED - Select dinámico) -->
+                    <div class="form-group">
+                        <label for="id_cliente" class="form-label">Cliente Asociado</label>
+                        <select id="id_cliente" name="id_cliente" class="form-select" required>
+                            <option value="">-- Seleccione un cliente --</option>
+                            <!-- Las opciones de clientes se cargarán aquí dinámicamente con JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- Mantenimiento Asociado (REQUIRED - Select dinámico) -->
+                    <div class="form-group">
+                        <label for="id_mantenimiento" class="form-label">Mantenimiento Asociado</label>
+                        <select id="id_mantenimiento" name="id_mantenimiento" class="form-select" required>
+                            <option value="">-- Seleccione un mantenimiento --</option>
+                            <!-- Las opciones de mantenimientos se cargarán aquí dinámicamente con JavaScript -->
+                        </select>
+                    </div>
+
+                    <!-- Valor del Trabajo (REQUIRED) -->
+                    <div class="form-group">
+                        <label for="valor_trabajo" class="form-label">Valor del Trabajo</label>
+                        <input type="number" id="valor_trabajo" name="valor_trabajo"
+                            class="form-input" placeholder="Ej: 150000.00" step="0.01" required>
+                    </div>
+
+                    <!-- Valor Pagado (Opcional, por defecto 0.00) -->
+                    <div class="form-group">
+                        <label for="valor_pagado" class="form-label">Valor Pagado</label>
+                        <input type="number" id="valor_pagado" name="valor_pagado"
+                            class="form-input" placeholder="Ej: 0.00" step="0.01" value="0.00">
+                    </div>
+                    
+                    <!-- Fecha de Facturación (REQUIRED) -->
+                    <div class="form-group">
+                        <label for="fecha_facturacion" class="form-label">Fecha de Facturación</label>
+                        <input type="date" id="fecha_facturacion" name="fecha_facturacion"
+                            class="form-input" required>
+                    </div>
+
+                    <!-- Días de Plazo (REQUIRED) -->
+                    <div class="form-group">
+                        <label for="dias_plazo" class="form-label">Días de Plazo</label>
+                        <input type="number" id="dias_plazo" name="dias_plazo"
+                            class="form-input" placeholder="Ej: 30" required>
+                    </div>
+
+                    <!-- Estado del Pago (Opcional, por defecto 'pendiente') -->
+                    <div class="form-group">
+                        <label for="estado_pago" class="form-label">Estado del Pago</label>
+                        <select id="estado_pago" name="estado_pago" class="form-select">
+                            <option value="pendiente">Pendiente</option>
+                            <option value="pagado">Pagado</option>
+                            <option value="vencido">Vencido</option>
+                        </select>
+                        <small class="form-text-muted">El estado se puede actualizar automáticamente.</small>
+                    </div>
+
+                    <!-- Detalle del Pago (TEXTAREA) -->
+                    <div class="form-group form-group-full"> <!-- Clase para ocupar todo el ancho si es necesario -->
+                        <label for="detalle" class="form-label">Detalle del Pago</label>
+                        <textarea id="detalle" name="detalle"
+                            class="form-input" rows="4" placeholder="Descripción breve del pago..."></textarea>
+                    </div>
+
+                    <!-- NOTA: valor_mora, fecha_vencimiento, fecha_registro, fecha_actualizacion son GENERATED o DEFAULT en DB, no se incluyen en el form -->
+
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="btn-container">
+                    <button type="submit" class="btn btn-primary">Guardar Pago</button>
+                    <button type="button" class="btn btn-secondary" onclick="window.history.back()">Cancelar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

@@ -110,6 +110,16 @@ const routes = {
     controlador: pagosController,
     private: true,
   },
+  "editarPagos/:id": {
+    template: "pagos/editarPagos.html",
+    controlador: pagosController,
+    private: true,
+  },
+  "crearPagos": {
+    template: "pagos/crearPagos.html",
+    controlador: pagosController,
+    private: true,
+  },
   "proveedores": {
     template: "proveedores/index.html",
     controlador: proveedoresController,
