@@ -1,8 +1,10 @@
 import Swal from "sweetalert2";
+
+
 import { encabezados } from "../../helpers/solicitudes";
 import { error, success } from "../../helpers/alerts";
 
-export const editarUserController = (idUsuario) => {
+export const editarUserController = async (idUsuario) => {
     const form = document.querySelector('#userEditForm');
 
     const nombreCompleto = document.querySelector('#nombreCompleto');
@@ -11,6 +13,7 @@ export const editarUserController = (idUsuario) => {
     const contrasenaConfirm = document.querySelector('#confirmar_contrasena');
     const rol = document.querySelector('#id_rol');
     const estado = document.querySelector('#estado');
+          
 
     const enviar = async (e) => {
         e.preventDefault();
