@@ -43,7 +43,6 @@ export const proveedoresController = async () => {
 
         crearEmpleadoBtn.addEventListener('click', (e) => {
             e.preventDefault();
-            alert("crear proveedor clikeado")
             location.hash = '#crearProveedores';
         });
 

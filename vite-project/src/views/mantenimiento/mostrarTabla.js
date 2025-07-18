@@ -243,13 +243,11 @@ export const agregarEventosBotones = async () => {
     tabla.addEventListener('click', async (e) => {
         if (e.target.classList.contains('eliminar')) {
             const mantenimientoId = e.target.dataset.id; // Renombrado
-            if (confirm(`¿Estás seguro de eliminar el Mantenimiento con ID ${mantenimientoId}?`)) { // Mensaje más específico
                 await eliminar_mantenimientos_por_id(mantenimientoId); // Usar el ID correcto
                 allMantenimientos = []; // Vacía la lista de mantenimientos
                 setCurrentPage(1); // Vuelve a la primera página
                 await cargar_tabla(tabla);
-                alert("Mantenimiento eliminado exitosamente."); // Mensaje más específico
-            }
+    
         }
         // Lógica para el botón de editar
         if (e.target.classList.contains('editar')) {

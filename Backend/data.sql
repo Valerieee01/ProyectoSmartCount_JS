@@ -1,5 +1,6 @@
 #Crear un usuario DBA
 create user if not exists usuario_fixmasterAcces@localhost identified by "FixmasterP1";
+
 #Creamos la base de datos 
 create database Fixmaster_P1_DBA;
 
@@ -9,9 +10,7 @@ flush privileges;
 
 **********************************************************************************************************************************
 USE Fixmaster_P1_DBA;
-show tables;
-USE Fixmaster_P1_DBA;
-
+        
 -- Tabla de tipos de identificación
 CREATE TABLE tipos_identificacion (
     id_tipo_identificacion INT AUTO_INCREMENT PRIMARY KEY,
@@ -32,6 +31,7 @@ CREATE TABLE roles (
     nombre_rol VARCHAR(50) NOT NULL UNIQUE
 );
 
+select * from roles;
 -- Tabla de usuarios
 CREATE TABLE usuarios (
     id_usuario INT AUTO_INCREMENT PRIMARY KEY,
@@ -42,9 +42,10 @@ CREATE TABLE usuarios (
     estado ENUM('activo', 'inactivo') DEFAULT 'activo',
     fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_rol) REFERENCES roles(id_rol) ON DELETE CASCADE
+    FOREIGN KEY (id_rol) REFERENCES roles(id_rol) 
 );
 
+alter table usuarios add column refresh_token text;
 -- Tabla de personas (base para clientes, proveedores y empleados)
 CREATE TABLE personas (
     id_persona INT AUTO_INCREMENT PRIMARY KEY,
@@ -59,13 +60,13 @@ CREATE TABLE personas (
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     FOREIGN KEY (id_tipo_identificacion) REFERENCES tipos_identificacion(id_tipo_identificacion) ON DELETE CASCADE,
-    FOREIGN KEY (id_ciudad) REFERENCES ciudades(id_ciudad) ON DELETE CASCADE
+    FOREIGN KEY (id_ciudad) REFERENCES ciudades(id_ciudad)
 );
-
+select * from personas;
 -- Clientes
 CREATE TABLE clientes (
     id_cliente INT PRIMARY KEY,
-    FOREIGN KEY (id_cliente) REFERENCES personas(id_persona) ON DELETE CASCADE
+    FOREIGN KEY (id_cliente) REFERENCES personas(id_persona) 
 );
 
 -- Proveedores
@@ -77,7 +78,7 @@ CREATE TABLE proveedores (
 -- Empleados
 CREATE TABLE empleados (
     id_empleado INT PRIMARY KEY,
-    FOREIGN KEY (id_empleado) REFERENCES personas(id_persona) ON DELETE CASCADE
+    FOREIGN KEY (id_empleado) REFERENCES personas(id_persona)
 );
 
 -- Equipos
@@ -89,9 +90,10 @@ CREATE TABLE equipos (
     id_cliente INT NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente)
 );
 
+SELECT id_equipo, numero_equipo, placa, descripcion, id_cliente, fecha_registro FROM equipos WHERE id_equipo = 1;
 -- Mantenimientos
 -- Se ha integrado la clave foránea id_empleado desde el principio y se eliminó 'encargado'.
 CREATE TABLE mantenimientos (
@@ -104,8 +106,8 @@ CREATE TABLE mantenimientos (
     observaciones TEXT,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo) ON DELETE CASCADE,
-    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE
+    FOREIGN KEY (id_equipo) REFERENCES equipos(id_equipo),
+    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) 
 );
 
 -- Empleados asignados a mantenimientos (muchos a muchos)
@@ -115,8 +117,8 @@ CREATE TABLE empleados_mantenimiento (
     id_mantenimiento INT NOT NULL,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado) ON DELETE CASCADE,
-    FOREIGN KEY (id_mantenimiento) REFERENCES mantenimientos(id_mantenimiento) ON DELETE CASCADE
+    FOREIGN KEY (id_empleado) REFERENCES empleados(id_empleado),
+    FOREIGN KEY (id_mantenimiento) REFERENCES mantenimientos(id_mantenimiento) 
 );
 
 -- Pagos
@@ -137,8 +139,8 @@ CREATE TABLE pagos (
     ) STORED,
     fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     fecha_actualizacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ON DELETE CASCADE,
-    FOREIGN KEY (id_mantenimiento) REFERENCES mantenimientos(id_mantenimiento) ON DELETE CASCADE
+    FOREIGN KEY (id_cliente) REFERENCES clientes(id_cliente) ,
+    FOREIGN KEY (id_mantenimiento) REFERENCES mantenimientos(id_mantenimiento) 
 );
 
 
@@ -363,13 +365,41 @@ INSERT INTO pagos (id_cliente, id_mantenimiento, detalle, valor_trabajo, valor_p
 (1, 25, 'Cambio correas camioneta', 190.00, 0.00, 'pendiente', '2024-07-15', 20),
 (2, 26, 'Diagnóstico ruido taladro', 220.00, 0.00, 'pendiente', '2024-07-16', 30);
 
+SELECT 
+    p.nombre_completo_razon_social, 
+    pa.id_mantenimiento, 
+    pa.detalle, 
+    pa.valor_trabajo, 
+    pa.valor_pagado, 
+    pa.valor_mora, 
+    pa.estado_pago, 
+    pa.dias_plazo, 
+    pa.fecha_vencimiento 
+FROM 
+    pagos pa 
+JOIN 
+    clientes c ON c.id_cliente = pa.id_cliente 
+JOIN 
+    personas p ON p.id_persona = c.id_cliente ;
 
 
-SELECT p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona;
-select * from usuarios;
+SELECT  p.id_persona, p.nombre_completo_razon_social, ti.tipo, p.numero_identificacion, p.correo, p.estado, p.telefono
+	FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona 
+JOIN tipos_identificacion ti ON ti.id_tipo_identificacion = p.id_tipo_identificacion;
+     
+SELECT eq.numero_equipo, m.descripcion_trabajo, p.nombre_completo_razon_social, m.tipo_mantenimiento, m.fecha_mantenimiento, m.observaciones
+	FROM mantenimientos m JOIN empleados e ON m.id_empleado = e.id_empleado  
+JOIN personas p ON p.id_persona = e.id_empleado
+JOIN equipos eq ON eq.id_equipo = m.id_equipo;
 
-SELECT p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.telefono 
-FROM personas p 
-JOIN clientes c ON c.id_cliente = p.id_persona 
-WHERE c.id_cliente = 1;
 
+
+PORT=3000
+DB_HOST=localhost
+DB_USER=usuario_fixmasterAcces
+DB_PASSWORD=FixmasterP1
+DB_NAME=Fixmaster_P1_DBA
+ACCESS_TOKEN_SECRET=fixmasterSecrestToken
+REFRESH_TOKEN_SECRET=fixmasterRefreshSecrestToken
+TOKEN_EXPIRATION=1h
+REFRESH_EXPIRATION=7d
