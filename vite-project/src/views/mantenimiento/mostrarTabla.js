@@ -64,7 +64,7 @@ export const crearFila = ({id_mantenimiento, id_equipo, descripcion_trabajo, id_
     const btnEditar = document.createElement("a");
  
     btnEditar.setAttribute("data-id", id_mantenimiento);
-    btnEditar.setAttribute("href", `#editarManto/${id_mantenimiento}`); // Cambiado a #editarcliente si es de equipos
+    btnEditar.setAttribute("href", `#editarMantenimiento/${id_mantenimiento}`); // Cambiado a #editarcliente si es de equipos
 
     btnEliminar.setAttribute("data-id", id_mantenimiento);
  
@@ -151,9 +151,9 @@ export const agregarEventosBotones = async () => {
         // Puedes añadir aquí la lógica para el botón de editar
         if (e.target.classList.contains('editar')) {
             // El href ya maneja la navegación, pero si necesitas JS adicional:
-             const clienteId = e.target.dataset.id;
-             console.log("Editar Mantenimiento con ID:", clienteId);
-             location.hash = `#editarMantenimiento/${clienteId}`; // Ya se maneja con el href
+             const mantenimientoId = e.target.dataset.id;
+             console.log("Editar Mantenimiento con ID:", mantenimientoId);
+             location.hash = `#editarMantenimiento/${mantenimientoId}`; // Ya se maneja con el href
         }
     });
 };

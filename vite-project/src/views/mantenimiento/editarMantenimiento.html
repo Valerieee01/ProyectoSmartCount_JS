@@ -6,10 +6,10 @@
             <h1 class="form-title">Editar Mantenimiento</h1>
             <form id="mantenimientoForm"> <!-- ID del formulario para JavaScript -->
                 <div class="form-grid">
-                    <!-- Equipo Asociado (REQUIRED - Select dinámico) -->
+                    <!-- Equipo Asociado  - Select dinámico) -->
                     <div class="form-group">
                         <label for="id_equipo" class="form-label">Equipo Asociado</label>
-                        <select id="id_equipo" name="id_equipo" class="form-select" required>
+                        <select id="id_equipo" name="id_equipo" class="form-select">
                             <option value="">-- Seleccione un equipo --</option>
                             <!-- Las opciones de equipos se cargarán aquí dinámicamente con JavaScript -->
                         </select>
@@ -25,21 +25,21 @@
                         <small class="form-text-muted">Opcional: Si no se selecciona, el campo será NULL en la base de datos.</small>
                     </div>
 
-                    <!-- Tipo de Mantenimiento (REQUIRED - ENUM) -->
+                    <!-- Tipo de Mantenimiento  - ENUM) -->
                     <div class="form-group">
                         <label for="tipo_mantenimiento" class="form-label">Tipo de Mantenimiento</label>
-                        <select id="tipo_mantenimiento" name="tipo_mantenimiento" class="form-select" required>
+                        <select id="tipo_mantenimiento" name="tipo_mantenimiento" class="form-select">
                             <option value="">-- Seleccione el tipo --</option>
                             <option value="preventivo">Preventivo</option>
                             <option value="correctivo">Correctivo</option>
                         </select>
                     </div>
 
-                    <!-- Fecha de Mantenimiento (REQUIRED) -->
+                    <!-- Fecha de Mantenimiento ) -->
                     <div class="form-group">
                         <label for="fecha_mantenimiento" class="form-label">Fecha de Mantenimiento</label>
                         <input type="date" id="fecha_mantenimiento" name="fecha_mantenimiento"
-                            class="form-input" required>
+                            class="form-input">
                     </div>
 
                     <!-- Descripción del Trabajo -->

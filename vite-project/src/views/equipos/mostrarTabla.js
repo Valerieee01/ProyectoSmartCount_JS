@@ -7,8 +7,8 @@ import listarEquipos from "../../casos_de_uso/Equipos/listarEquipos.js"; // Debe
 
 // --- Variables Globales para Paginación y Filtrado de Equipos ---
 // Estas variables se exportan para que otros módulos (como equiposController.js) puedan acceder a ellas.
-export const ITEMS_PER_PAGE_EQUIPOS = 4; 
-export let currentPageEquipos = 1;       
+export const ITEMS_PER_PAGE_EQUIPOS = 4;
+export let currentPageEquipos = 1;
 export let allEquipos = [];              // Almacena TODOS los equipos obtenidos de la API
 
 // Variables para persistir los filtros activos
@@ -54,7 +54,7 @@ export const cargar_tabla_equipos = async (tabla) => {
     if (allEquipos.length === 0) {
       const response = await listarEquipos(); // Llama a tu API para obtener todos los equipos.
       console.log();
-      
+
       allEquipos = response.data; // Asume que los datos están en 'response.data'.
       console.log("[mostrarTablaEquipos] Datos iniciales de todos los equipos cargados:", allEquipos);
       if (allEquipos.length > 0) {
@@ -260,21 +260,12 @@ export const agregarEventosBotonesEquipos = async (tabla) => {
   tabla.addEventListener('click', async (e) => {
     if (e.target.classList.contains('eliminar')) {
       const equipoId = e.target.dataset.id;
-      if (confirm(`¿Estás seguro de eliminar el Equipo con ID ${equipoId}?`)) {
-        try {
-          console.log(`[mostrarTablaEquipos] Iniciando eliminación de equipo con ID: ${equipoId}`);
-          await eliminar_equipos_por_id(equipoId);
 
-          alert("Equipo eliminado exitosamente.");
+      console.log(`[mostrarTablaEquipos] Iniciando eliminación de equipo con ID: ${equipoId}`);
+      await eliminar_equipos_por_id(equipoId);
+      // Forzar recarga de todos los equipos después de la eliminación.
+      await forceReloadAllEquipos();
 
-          // Forzar recarga de todos los equipos después de la eliminación.
-          await forceReloadAllEquipos();
-
-        } catch (error) {
-          console.error("Error al eliminar equipo:", error);
-          alert("Error al eliminar equipo. Inténtalo de nuevo.");
-        }
-      }
     }
     if (e.target.classList.contains('editar')) {
       const equipoId = e.target.dataset.id;

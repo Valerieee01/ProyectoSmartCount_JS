@@ -4,12 +4,12 @@ import EquipoService from "../services/EquipoServices.js";
 class EquiposController {
 
   // Obtener todas las equipos
-  static getAllEquipos = async (req, res) => {    
+  static getAllEquipos = async (req, res) => {
     try {
       // Llamamos al servicio para obtener las equipos
-      const response = await EquipoService.getEquipos();   
+      const response = await EquipoService.getEquipos();
       // Validamos si no hay equipos
-      if (response.error) {        
+      if (response.error) {
         // Llamamos el equipo para centralizar los mensajes de respuesta
         return ResponseProvider.error(
           res,
@@ -24,7 +24,7 @@ class EquiposController {
           response.message,
           response.code
         );
-       }
+      }
     } catch (error) {
       // Llamamos el equipo para centralizar los mensajes de respuesta
       ResponseProvider.error(res, "Error al interno en el servidor", 500);
@@ -44,7 +44,7 @@ class EquiposController {
           response.message,
           response.code
         );
-      } else {        
+      } else {
         // Llamamos el equipo para centralizar los mensajes de respuesta
         return ResponseProvider.success(
           res,
@@ -95,7 +95,7 @@ class EquiposController {
     const campos = req.body;
     try {
       // Crear una instancia de la clase Categoria
-      const clientes = await EquipoService.updateCliente(id, campos);
+      const clientes = await EquipoService.updateEquipo(id, campos);
       // Validamos si no se pudo actualizar la categoría
       if (clientes.error) {
         ResponseProvider.error(
@@ -111,7 +111,7 @@ class EquiposController {
         clientes.message,
         clientes.code
       );
-    } catch (error) {
+    } catch (error) {      
       // Llamamos el equipo para centralizar los mensajes de respuesta
       ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }

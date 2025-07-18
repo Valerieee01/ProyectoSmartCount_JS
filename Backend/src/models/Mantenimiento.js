@@ -1,29 +1,31 @@
 import connection from "../utils/db.js";
 
 class Mantenimiento {
-    
-    async getAll() {
-        try {
-            const [rows] = await connection.query("SELECT * FROM mantenimientos");
-            return rows; 
-        } catch (error) {
-            throw new Error("Error al obtener los mantenmientos");
-        }
-    }
 
-    async getById() {
-        try {
-            const [rows] = await connection.query( "SELECT * FROM mantenimientos WHERE id = ?",[id]);
-            if (rows.length === 0) {
-                return []; // Retorna un array vacío si no se encuentra la mantenimiento
-            }
-        return [];
-        } catch (error) {
-                  throw new Error("Error al obtener la mantenimiento");
-        }
+  async getAll() {
+    try {
+      const [rows] = await connection.query("SELECT * FROM mantenimientos");
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener los mantenmientos");
     }
+  }
 
-    // Método para crear una nueva categoría
+  async getById(id) {
+    try {
+      const [rows] = await connection.query("SELECT id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones FROM mantenimientos WHERE id_mantenimiento = ?", [id]);
+      if (rows.length === 0) {
+        return []; // Retorna un array vacío si no se encuentra la mantenimiento
+      }
+      return rows[0];
+    } catch (error) {
+      console.log(error);
+
+      throw new Error("Error al obtener la mantenimiento");
+    }
+  }
+
+  // Método para crear una nueva categoría
   async create(id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones) {
     try {
       const [result] = await connection.query(
@@ -40,7 +42,7 @@ class Mantenimiento {
     }
   }
 
-   async update(id, campos) {
+  async update(id, campos) {
     try {
       let query = "UPDATE mantenimientos SET ";
       let params = [];
@@ -64,7 +66,7 @@ class Mantenimiento {
     }
   }
 
-   // Método para eliminar una Mantenimiento
+  // Método para eliminar una Mantenimiento
   async delete(id_mantenimiento) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(

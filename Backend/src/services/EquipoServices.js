@@ -59,10 +59,10 @@ class EquipoService {
     }
   }
 
-  static async createEquipo(id_equipo) {
+  static async createEquipo(numero_equipo, placa, descripcion, id_cliente) {
     try {
       const EquipoInstance = new Equipo();
-      const Equipos = await EquipoInstance.create(id_equipo);
+      const Equipos = await EquipoInstance.create(numero_equipo, placa, descripcion, id_cliente);
       // Validamos si no se pudo crear la categoría      
       if (Equipos === null) {
         return {
@@ -78,18 +78,18 @@ class EquipoService {
         message: "Equipo creada correctamente",
         data: Equipos,
       };
-    } catch (error) {
+    } catch (error) {      
       return {
         error: true,
         code: 500,
-        message: "Error interno al crear la Equipo",
+        message: "Error interno al crear la Equipo, verifica si ya existe",
       };
     }
   }
 
   static async updateEquipo(id, campos) { 
+    const EquipoInstance = new Equipo();
     try {
-      const EquipoInstance = new Equipo();
       // Consultamos la Equipo por id
       const EquipoExistente = await EquipoInstance.getById(id);
       // Validamos si no existe la Equipo
@@ -116,7 +116,9 @@ class EquipoService {
         message: "Equipo actualizada correctamente",
         data: Equipo,
       };
-    } catch (error) {
+    } catch (error) {   
+      console.log(error);
+         
       return {
         error: true,
         code: 500,
@@ -162,7 +164,7 @@ class EquipoService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al eliminar el Equipo",
+        message: "Error interno al eliminar el Equipo, verifica si tiene mantenimientos asociados",
       };
     }
   }

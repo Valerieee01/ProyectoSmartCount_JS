@@ -16,7 +16,7 @@ export const eliminar_equipos_por_id = async (id) => {
       icon: 'success',
       confirmButtonText: 'Cool'
     })
-    location.hash = "#empleados";
+    location.hash = "#equipos";
   } else {
     console.log(response);
     Swal.fire({

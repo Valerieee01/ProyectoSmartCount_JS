@@ -1,29 +1,31 @@
 import connection from "../utils/db.js";
 
 class Equipo {
-    
-    async getAll() {
-        try {
-            const [rows] = await connection.query("SELECT * FROM equipos");
-            return rows; 
-        } catch (error) {
-            throw new Error("Error al obtener los equipos");
-        }
-    }
 
-    async getById(id) {
-        try {
-            const [rows] = await connection.query( "SELECT * FROM equipos WHERE id = ?",[id]);
-            if (rows.length === 0) {
-                return []; // Retorna un array vacío si no se encuentra el equipo
-            }
-        return [];
-        } catch (error) {
-                  throw new Error("Error al obtener el equipo");
-        }
+  async getAll() {
+    try {
+      const [rows] = await connection.query("SELECT id_equipo,  numero_equipo, placa, descripcion, id_cliente, fecha_registro FROM equipos");
+      return rows;
+    } catch (error) {
+      throw new Error("Error al obtener los equipos");
     }
+  }
 
-    // Método para crear una nueva categoría
+  async getById(id) {
+    try {
+      const [rows] = await connection.query("SELECT id_equipo, numero_equipo, placa, descripcion, id_cliente, fecha_registro FROM equipos WHERE id_equipo = ?", [id]);
+      if (rows.length === 0) {
+        return []; // Retorna un array vacío si no se encuentra el equipo
+      }
+      return rows[0];
+    } catch (error) {
+      console.log(error);
+      
+      throw new Error("Error al obtener el equipo");
+    }
+  }
+
+  // Método para crear una nueva categoría
   async create(numero_equipo, placa, descripcion, id_cliente) {
     try {
       const [result] = await connection.query(
@@ -40,7 +42,7 @@ class Equipo {
     }
   }
 
-   async update(id, campos) {
+  async update(id, campos) {
     try {
       let query = "UPDATE equipos SET ";
       let params = [];
@@ -55,7 +57,7 @@ class Equipo {
       query = query.slice(0, -2);
 
       // Añadimos la condición WHERE para seleccionar el producto por su ID
-      query += " WHERE id = ?";
+      query += " WHERE id_equipo = ?";
       params.push(id);
       const [result] = await connection.query(query, params);
       return result.affectedRows > 0 ? { id, ...campos } : null;
@@ -64,7 +66,7 @@ class Equipo {
     }
   }
 
-   // Método para eliminar una Equipo
+  // Método para eliminar una Equipo
   async delete(id_equipo) {
     // Procedemos con la eliminación si no está relacionada
     const [result] = await connection.query(

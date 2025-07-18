@@ -22,6 +22,9 @@ import { initCrearEmpleadoForm } from "../views/empleado/crearEmpleadoController
 import { initCrearProveedoresForm } from "../views/proveedores/crearProveedoresController.js";
 import { editarControllerEqu } from "../views/equipos/editarController.js";
 import { editarControllerCat } from "../views/cliente/editarController.js";
+import { initCrearEquipoForm } from "../views/equipos/crearEquipoController.js";
+import { editarControllerMnto } from "../views/mantenimiento/editarController.js";
+import { initCrearMantenimientosForm } from "../views/mantenimiento/crearMantenimientoController.js";
 
 const routes = {
   "home": {
@@ -86,7 +89,7 @@ const routes = {
   },
   "crearEquipo": {
     template: "equipos/crearEquipo.html",
-    controlador: initEquiposController,
+    controlador: initCrearEquipoForm,
     private: true,
   },
   "mantenimiento": {
@@ -97,12 +100,12 @@ const routes = {
   
   "editarMantenimiento/:id": {
     template: "mantenimiento/editarMantenimiento.html",
-    controlador: mantenimientoController,
+    controlador: editarControllerMnto,
     private: true,
   },
   "crearMantenimiento": {
     template: "mantenimiento/crearMantenimientos.html",
-    controlador: mantenimientoController,
+    controlador: initCrearMantenimientosForm,
     private: true,
   },
   "pagos": {
