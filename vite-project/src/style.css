@@ -45,18 +45,6 @@ a {
   height: 100vh;
 }
 
-#contenido {
-  display: flex;
-  flex-direction: column;
-  /* Esto es clave para que los elementos se apilen verticalmente */
-  justify-content: center;
-  /* Centra el contenido (la tabla, el título, el paginador) */
-  align-items: center;
-  /* Centra los elementos flexibles individualmente en el eje cruzado */
-  width: 100%;
-  /* Asegúrate de que #contenido ocupe todo el ancho disponible */
-}
-
 /* Contenedor principal de la vista, si tiene algún max-width o centrado */
 #contenido {
   display: flex;
@@ -198,82 +186,6 @@ a {
 }
 
 
-* Estilos generales de la tabla */ .table {
-  width: 100%;
-  border-collapse: collapse;
-  /* Para eliminar el espacio entre celdas */
-  margin-bottom: 1.5rem;
-  /* Espacio debajo de la tabla */
-  background-color: #f5f5f5;
-  /* Fondo blanco para la tabla */
-  border-radius: 8px;
-  /* Bordes ligeramente redondeados */
-  overflow: hidden;
-  /* Asegura que el radio de borde se aplique a los hijos */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  /* Sombra suave para darle profundidad */
-}
-
-/* Encabezado de la tabla */
-.table thead {
-  background-color: var(--primary-color);
-  /* Un azul oscuro o gris oscuro para el encabezado */
-  color: #ffffff;
-  /* Texto blanco para contraste */
-}
-
-.table th {
-  padding: 12px 15px;
-  /* Espaciado interno */
-  text-align: left;
-  /* Alineación del texto a la izquierda */
-  font-weight: 600;
-  /* Un poco más de negrita */
-  border: 2px solid var(--primary-color-dark);
-  /* Borde inferior más oscuro para separar */
-  text-transform: uppercase;
-  /* Texto en mayúsculas */
-  font-size: 0.9em;
-  /* Un poco más pequeño */
-  letter-spacing: 0.5px;
-  /* Pequeño espacio entre letras */
-  border-radius: 10px;
-}
-
-/* Filas y celdas del cuerpo */
-.table tbody tr {
-  border-bottom: 1px solid #e0e0e0;
-  /* Divisor suave entre filas */
-  transition: background-color 0.3s ease;
-  /* Transición suave al pasar el mouse */
-}
-
-.table tbody tr:last-child {
-  border-bottom: none;
-  /* Eliminar el borde inferior de la última fila */
-}
-
-.table tbody tr:hover {
-  background-color: #f5f5f5;
-  /* Cambio de color al pasar el mouse */
-}
-
-.table td {
-  padding: 10px 15px;
-  /* Espaciado interno */
-  vertical-align: middle;
-  /* Alineación vertical */
-  color: #333333;
-  /* Color de texto oscuro */
-  font-size: 0.95em;
-  /* Tamaño de fuente ligeramente más pequeño */
-}
-
-/* Estilo para el divisor de grupo (si usas Bootstrap) */
-.table-group-divider {
-  border-top: 2px solid #dee2e6;
-  /* Un divisor más prominente si lo necesitas */
-}
 
 /* Contenedor de botones en las acciones */
 .botonera {

@@ -4,7 +4,7 @@ class Usuario {
 
   // Método para obtener todos los usuarios
   // Este método es de instancia, no estático, por lo que se llama en una instancia de la clase.
-   async getAll() {
+  async getAll() {
     try {
       const [rows] = await connection.query("SELECT * FROM usuarios");
       return rows;
@@ -15,7 +15,7 @@ class Usuario {
   }
 
   // Método para obtener un usuario por su ID (id_usuario es la clave primaria)
-   async getById(id_usuario) { // Recibe el ID del usuario
+  async getById(id_usuario) { // Recibe el ID del usuario
     try {
       const [rows] = await connection.query("SELECT * FROM usuarios WHERE id_usuario = ?", [id_usuario]);
       if (rows.length === 0) {
@@ -31,47 +31,24 @@ class Usuario {
   // Método para obtener el perfil completo de un usuario por su ID.
   // Este método está diseñado para la vista de perfil en el frontend,
   // y puede incluir datos de tablas relacionadas si existen.
+  // Método para obtener el perfil completo de un usuario por su ID.
    async getProfileById(id_usuario) {
-    try {
+  try {
+    const [rows] = await connection.query(
+      "SELECT id_usuario, nombreCompleto, correo, contrasena ,id_rol, estado FROM usuarios WHERE id_usuario = ?",
+      [id_usuario]
+    );
 
-      const [rows] = await connection.query(`
-                SELECT 
-    u.id_usuario, 
-    u.nombreCompleto AS nombre_completo_razon_social, 
-    u.correo, 
-    u.estado, 
-    u.id_rol, 
-    r.nombre_rol
-FROM usuarios u
-LEFT JOIN roles r ON u.id_rol = r.id_rol;
-            `, [id_usuario]);
-
-      if (rows.length === 0) {
-        return null;
-      }
-
-      // Mapea los nombres de las columnas a lo que tu frontend espera.
-      // Si los campos comentados no están en tu DB/JOIN, el frontend deberá manejarlos como 'No disponible'.
-      const profile = {
-        id_usuario: rows[0].id_usuario,
-        nombre_completo_razon_social: rows[0].nombre_completo_razon_social, // Ya es un alias
-        correo: rows[0].correo,
-        estado: rows[0].estado, // El estado del usuario
-        id_rol: rows[0].id_rol,
-        nombre_rol: rows[0].nombre_rol,
-
-
-      };
-      return profile;
-    } catch (error) {
-      console.error(`Error en el modelo (getProfileById) para ID ${id_usuario}:`, error);
-      throw new Error("Error al obtener el perfil del usuario desde la base de datos.");
-    }
+    return rows[0];
+  } catch (error) {
+    console.error(error);
+    throw error;
   }
+}
 
 
   // Buscar un usuario por su correo electrónico
-   async findByEmail(email) {
+  async findByEmail(email) {
     try {
       const [rows] = await connection.query("SELECT * FROM usuarios WHERE correo = ?", [email]);
       if (rows.length === 0) {
@@ -85,7 +62,7 @@ LEFT JOIN roles r ON u.id_rol = r.id_rol;
   }
 
   // Crear un nuevo usuario
-   async create(nombreCompleto, correo, id_rol, contrasena) {
+  async create(nombreCompleto, correo, id_rol, contrasena) {
     try {
       const [result] = await connection.query(
         "INSERT INTO usuarios (nombreCompleto, correo, id_rol, contrasena) VALUES (?, ?, ?, ?)",
@@ -106,7 +83,7 @@ LEFT JOIN roles r ON u.id_rol = r.id_rol;
   }
 
   // Actualizar un usuario por su ID
-   async update(id_usuario, campos) {
+  async update(id_usuario, campos) {
     try {
       let query = "UPDATE usuarios SET ";
       let params = [];
@@ -139,7 +116,7 @@ LEFT JOIN roles r ON u.id_rol = r.id_rol;
   }
 
   // Actualizar el refresh token de un usuario
-   async updateRefreshToken(id_usuario, refreshToken) {
+  async updateRefreshToken(id_usuario, refreshToken) {
     try {
       await connection.query("UPDATE usuarios SET refresh_token = ? WHERE id_usuario = ?", [
         refreshToken,
@@ -154,7 +131,7 @@ LEFT JOIN roles r ON u.id_rol = r.id_rol;
   }
 
   // Eliminar un usuario por su ID
-   async delete(id_usuario) {
+  async delete(id_usuario) {
     try {
       const [result] = await connection.query("DELETE FROM usuarios WHERE id_usuario = ?", [id_usuario]);
       if (result.affectedRows === 0) {

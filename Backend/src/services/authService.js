@@ -2,7 +2,7 @@
 import jwt from "jsonwebtoken";
 import dotenv from "dotenv";
 import bcrypt from "bcryptjs";
-import  Usuario  from "../models/Usuario.js";
+import Usuario from "../models/Usuario.js";
 
 dotenv.config();
 
@@ -31,10 +31,10 @@ class AuthService {
       // Hashear la contraseña || encriptar la contraseña
       const hashedPassword = await bcrypt.hash(password, 10);
       // Registramos el usuario en la base de datos
-      const userId = await UsuarioInstance.create(nombre, email, id_rol,hashedPassword);
+      const userId = await UsuarioInstance.create(nombre, email, id_rol, hashedPassword);
       // Retornamos la respuesta
       return { error: false, code: 201, message: "Usuario creado" };
-    } catch (error) {      
+    } catch (error) {
       return { error: true, code: 500, message: "Error al crear el usuario" };
     }
   }
@@ -45,7 +45,7 @@ class AuthService {
    * @returns
    */
   static async login(email, password) {
-    
+
     try {
       const UsuarioInstance = new Usuario();
 
@@ -60,7 +60,7 @@ class AuthService {
         };
       // Comparmamos la contraseña del usuarios registrado con la ingresada basado en la llave de encriptación
       const validPassword = await bcrypt.compare(password, user.contrasena);
-      
+
       // Validamos si la contraseña es la misma
       if (!validPassword)
         return {
@@ -86,75 +86,64 @@ class AuthService {
       };
     } catch (error) {
       console.log(error);
-      
+
       return { error: true, code: 500, message: "Error en el servidor" };
     }
   }
 
-  /**
-   *
-   * @param {*} user
-   * @returns
-   */
   static generateAccessToken(user) {
     return jwt.sign(
       {
-        id: user.id,
-        email: user.email,
-        // Podemos pasar más datos
+        id_usuario: user.id_usuario,
+        correo: user.correo,
+        nombreCompleto: user.nombreCompleto,
+        id_rol: user.id_rol
       },
       secretKey,
       { expiresIn: tokenExpiration }
     );
   }
 
-  /**
-   *
-   * @param {*} user
-   * @returns
-   */
   static generateRefreshToken(user) {
     return jwt.sign(
       {
-        id: user.id,
-        email: user.email,
-        // Podemos pasar más datos
+        id_usuario: user.id_usuario,
+        correo: user.correo
       },
       refreshSecretKey,
       { expiresIn: refreshExpiration }
     );
   }
-
   /**
    *
    * @param {*} refreshToken
    */
-  static async verifyAccessToken(refreshToken) {    
-    try {      
+  static async verifyAccessToken(refreshToken) {
+    try {
       // Verificamos el token
       const decoded = jwt.verify(refreshToken, refreshSecretKey);
-      
+
       // Consultamos los datos del usuario en la base de datos
       const user = await Usuario.findByEmail(decoded.email);
       if (!user || user.refresh_token !== refreshToken) {
         return { error: true, code: 403, message: "Token inválido" };
       }
-      
+
       // Generamos nuevo access token
       const accessToken = this.generateAccessToken(user);
       // Validamos si tenemos que renovar el token de refreso y asignamos el nuevo
       refreshToken = await this.renewAccessToken(refreshToken, user);
       // Retornamos los token
-        return {
-          error: false,
-          code: 201,
-          message: "Token actualizado correctamente",
-          data: {
+      return {
+        error: false,
+        code: 201,
+        message: "Token actualizado correctamente",
+        data: {
           accessToken,
           refreshToken,
-          },
-        };
-    } catch (error) {      
+        },
+      };
+    } catch (error) {
       if (error.name === "TokenExpiredError") {
         return {
           error: true,
@@ -183,11 +172,11 @@ class AuthService {
         { id: decoded.id },
         refreshSecretKey,
         {
-        expiresIn: refreshExpiration,
+          expiresIn: refreshExpiration,
         }
       );
       // Actualizamos el token de refresco en la base de datos
-      await Usuario.updateRefreshToken(user.id, newRefreshToken);      
+      await Usuario.updateRefreshToken(user.id, newRefreshToken);
     }
     // Si aún es válido, no renueva el token
     return newRefreshToken;

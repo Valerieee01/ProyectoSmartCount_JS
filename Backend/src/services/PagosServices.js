@@ -59,10 +59,10 @@ class PagoService {
     }
   }
 
-  static async createPago(id_equipo) {
+  static async createPago(id_cliente, id_mantenimiento, detalle , valor_trabajo, valor_pagado, estado_pago, fecha_facturacion, dias_plazo ) {
     try {
       const PagoInstance = new Pago();
-      const Pagos = await PagoInstance.create(id_equipo);
+      const Pagos = await PagoInstance.create(id_cliente, id_mantenimiento, detalle , valor_trabajo, valor_pagado, estado_pago, fecha_facturacion, dias_plazo );
       // Validamos si no se pudo crear la categoría      
       if (Pagos === null) {
         return {
@@ -88,8 +88,8 @@ class PagoService {
   }
 
   static async updatePago(id, campos) { 
+    const PagoInstance = new Pago();
     try {
-      const PagoInstance = new Pago();
       // Consultamos la Pago por id
       const PagoExistente = await PagoInstance.getById(id);
       // Validamos si no existe la Pago
@@ -117,6 +117,7 @@ class PagoService {
         data: Pago,
       };
     } catch (error) {
+      console.log(error);
       return {
         error: true,
         code: 500,
@@ -126,6 +127,7 @@ class PagoService {
   }
 
   static async deletePago(id) { 
+    
     try {
       const PagoInstance = new Pago();
       // Consultamos el Pago por id
@@ -157,7 +159,6 @@ class PagoService {
         data: PagoExistente,
       };
     } catch (error) {
-      console.log(error);
       
       return {
         error: true,

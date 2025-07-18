@@ -7,6 +7,7 @@
     margin: 40px auto; /* Centra la tarjeta y da espacio */
     max-width: 600px; /* Ancho máximo de la tarjeta */
     text-align: center;
+    overflow-wrap: break-word; 
 }
 
 .user-profile-card h1 {
@@ -16,6 +17,7 @@
     border-bottom: 2px solid #eee;
     padding-bottom: 15px;
 }
+
 
 .profile-info p {
     font-size: 1.1em;

@@ -1,6 +1,7 @@
 import Swal from "sweetalert2";
 import { encabezados } from "../../helpers/solicitudes.js";
 import { error, success } from "../../helpers/alerts.js";
+import { forceReloadAllMantenimientos } from "./mostrarTabla.js";
 
 export const editarMantenimientoController = (a) => {
 
@@ -35,6 +36,7 @@ export const editarMantenimientoController = (a) => {
         if (response.success) {
             form.reset();
             success(response);
+            forceReloadAllMantenimientos();
             location.hash = "#mantenimiento";
         } else {
             console.error("Error de la API:", response);

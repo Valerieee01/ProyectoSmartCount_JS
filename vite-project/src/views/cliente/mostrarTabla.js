@@ -121,7 +121,7 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
 };
 
 
-export const crearFila = ({ id_persona, nombre_completo_razon_social, id_tipo_identificacion, numero_identificacion, correo, telefono, estado }, tabla) => {
+export const crearFila = ({ id_persona, nombre_completo_razon_social, tipo, numero_identificacion, correo, telefono, estado }, tabla) => {
   const tBody = tabla.querySelector("tbody");
   const tr = tBody.insertRow();
   const tdNombre = tr.insertCell(0);
@@ -133,7 +133,7 @@ export const crearFila = ({ id_persona, nombre_completo_razon_social, id_tipo_id
   const tdBotonera = tr.insertCell(6);
 
   tdNombre.textContent = nombre_completo_razon_social;
-  tdTipoId.textContent = id_tipo_identificacion;
+  tdTipoId.textContent = tipo;
   tdNumId.textContent = numero_identificacion;
   tdCorreo.textContent = correo;
   tdTelefono.textContent = telefono;

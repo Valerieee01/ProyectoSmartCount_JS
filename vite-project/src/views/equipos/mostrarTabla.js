@@ -53,7 +53,6 @@ export const cargar_tabla_equipos = async (tabla) => {
   try {
     if (allEquipos.length === 0) {
       const response = await listarEquipos(); // Llama a tu API para obtener todos los equipos.
-      console.log();
 
       allEquipos = response.data; // Asume que los datos están en 'response.data'.
       console.log("[mostrarTablaEquipos] Datos iniciales de todos los equipos cargados:", allEquipos);
@@ -160,7 +159,18 @@ export const crearFilaEquipo = ({ id_equipo, numero_equipo, placa, descripcion, 
   tdDescripcion.textContent = descripcion;
   // Muestra el nombre del cliente si viene de la unión, o el ID si solo tienes el ID.
   tdCliente.textContent = nombre_cliente || id_cliente;
-  tdFechaRegistro.textContent = fecha_registro
+
+  // Formatear la fecha de mantenimiento
+    if (fecha_registro) {
+        const dateObj = new Date(fecha_registro);
+        if (!isNaN(dateObj.getTime())) {
+            tdFechaRegistro.textContent = dateObj.toLocaleDateString(); // Formato local de fecha
+        } else {
+            tdFechaRegistro.textContent = 'Fecha inválida';
+        }
+    } else {
+        tdFechaRegistro.textContent = 'N/A';
+    }
 
   const div = document.createElement("div");
   const btnEliminar = document.createElement("a");
@@ -190,7 +200,7 @@ export const crearFilaEquipo = ({ id_equipo, numero_equipo, placa, descripcion, 
  */
 const renderPaginatorEquipos = (tabla, totalFilteredEquipos) => {
   const totalPages = Math.ceil(totalFilteredEquipos / ITEMS_PER_PAGE_EQUIPOS);
-  const paginatorContainer = document.querySelector("#paginatorEquipos"); // ID del paginador de equipos
+  const paginatorContainer = document.querySelector("#paginator"); // ID del paginador de equipos
 
   if (!paginatorContainer) {
     console.error("Contenedor del paginador (#paginatorEquipos) no encontrado.");

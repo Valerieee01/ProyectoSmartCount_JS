@@ -22,7 +22,7 @@ class MantenimientoService {
         message: "Mantenimientos obtenidos correctamente",
         data: Mantenimientos,
       };
-    } catch (error) {      
+    } catch (error) {     
       return {
         error: true,
         code: 500,
@@ -59,10 +59,10 @@ class MantenimientoService {
     }
   }
 
-  static async createMantenimiento(id_equipo) {
+  static async createMantenimiento(id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones) {
     try {
       const MantenimientoInstance = new Mantenimiento();
-      const Mantenimientos = await MantenimientoInstance.create(id_equipo);
+      const Mantenimientos = await MantenimientoInstance.create(id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones);
       // Validamos si no se pudo crear la categoría      
       if (Mantenimientos === null) {
         return {
@@ -88,8 +88,8 @@ class MantenimientoService {
   }
 
   static async updateMantenimiento(id, campos) { 
+    const MantenimientoInstance = new Mantenimiento();
     try {
-      const MantenimientoInstance = new Mantenimiento();
       // Consultamos la Mantenimiento por id
       const MantenimientoExistente = await MantenimientoInstance.getById(id);
       // Validamos si no existe la Mantenimiento
@@ -117,6 +117,8 @@ class MantenimientoService {
         data: Mantenimiento,
       };
     } catch (error) {
+      console.log(error);
+      
       return {
         error: true,
         code: 500,
@@ -162,7 +164,7 @@ class MantenimientoService {
       return {
         error: true,
         code: 500,
-        message: "Error interno al eliminar el Mantenimiento",
+        message: "Error interno al eliminar el Mantenimiento, revise si tiene registros relacionados",
       };
     }
   }

@@ -4,7 +4,7 @@ class Pago {
     // Método para obtener todos los pagos
     async getAll() {
         try {
-            const [rows] = await connection.query("SELECT  p.nombre_completo_razon_social, pa.id_mantenimiento, pa.detalle,  pa.valor_trabajo, " +
+            const [rows] = await connection.query("SELECT pa.id_pago, p.nombre_completo_razon_social, pa.id_mantenimiento, pa.detalle,  pa.valor_trabajo, " +
                 " pa.valor_pagado, pa.valor_mora, pa.estado_pago, pa.dias_plazo, pa.fecha_vencimiento " + 
                 "FROM pagos pa " +
                 "JOIN clientes c ON c.id_cliente = pa.id_cliente " +
@@ -94,7 +94,6 @@ class Pago {
                 mensaje: "Pago eliminado exitosamente.",
             };
         } catch (error) {
-            console.error("Error al eliminar el pago:", error);
             throw new Error("Error al eliminar el pago.");
         }
     }

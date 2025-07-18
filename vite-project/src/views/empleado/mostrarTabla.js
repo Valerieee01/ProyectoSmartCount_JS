@@ -10,16 +10,16 @@ export let allEmpleados = [];
 let currentNameFilter = null; // Variable global para persistir el filtro de nombre
 let currentStateFilter = null; // Variable global para persistir el filtro de estado
 
-export const forceReloadAllEmpleados= async () => {
-    allEmpleados = []; // Vacía la caché de Empleados.
-    currentPage = 1; // Resetea a la primera página.
+export const forceReloadAllEmpleados = async () => {
+  allEmpleados = []; // Vacía la caché de Empleados.
+  currentPage = 1; // Resetea a la primera página.
 
-    const tabla = document.querySelector("#tableEmpleados");
-    if (tabla) {
-        await cargar_tabla(tabla);
-    } else {
-        console.warn("[mostrarTabla] No se encontró la tabla de personas para recargar.");
-    }
+  const tabla = document.querySelector("#tableEmpleados");
+  if (tabla) {
+    await cargar_tabla(tabla);
+  } else {
+    console.warn("[mostrarTabla] No se encontró la tabla de personas para recargar.");
+  }
 };
 
 export const setCurrentPage = (newPage) => {
@@ -81,11 +81,10 @@ export const cargar_tabla_con_filtros = async (tabla, nombreFilter = null, estad
       empleado.nombre_completo_razon_social.toLowerCase().includes(lowerCaseNameFilter)
     );
   } else if (currentStateFilter && currentStateFilter !== '') { // <-- CONDICIÓN MEJORADA: solo verifica que no sea vacío.
-    // También captura la opción por defecto ("Seleccione Estado...") si no se cambia.
     const lowerCaseEstadoFilter = currentStateFilter.toLowerCase();
 
     clientsToFilter = clientsToFilter.filter(empleado => {
- 
+
       return empleado.estado && // Verifica que la propiedad 'estado' exista
         typeof empleado.estado === 'string' && // Asegura que es un string
         empleado.estado.toLowerCase() === lowerCaseEstadoFilter; // Compara

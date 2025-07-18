@@ -88,7 +88,7 @@ const asideBar = (asideContainer) => {
     labelClick.setAttribute('for', 'click');
 
     aHome.setAttribute('href', '#inicio');
-    aUsuario.setAttribute('href', '#usuario');
+    aUsuario.setAttribute('href', '#user/me');
     aCiente.setAttribute('href', '#cliente');
     aEmpleado.setAttribute('href', '#empleado');
     aMantenimiento.setAttribute('href', '#mantenimiento');
@@ -134,7 +134,7 @@ const asideBar = (asideContainer) => {
 
     const menuItems = [
         { element: liHome, hash: '#inicio' },
-        { element: liUsuario, hash: '#usuario' },
+        { element: liUsuario, hash: '#user/me' },
         { element: liCliente, hash: '#cliente' },
         { element: liEmpleado, hash: '#empleado' },
         { element: liMantenimiento, hash: '#mantenimiento' },

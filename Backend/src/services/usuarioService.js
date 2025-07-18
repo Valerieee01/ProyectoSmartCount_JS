@@ -65,10 +65,10 @@ class UsuarioService {
 
   // Método para obtener el perfil de un usuario por su ID (usado para la vista "Mi Perfil")
   static async getProfileById(id_usuario) { // Parámetro corregido a id_usuario
+    const usuariosInstance = new Usuario();
     try {
-      const usuariosInstance = new Usuario();
       const profile = await usuariosInstance.getProfileById(id_usuario); // El modelo devuelve null o un objeto
-
+      
       // Si el modelo devuelve null, el perfil no fue encontrado.
       if (!profile) {
         return {

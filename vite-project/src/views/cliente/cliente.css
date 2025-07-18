@@ -138,3 +138,178 @@
      /* mb-8 */
      text-align: center;
  }
+ 
+
+
+/* --- Variables CSS --- */
+/* Es buena práctica definir tus colores principales aquí si no lo has hecho ya. */
+:root {
+    --primary-color: #007bff;        /* Azul principal */
+    --primary-color-dark: #0056b3;   /* Azul oscuro para hover/bordes */
+    --accent-color-edit: #dbb433;    /* Amarillo/Naranja para editar */
+    --accent-color-delete: #d86733;  /* Rojo/Naranja para eliminar */
+    --table-bg-color: #ffffff;       /* Fondo blanco para la tabla */
+    --table-header-bg: var(--primary-color); /* Fondo del encabezado */
+    --table-border-color: #e0e0e0;   /* Borde suave entre filas */
+    --text-color-dark: #333333;      /* Color de texto oscuro */
+    --text-color-light: #ffffff;     /* Color de texto claro */
+    --hover-bg-color: #f8f8f8;       /* Color de fondo al pasar el mouse */
+    --paginator-border-color: var(--primary-color);
+    --paginator-text-color: var(--primary-color-dark);
+}
+
+
+/* --- Estilos generales de la tabla --- */
+.table {
+    width: 100%;
+    border-collapse: collapse; /* Elimina el espacio entre celdas */
+    margin-bottom: 1.5rem; /* Espacio debajo de la tabla */
+    background-color: var(--table-bg-color); /* Fondo blanco para la tabla */
+    border-radius: 8px; /* Bordes ligeramente redondeados para la tabla completa */
+    overflow: hidden; /* ¡CRÍTICO! Asegura que el border-radius se aplique a los hijos y que el contenido se trunque si se desborda */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Sombra suave para darle profundidad */
+    table-layout: fixed; /* ¡CRÍTICO! Distribuye el ancho de las columnas de forma fija */
+}
+
+/* --- Encabezado de la tabla (thead, th) --- */
+.table thead {
+    background-color: var(--table-header-bg);
+    color: var(--text-color-light);
+}
+
+.table th {
+    padding: 12px 15px;
+    text-align: left;
+    font-weight: 600;
+    /* Borde inferior para separar el encabezado del cuerpo */
+    border-bottom: 2px solid var(--primary-color-dark); 
+    text-transform: uppercase;
+    font-size: 0.9em;
+    letter-spacing: 0.5px;
+    /* Los border-radius en TH individuales son problemáticos con border-collapse y overflow:hidden en .table.
+       Es mejor aplicar el redondeo solo a las esquinas de la tabla en general. */
+    border-radius: 0; 
+    /* Asegura que el texto se envuelva si es muy largo en el encabezado */
+    word-wrap: break-word; 
+}
+
+/* Redondeo de las esquinas superiores de la tabla (no de cada TH) */
+.table thead tr:first-child th:first-child {
+    border-top-left-radius: 8px;
+}
+.table thead tr:first-child th:last-child {
+    border-top-right-radius: 8px;
+}
+
+
+/* --- Filas y celdas del cuerpo (tbody, tr, td) --- */
+.table tbody tr {
+    border-bottom: 1px solid var(--table-border-color); /* Divisor suave entre filas */
+    transition: background-color 0.3s ease; /* Transición suave al pasar el mouse */
+}
+
+.table tbody tr:last-child {
+    border-bottom: none; /* Eliminar el borde inferior de la última fila */
+}
+
+.table tbody tr:hover {
+    background-color: var(--hover-bg-color); /* Cambio de color al pasar el mouse */
+}
+
+.table td {
+    padding: 10px 15px;
+    vertical-align: middle; /* Alineación vertical del contenido en la celda */
+    color: var(--text-color-dark);
+    font-size: 0.95em;
+    /* --- ¡CRÍTICO PARA EL AJUSTE DE TEXTO! --- */
+    word-wrap: break-word; /* Permite que las palabras largas se rompan y pasen a la siguiente línea */
+    /* white-space: normal; // Asegura que el texto se envuelva (es el valor por defecto, pero explícito es bueno) */
+    /* overflow: hidden; // Oculta el contenido que se desborde si no se envuelve o se trunca */
+    /* text-overflow: ellipsis; // Muestra '...' si el texto se trunca (requiere white-space: nowrap y overflow: hidden) */
+}
+
+/* Estilo para el divisor de grupo (si usas Bootstrap, ya tienes esta clase) */
+.table-group-divider {
+    border-top: 2px solid #dee2e6; 
+}
+
+/* --- Ajustes de Ancho para Columnas Específicascon table-layout: fixed!) --- */
+/* Estos anchos deben sumar 100% para la tabla de Mantenimientos (7 columnas) */
+/* Ajusta los porcentajes según la importancia y longitud esperada del contenido de cada columna */
+/* Columnas de Mantenimientos: Número de Equipo, Descripción de trabajo, Empleado, Tipo Mantenimiento, Fecha, Observaciones, Acciones */
+.table th:nth-child(1), .table td:nth-child(1) { 
+    width: 12%; 
+}
+.table th:nth-child(2), .table td:nth-child(2) { 
+    width: 20%; 
+}
+.table th:nth-child(3), .table td:nth-child(3) { 
+    width: 15%;
+}
+.table th:nth-child(4), .table td:nth-child(4) { 
+    width: 12%;
+}
+.table th:nth-child(5), .table td:nth-child(5) { 
+    width: 12%;
+}
+.table th:nth-child(6), .table td:nth-child(6) { 
+    width: 18%; 
+}
+.table th:nth-child(7), .table td:nth-child(7) { /* Acciones */
+    width: 11%; /* Suficiente espacio para 2 botones */
+    text-align: center; /* Centrar los botones */
+}
+/* Suma de porcentajes: 12 + 20 + 15 + 12 + 12 + 18 + 11 = 100% */
+
+
+/* --- Ajuste para el contenedor de botones en las celdas de acción --- */
+.botonera {
+    display: flex; /* Asegura que los botones se alineen horizontalmente */
+    gap: 5px; /* Espacio más pequeño entre botones para celdas estrechas */
+    justify-content: center; /* Centra los botones en la celda */
+    align-items: center;
+}
+
+
+#tablePagos th:nth-child(1), #tablePagos td:nth-child(1) { /* Cliente */
+    width: 10%; 
+}
+#tablePagos th:nth-child(2), #tablePagos td:nth-child(2) { /* Id Mantenimiento */
+    width: 10%; 
+}
+#tablePagos th:nth-child(3), #tablePagos td:nth-child(3) { /* Detalle */
+    width: 15%; 
+}
+#tablePagos th:nth-child(4), #tablePagos td:nth-child(4) { /* Valor trabajo */
+    width: 10%; 
+}
+#tablePagos th:nth-child(5), #tablePagos td:nth-child(5) { /* Valor Pagado */
+    width: 10%; 
+}
+#tablePagos th:nth-child(6), #tablePagos td:nth-child(6) { /* Valor Mora */
+    width: 8%; 
+}
+#tablePagos th:nth-child(7), #tablePagos td:nth-child(7) { /* Estado Pago */
+    width: 10%; 
+}
+#tablePagos th:nth-child(8), #tablePagos td:nth-child(8) { /* Dias Plazo */
+    width: 5%; 
+}
+#tablePagos th:nth-child(9), #tablePagos td:nth-child(9) { /* Fecha Vencimiento */
+    width: 10%; 
+}
+#tablePagos th:nth-child(10), #tablePagos td:nth-child(10) { /* Acciones */
+    width: 12%; /* Suficiente para los botones */
+    text-align: center;
+}
+/* Suma de porcentajes: 15+10+15+10+10+8+10+5+10+7 = 100% */
+
+/* --- Asegúrate que el paginador de pagos tenga su ID correcto --- */
+#paginatorPagos { /* Si tu paginador de pagos tiene un ID diferente a #paginator */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 25px;
+    gap: 10px;
+}
+/* Si solo tienes un paginador en la página y su ID es #paginator, entonces no necesitas este selector específico */

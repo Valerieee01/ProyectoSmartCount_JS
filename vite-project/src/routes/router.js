@@ -25,6 +25,9 @@ import { editarControllerCat } from "../views/cliente/editarController.js";
 import { initCrearEquipoForm } from "../views/equipos/crearEquipoController.js";
 import { editarControllerMnto } from "../views/mantenimiento/editarController.js";
 import { initCrearMantenimientosForm } from "../views/mantenimiento/crearMantenimientoController.js";
+import { initCrearPagosForm } from "../views/pagos/crearPagoscONTROLLER.JS";
+import { initEditarPagosForm } from "../views/pagos/editarController.js";
+import { editarControllerUser } from "../views/user/editarController.js";
 
 const routes = {
   "home": {
@@ -115,12 +118,12 @@ const routes = {
   },
   "editarPagos/:id": {
     template: "pagos/editarPagos.html",
-    controlador: pagosController,
+    controlador: initEditarPagosForm,
     private: true,
   },
   "crearPagos": {
     template: "pagos/crearPagos.html",
-    controlador: pagosController,
+    controlador: initCrearPagosForm,
     private: true,
   },
   "proveedores": {
@@ -143,11 +146,19 @@ const routes = {
     controlador: reportesController,
     private: true,
   },
-  "usuario": {
+  "user/me": {
     template: "user/index.html",
     controlador: initUserProfile,
     private: true,
-  }, "personas": {
+
+  }, 
+  "editarUser/me": {
+    template: "user/editarUser.html",
+    controlador: editarControllerUser,
+    private: true,
+
+  }, 
+  "personas": {
     template: "personas/index.html",
     controlador: personasController,
     private: true,

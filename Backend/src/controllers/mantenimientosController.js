@@ -26,6 +26,8 @@ class MantenimientoController {
         );
        }
     } catch (error) {
+            console.log(error);      
+
       // Llamamos el mantenimiento para centralizar los mensajes de respuesta
       ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }
@@ -35,7 +37,7 @@ class MantenimientoController {
   static getMantenimientosById = async (req, res) => {
     const { id } = req.params;
     try {
-      // Llamamos al servicio para obtener la categoría por su ID
+      // Llamamos al servicio para obtener el mantenimiento por su ID
       const response = await MantenimientoService.getMantenimientosById(id);
       if (response.error) {
         // Llamamos el mantenimiento para centralizar los mensajes de respuesta
@@ -61,10 +63,10 @@ class MantenimientoController {
 
   // Crear una nueva categoría
   static createMantenimiento = async (req, res) => {
-    const { numero_mantenimiento, placa, descripcion, id_cliente } = req.body;
+    const { id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones } = req.body;
     try {
       const response = await MantenimientoService.createMantenimiento(
-        numero_mantenimiento, placa, descripcion, id_cliente
+        id_equipo, descripcion_trabajo, id_empleado, tipo_mantenimiento, fecha_mantenimiento, observaciones
       );
       if (response.error) {
         // Llamamos el mantenimiento para centralizar los mensajes de respuesta
@@ -112,6 +114,8 @@ class MantenimientoController {
         clientes.code
       );
     } catch (error) {
+      console.log(error);
+      
       // Llamamos el mantenimiento para centralizar los mensajes de respuesta
       ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }

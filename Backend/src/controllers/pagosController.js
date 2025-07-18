@@ -61,10 +61,10 @@ class PagoController {
 
   // Crear una nueva pago
   static createPago = async (req, res) => {
-    const { numero_pago, placa, descripcion, id_cliente } = req.body;
+    const { id_cliente, id_mantenimiento, detalle , valor_trabajo, valor_pagado, estado_pago, fecha_facturacion, dias_plazo  } = req.body;
     try {
       const response = await PagoService.createPago(
-        numero_pago, placa, descripcion, id_cliente
+        id_cliente, id_mantenimiento, detalle , valor_trabajo, valor_pagado, estado_pago, fecha_facturacion, dias_plazo 
       );
       if (response.error) {
         // Llamamos el pago para centralizar los mensajes de respuesta
@@ -91,6 +91,7 @@ class PagoController {
   // Actualizar una categoría
   static updatePago = async (req, res) => {
     const { id } = req.params;
+    
     // Los campos a actualizar se pasan en el cuerpo de la solicitud
     const campos = req.body;
     try {
@@ -111,7 +112,7 @@ class PagoController {
         clientes.message,
         clientes.code
       );
-    } catch (error) {
+    } catch (error) {      
       // Llamamos el pago para centralizar los mensajes de respuesta
       ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }
@@ -120,6 +121,7 @@ class PagoController {
   // Eliminar un pago
   static deletePago = async (req, res) => {
     const { id } = req.params;
+    
     try {
       // Llamamos al servicio para eliminar la pago
       const response = await PagoService.deletePago(id);

@@ -1,44 +1,46 @@
+<!-- src/views/mantenimientos/index.html -->
+
 <div id="contenidoVista">
     <div id="contenido">
         <div class="tituloTable">
             <h1>Gestión de Mantenimientos</h1>
             <div class="buscadorContenedor">
+                <!-- Campo de búsqueda por Número de Equipo (antes "Nombre Empleado") -->
                 <div class="input-box buscador">
-                    <input type="text" placeholder="Nombre Empleado" id="nombre">
-                    <i class="ri-user-5-line"></i>
+                    <input type="text" placeholder="Número de Equipo" id="numero_equipo_buscar">
+                    <i class="ri-barcode-line"></i> <!-- Icono más apropiado para equipo -->
                 </div>
+                <!-- Campo de filtro por Tipo de Mantenimiento -->
                 <div class="input-box buscador">
-                    <select name="option" id="estado">
-                        <option value="activo">Seleccione Estado...</option>
-                        <option value="activo">Activo</option>
-                        <option value="inactivo">Inactivo</option>
+                    <select name="tipo_mantenimiento" id="tipo_mantenimiento_buscar"> 
+                        <option value="">Seleccione Tipo Mantenimiento...</option>
+                        <option value="preventivo">Preventivo</option>
+                        <option value="correctivo">Correctivo</option>
                     </select>
                 </div>
-                <a href="" class="btn buscarTabla">Buscar</a>
-                <a href="#crearMantenimiento" class="btn buscarTabla">Crear Mantenimiento</a>
+                <a href="#" class="btn buscarTabla">Buscar</a> <!-- href="#" es mejor que href="" -->
+                <a href="#crearMantenimiento" class="btn btn-primary">Crear Mantenimiento</a> <!-- Clase btn-primary para consistencia -->
 
             </div>
+            <table class="table" id="tableMantenimientos">
+                <thead>
+                    <tr>
+                        <th scope="col">Número de Equipo</th>
+                        <th scope="col">Descripción de Trabajo</th>
+                        <th scope="col">Empleado</th>
+                        <th scope="col">Tipo Mantenimiento</th>
+                        <th scope="col">Fecha de Mantenimiento</th>
+                        <th scope="col">Observaciones</th>
+                        <th scope="col">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody class="table-group-divider">
+                    <!-- Las filas se cargarán aquí -->
+                </tbody>
+            </table>
         </div>
-        <table class="table" id="tableMantenimientos">
-            <thead>
-                <tr>
-                    <th scope="col">Id Equipo</th>
-                    <th scope="col">Descripcion de trabajo</th>
-                    <th scope="col">Empleado</th>
-                    <th scope="col">Tipo Manteniiento</th>
-                    <th scope="col">Fecha de Mantenimiento</th>
-                    <th scope="col">Observaciones</th>
 
-                    <th scope="col">Acciones</th>
-
-                </tr>
-            </thead>
-            <tbody class="table-group-divider">
-
-            </tbody>
-        </table>
-
-        <div id="paginator" style="margin-top: 20px; text-align: center;">
+        <div id="paginator" style="margin-top: 20px; text-align: center;"> <!-- ¡ID CORREGIDO! -->
         </div>
     </div>
 </div>

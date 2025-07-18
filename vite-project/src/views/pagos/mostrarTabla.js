@@ -151,12 +151,25 @@ export const crearFila = ({ id_pago, nombre_completo_razon_social, id_mantenimie
     tdDiasPlazo.textContent = dias_plazo;
     tdFechaVencimiento.textContent = fecha_vencimiento;
 
+    // Formatear la fecha de mantenimiento
+    if (fecha_vencimiento) {
+        const dateObj = new Date(fecha_vencimiento);
+        if (!isNaN(dateObj.getTime())) {
+            tdFechaVencimiento.textContent = dateObj.toLocaleDateString(); // Formato local de fecha
+        } else {
+            tdFechaVencimiento.textContent = 'Fecha inválida';
+        }
+    } else {
+        tdFechaVencimiento.textContent = 'N/A';
+    }
+
+
     const div = document.createElement("div");
     const btnEliminar = document.createElement("a");
     const btnEditar = document.createElement("a");
 
     btnEditar.setAttribute("data-id", id_pago);
-    btnEditar.setAttribute("href", `#editarPago/${id_pago}`); // Cambiado a #editarcliente si es de equipos
+    btnEditar.setAttribute("href", `#editarPagos/${id_pago}`); // Cambiado a #editarcliente si es de equipos
 
     btnEliminar.setAttribute("data-id", id_pago);
 
@@ -242,6 +255,8 @@ export const agregarEventosBotones = async () => {
     tabla.addEventListener('click', async (e) => {
         if (e.target.classList.contains('eliminar')) {
             const pagosId = e.target.dataset.id;
+            console.log(pagosId);
+            
             await eliminar_pagos_por_id(pagosId);
             allPagos = [];
             setCurrentPage(1);

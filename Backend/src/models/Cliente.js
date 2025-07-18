@@ -4,7 +4,9 @@ class Cliente {
 
   async getAll() {
     try {
-      const [rows] = await connection.query("SELECT  p.id_persona, p.nombre_completo_razon_social, p.id_tipo_identificacion, p.numero_identificacion, p.correo, p.estado, p.telefono FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona ");
+      const [rows] = await connection.query("SELECT  p.id_persona, p.nombre_completo_razon_social, ti.tipo, p.numero_identificacion, p.correo, p.estado, p.telefono"
+        + " FROM personas p JOIN clientes c ON c.id_cliente = p.id_persona "
+      + "JOIN tipos_identificacion ti ON ti.id_tipo_identificacion = p.id_tipo_identificacion");
       return rows;
     } catch (error) {
       console.log(error);

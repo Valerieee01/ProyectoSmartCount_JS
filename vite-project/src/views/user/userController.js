@@ -1,10 +1,10 @@
 // src/controllers/userController.js
 
-import { 
-    updateAuthenticatedUserProfile, 
-    deleteAuthenticatedUserProfile, 
-    getAuthenticatedUserProfile 
-} from '../../casos_de_uso/usuario/obtenerUsuario.js';
+import {
+    updateAuthenticatedUserProfile,
+    deleteAuthenticatedUserProfile,
+    getAuthenticatedUserProfile
+} from '../../casos_de_uso/usuario/obtenerUsuario.js'; // Asegúrate de que esta ruta sea correcta para tu archivo API
 
 import { cleanLocalStorage } from '../../helpers/auth.js';
 
@@ -13,12 +13,18 @@ export const initUserProfile = async () => {
 
     const userNameSpan = document.querySelector('#userName');
     const userEmailSpan = document.querySelector('#userEmail');
-    const userTipoIdSpan = document.querySelector('#userTipoId');
-    const userNumIdSpan = document.querySelector('#userNumId');
-    const userPhoneSpan = document.querySelector('#userPhone');
-    const editProfileBtn = document.querySelector('#editProfileBtn');
-    const deleteAccountBtn = document.querySelector('#deleteAccountBtn');
+    const userPasswordSpan = document.querySelector('#userPassword');
+    const userRolSpan = document.querySelector('#userRol');
+    const userEstadoSpan = document.querySelector('#userEstado');
     const profileMessageDiv = document.querySelector('#profileMessage');
+    const deleteAccountBtn = document.querySelector('#deleteAccountBtn');
+    const editProfileBtn = document.querySelector('#editProfileBtn');
+
+    if (!userNameSpan || !deleteAccountBtn || !editProfileBtn) {
+        console.error("Error: Algunos elementos esenciales del perfil de usuario no se encontraron en el DOM.");
+        return;
+    }
+
 
     if (!userNameSpan || !deleteAccountBtn || !editProfileBtn) {
         console.error("Error: Algunos elementos esenciales del perfil de usuario no se encontraron en el DOM.");
@@ -28,13 +34,20 @@ export const initUserProfile = async () => {
     const loadUserProfile = async () => {
         try {
             const userData = await getAuthenticatedUserProfile();
+            console.log(userData);
+
 
             if (userData) {
-                userNameSpan.textContent = userData.nombre_completo_razon_social || userData.nombreCompleto || 'No disponible';
-                userEmailSpan.textContent = userData.correo || 'No disponible';
-                userTipoIdSpan.textContent = userData.tipo_identificacion_nombre || userData.id_tipo_identificacion || 'No disponible';
-                userNumIdSpan.textContent = userData.numero_identificacion || 'No disponible';
-                userPhoneSpan.textContent = userData.telefono || 'No disponible';
+                userNameSpan.textContent = (userData.data).nombreCompleto || userData.nombreCompleto || 'No disponible';
+                userEmailSpan.textContent = (userData.data).correo || 'No disponible';
+                userPasswordSpan.textContent = (userData.data).contrasena || 'No disponible';
+                userRolSpan.textContent = (userData.data).id_rol || 'No disponible';
+                userEstadoSpan.textContent = (userData.data).estado || 'No disponible';
+
+                if (userData?.data?.id_usuario) {
+                    editProfileBtn.dataset.userId = (userData.data).id_usuario;
+                    deleteAccountBtn.dataset.userId = (userData.data).id_usuario;
+                }
             } else {
                 profileMessageDiv.textContent = 'No se pudo cargar la información del usuario.';
                 profileMessageDiv.className = 'message error';
@@ -48,31 +61,36 @@ export const initUserProfile = async () => {
 
     editProfileBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        location.hash = '#editarusuario';
+        // Si el ID se necesita para la ruta de edición, asegúrate de que esté en el dataset
+        const userId = e.target.dataset.userId;
+        console.log(userId);
+        location.hash = `#editarUser/me`;
+
     });
 
     deleteAccountBtn.addEventListener('click', async (e) => {
         e.preventDefault();
+        try {
+            const userId = e.target.dataset.userId;
 
-        if (confirm("¿Estás seguro de que quieres eliminar tu cuenta? Esta acción es irreversible.")) {
-            try {
-                await deleteAuthenticatedUserProfile(); 
 
-                profileMessageDiv.textContent = 'Cuenta eliminada exitosamente. Redirigiendo...';
-                profileMessageDiv.className = 'message success';
+            await deleteAuthenticatedUserProfile(userId);
 
-                cleanLocalStorage();
+            profileMessageDiv.textContent = 'Cuenta eliminada exitosamente. Redirigiendo...';
+            profileMessageDiv.className = 'message success';
 
-                setTimeout(() => {
-                    location.hash = '#home';
-                    window.dispatchEvent(new Event('modificandoHeader'));
-                }, 2000);
-            } catch (error) {
-                console.error("Error al eliminar la cuenta:", error);
-                profileMessageDiv.textContent = `Error al eliminar cuenta: ${error.message}`;
-                profileMessageDiv.className = 'message error';
-            }
+            cleanLocalStorage();
+
+            setTimeout(() => {
+                location.hash = '#home';
+                window.dispatchEvent(new Event('modificandoHeader'));
+            }, 2000);
+        } catch (error) {
+            console.error("Error al eliminar la cuenta:", error);
+            profileMessageDiv.textContent = `Error al eliminar cuenta: ${error.message}`;
+            profileMessageDiv.className = 'message error';
         }
+
     });
 
     await loadUserProfile();

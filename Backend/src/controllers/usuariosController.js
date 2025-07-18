@@ -7,14 +7,14 @@ class UsuarioController {
 
     // Método para obtener todos los usuarios
     // Se usa, por ejemplo, para una vista de administración que lista todos los usuarios.
-    static getAllUsuarios = async (req, res) => { 
+    static getAllUsuarios = async (req, res) => {
         try {
             const response = await UsuarioService.getUsuarios(); // Llama al servicio para obtener todos los usuarios.
-            
+
             // Si el servicio devuelve un error, usa ResponseProvider.error.
-            if (response.error) { 
+            if (response.error) {
                 return ResponseProvider.error(res, response.message, response.code);
-            } 
+            }
             // Si es exitoso, usa ResponseProvider.success.
             return ResponseProvider.success(res, response.data, response.message, response.code);
         } catch (error) {
@@ -39,27 +39,27 @@ class UsuarioController {
         }
     };
 
- 
+
     // Método para obtener el perfil del usuario AUTENTICADO.
     // Este es el método clave para la vista "Mi Perfil" en el frontend.
     static getMe = async (req, res) => {
-        // autenticado a `req.user` (ej. `req.user.id_usuario`).
-        if (!req.user || !req.user.id_usuario) {
-            // Si no hay información de usuario en la request, significa que no está autenticado o el token es inválido.
-            return ResponseProvider.error(res, "Usuario no autenticado o ID no disponible.", 401);
-        }
-        const id_usuario_autenticado = req.user.id_usuario; // Extrae el ID del usuario del token/sesión.
-
         try {
-            // Llama al servicio para obtener el perfil completo del usuario autenticado.
-            const response = await UsuarioService.getProfileById(id_usuario_autenticado);
-            if (response.error) {
-                return ResponseProvider.error(res, response.message, response.code);
+            const id_usuario = req.user?.id_usuario; // Asegúrate de que este campo exista en el token
+
+            if (!id_usuario) {
+                return ResponseProvider.error(res, "ID de usuario no encontrado en el token", 401);
             }
-            return ResponseProvider.success(res, response.data, response.message, response.code);
+
+            const user = await UsuarioService.getProfileById(id_usuario); // Este método debe devolver los datos del usuario
+
+            if (!user) {
+                return ResponseProvider.error(res, "Usuario no encontrado", 404);
+            }
+            console.log(user);
+            
+            return ResponseProvider.success(res,  user, "Perfil de usuario obtenido correctamente.");
         } catch (error) {
-            console.error("Error en UsuarioController.getMe:", error);
-            ResponseProvider.error(res, "Error interno en el servidor al obtener el perfil del usuario autenticado.", 500);
+            return ResponseProvider.error(res, "Error al obtener el perfil del usuario", 500);
         }
     };
 
@@ -69,7 +69,7 @@ class UsuarioController {
     static getUsuariosByEmail = async (req, res) => {
         const { correo } = req.params; // Si el correo viene en params, o req.query.correo si es query param.
         console.log("Buscando usuario por correo:", correo); // Log para depuración.
-        
+
         try {
             const response = await UsuarioService.getUsuariosByEmail(correo);
             if (response.error) {
@@ -86,12 +86,12 @@ class UsuarioController {
     // Los datos del nuevo usuario vienen en el cuerpo de la solicitud (req.body).
     static createUsuario = async (req, res) => {
         // Desestructurar los campos que se esperan del body.
-        const { nombreCompleto, correo, id_rol, contrasena } = req.body; 
+        const { nombreCompleto, correo, id_rol, contrasena } = req.body;
         try {
             // Llama al servicio para crear el usuario.
             // Asume que la 'contrasena' ya viene hasheada por un middleware de autenticación,
             // o que el servicio se encarga de hashearla antes de pasarla al modelo.
-            const response = await UsuarioService.createUsuario(nombreCompleto, correo, id_rol, contrasena); 
+            const response = await UsuarioService.createUsuario(nombreCompleto, correo, id_rol, contrasena);
             if (response.error) {
                 return ResponseProvider.error(res, response.message, response.code);
             }
@@ -104,18 +104,13 @@ class UsuarioController {
 
     // Método para actualizar un usuario existente.
     static updateUsuario = async (req, res) => {
-        const { id } = req.params; // ID del usuario a actualizar.
+        const { id } = req.params;
         const campos = req.body; // Campos a actualizar, pasados en el cuerpo de la solicitud.
 
-        // NOTA: Si este endpoint es para que un usuario actualice *su propio* perfil,
-        // Y la ruta es /api/user/me (con 'me' en params), necesitarías obtener el ID de req.user
-        // y usarlo en lugar de 'id' de params, o añadir validación de autorización.
-        // Ejemplo:
-        // if (id === 'me' && req.user && req.user.id_usuario) {
-        //     id = req.user.id_usuario; // Usar el ID del token
-        // } else if (id !== req.user.id_usuario && req.user.id_rol !== ROL_ADMIN) {
-        //     return ResponseProvider.error(res, "No tiene permisos para actualizar este usuario.", 403);
-        // }
+    
+         if (id === 'me' && req.user && req.user.id_usuario) {
+             id = req.user.id_usuario; // Usar el ID del token
+         }
 
         try {
             const response = await UsuarioService.updateUsuario(id, campos);
