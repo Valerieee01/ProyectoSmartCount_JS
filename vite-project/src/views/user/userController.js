@@ -40,7 +40,7 @@ export const initUserProfile = async () => {
             if (userData) {
                 userNameSpan.textContent = (userData.data).nombreCompleto || userData.nombreCompleto || 'No disponible';
                 userEmailSpan.textContent = (userData.data).correo || 'No disponible';
-                userPasswordSpan.textContent = (userData.data).contrasena || 'No disponible';
+                userPasswordSpan.textContent = 'No disponible';
                 userRolSpan.textContent = (userData.data).id_rol || 'No disponible';
                 userEstadoSpan.textContent = (userData.data).estado || 'No disponible';
 

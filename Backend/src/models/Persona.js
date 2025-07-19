@@ -13,7 +13,7 @@ class Persona {
     
     async getById(id) {
       try {
-        const [rows] = await connection.query( "SELECT * FROM personas WHERE id_persona = ?",[id]);
+        const [rows] = await connection.query( "SELECT * FROM personas p WHERE id_persona = ?",[id]);
         console.log(rows);
         
         if (rows.length === 0) {
