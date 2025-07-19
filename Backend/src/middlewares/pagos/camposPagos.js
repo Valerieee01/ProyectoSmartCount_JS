@@ -15,6 +15,7 @@ export function camposPagos(req, res, next) {
     } = campo;
 
     const value = req.body[name];
+    
     // Validar si el campo es requerido y está vacío
     if (required && (!value || value.trim() === "")) {
       errors.push({

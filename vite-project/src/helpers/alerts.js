@@ -1,8 +1,7 @@
 import Swal from "sweetalert2";
 
 export const success = (response) => {
-
-  Swal.fire({
+  return Swal.fire({
     title: "¡Muy bien!",
     text: response.message || "Operación realizada con éxito.",
     icon: "success",

@@ -28,15 +28,16 @@ export const editarEquipoController = (a) => {
     });
     const response = await request.json();
     // --- Paso 4: Manejar la respuesta del servidor ---
-         if (response.success) {
-           form.reset();
-           success(response);
-           forceReloadAllEquipos()
-           location.hash = "#equipos";
-         } else {
-           console.error("Error de la API:", response);
-           error(response);
-         }
+    if (response.success) {
+      form.reset();
+      const alert = await success(response);
+      console.log(alert);
+      forceReloadAllEquipos()
+      location.hash = "#equipos";
+    } else {
+      console.error("Error de la API:", response);
+      error(response);
+    }
   }
 
   // Declaración de eventos
