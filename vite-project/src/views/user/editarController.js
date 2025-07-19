@@ -1,6 +1,24 @@
 import { encabezados } from "../../helpers/solicitudes";
 import { editarUserController } from "./editarUserController.js";
 
+const censorEmail = (email) => {
+    if (!email || typeof email !== 'string' || email.indexOf('@') === -1) {
+        return 'Email no válido';
+    }
+
+    const [localPart, domain] = email.split('@');
+    let censoredLocalPart;
+
+    if (localPart.length <= 4) {
+        censoredLocalPart = localPart.substring(0, 1) + '*****'; // Ej: j***
+    } else {
+        censoredLocalPart = localPart.substring(0, 2) + '*****' + localPart.substring(localPart.length - 2); // Ej: ju***lo
+    }
+
+    return `${censoredLocalPart}@${domain}`;
+};
+
+
 export const editarControllerUser = async () => {
     // declaracion de variables
     const nombreCompleto = document.querySelector('#nombreCompleto')
@@ -21,9 +39,7 @@ export const editarControllerUser = async () => {
     
     //Llenando los campos
     nombreCompleto.value = (data.data).nombreCompleto;
-    correo.value = (data.data).correo;
-    contrasena.value = (data.data).contrasena;
-    contrasenaConfirm.value = (data.data).contrasena;
+    correo.value = data.data.correo;
     rol.value = (data.data).id_rol;
     estado.value = (data.data).estado;
     

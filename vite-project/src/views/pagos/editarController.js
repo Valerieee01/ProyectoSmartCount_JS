@@ -20,53 +20,18 @@ export const initEditarPagosForm = async (a) => {
     const detalle = document.querySelector('#detalle')
 
 
-    if (id_cliente_select) {
-        try {
-            const response = await listarClientes();
-            const clientes = response.data;
-
-            if (clientes && clientes.length > 0) {
-                clientes.forEach(cliente => {
-                    const option = document.createElement('option');
-                    option.value = cliente.id_persona;
-                    option.textContent = cliente.nombre_completo_razon_social;
-                    id_cliente_select.appendChild(option);
-                });
-            } else {
-                console.log("[editarControllerManteenimiento] No se encontraron equipos para cargar en el select.");
-            }
-        } catch (error) {
-            console.error("[editarControllerManteenimiento] Error al cargar equipos para el select:", error);
-            const option = document.createElement('option');
-            option.value = "";
-            option.textContent = "Error al cargar Mantenimientos";
-            id_cliente_select.appendChild(option);
-            id_cliente_select.disabled = true;
-        }
-    }
-
-    if (id_mantenimiento_select) {
-        try {
-            const response = await listarMantenimientos();
-            const mantenimientos = response.data;
-
-            if (mantenimientos && mantenimientos.length > 0) {
-                mantenimientos.forEach(manenimiento => {
-                    const option = document.createElement('option');
-                    option.value = manenimiento.id_mantenimiento;
-                    option.textContent = manenimiento.id_mantenimiento;
-                    id_mantenimiento_select.appendChild(option);
-                });
-            } else {
-                console.log("[editarControllerManteenimiento] No se encontraron mantenimientos para cargar en el select.");
-            }
-        } catch (error) {
-            const option = document.createElement('option');
-            option.value = "";
-            option.textContent = "Error al cargar mantenimientos";
-            id_mantenimiento_select.appendChild(option);
-            id_mantenimiento_select.disabled = true;
-        }
+    // 3. Cargar opciones para los selects (Clientes y Mantenimientos) en paralelo.
+    // Esto asegura que los selects estén llenos antes de que el usuario interactúe.
+    try {
+        await Promise.all([
+            cargarOpcionesClientes(id_cliente_select),
+            cargarOpcionesMantenimientos(id_mantenimiento_select)
+        ]);
+    } catch (err) {
+        console.error("[CrearPagos] Error al cargar opciones de selects:", err);
+        error({ message: "Error al cargar las listas de clientes o mantenimientos." });
+        // Deshabilitar el formulario si no se pueden cargar las opciones críticas
+        form.querySelector('button[type="submit"]').disabled = true;
     }
 
     // Solicitud a la API
@@ -94,4 +59,59 @@ export const initEditarPagosForm = async (a) => {
 
 
     editarPagosController(a)
+};
+
+/**
+ * Carga las opciones para el select de Clientes.
+ * @param {HTMLElement} selectElement - El elemento select para clientes.
+ */
+const cargarOpcionesClientes = async (selectElement) => {
+    try {
+        const response = await listarClientes();
+        const clientes = response.data;
+
+        if (clientes && clientes.length > 0) {
+            clientes.forEach(cliente => {
+                const option = document.createElement('option');
+                option.value = cliente.id_persona;
+                option.textContent = cliente.nombre_completo_razon_social;
+                selectElement.appendChild(option);
+            });
+            console.log("[CrearPagos] Select de Clientes cargado con", clientes.length, "clientes.");
+        } else {
+            console.log("[CrearPagos] No se encontraron clientes para cargar en el select.");
+        }
+    } catch (error) {
+        console.error("[CrearPagos] Error al cargar opciones de clientes:", error);
+        error({ message: "Error al cargar la lista de clientes." });
+        selectElement.disabled = true;
+    }
+};
+
+/**
+ * Carga las opciones para el select de Mantenimientos.
+ * @param {HTMLElement} selectElement - El elemento select para mantenimientos.
+ */
+const cargarOpcionesMantenimientos = async (selectElement) => {
+    try {
+        const response = await listarMantenimientos();
+        const mantenimientos = response.data;
+
+        if (mantenimientos && mantenimientos.length > 0) {
+            mantenimientos.forEach(mantenimiento => {
+                const option = document.createElement('option');
+                option.value = mantenimiento.id_mantenimiento;
+                // Muestra una descripción del mantenimiento o el ID del equipo asociado
+                option.textContent = `Mantenimiento ID: ${mantenimiento.id_mantenimiento} - Equipo: ${mantenimiento.numero_equipo || 'N/A'}`;
+                selectElement.appendChild(option);
+            });
+            console.log("[CrearPagos] Select de Mantenimientos cargado con", mantenimientos.length, "mantenimientos.");
+        } else {
+            console.log("[CrearPagos] No se encontraron mantenimientos para cargar en el select.");
+        }
+    } catch (error) {
+        console.error("[CrearPagos] Error al cargar opciones de mantenimientos:", error);
+        error({ message: "Error al cargar la lista de mantenimientos." });
+        selectElement.disabled = true;
+    }
 };

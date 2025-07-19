@@ -9,35 +9,74 @@ export const editarUserController = async (idUsuario) => {
 
     const nombreCompleto = document.querySelector('#nombreCompleto');
     const correo = document.querySelector('#correo');
-    const contrasena = document.querySelector('#contrasena');
-    const contrasenaConfirm = document.querySelector('#confirmar_contrasena');
-    const rol = document.querySelector('#id_rol');
+    const contrasena_input= document.querySelector('#contrasena');
+    const contrasenaConfirm_input = document.querySelector('#confirmar_contrasena');
+    const id_rol = document.querySelector('#id_rol');
     const estado = document.querySelector('#estado');
           
 
     const enviar = async (e) => {
         e.preventDefault();
 
-        if (contrasena.value !== contrasenaConfirm.value) {
-            Swal.fire({
-                title: '¡ERROR!',
-                text: "Las contraseñas deben ser iguales.",
-                icon: 'error',
-                confirmButtonText: 'Ok'
-            });
-            return;
-        }
+        const newPassword = contrasena_input.value.trim();
+        const confirmPassword = contrasenaConfirm_input.value.trim();
 
+        if (newPassword !== "" || confirmPassword !== "") { // Si el usuario intentó cambiar la contraseña
+            if (newPassword !== confirmPassword) {
+                Swal.fire({
+                    title: '¡ERROR!',
+                    text: "Las contraseñas no coinciden.",
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+                return; // Detiene el envío
+            }
+            
+            if (newPassword.length < 6) { // Validación de longitud mínima (debe coincidir con el backend)
+                Swal.fire({
+                    title: '¡ERROR!',
+                    text: "La nueva contraseña debe tener al menos 6 caracteres.",
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+                return; // Detiene el envío
+            }
+
+            // Regex para al menos un número
+            const hasNumber = /[0-9]/.test(newPassword);
+            // Regex para al menos un carácter especial
+            const hasSpecialChar = /[!@#$%^&*()_+\-=\[\]{};':"\\|,.<>\/?~]/.test(newPassword);
+
+            if (!hasNumber) {
+                Swal.fire({
+                    title: '¡ERROR!',
+                    text: "La contraseña debe contener al menos un número.",
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+                return; // Detiene el envío
+            }
+            if (!hasSpecialChar) {
+                Swal.fire({
+                    title: '¡ERROR!',
+                    text: "La contraseña debe contener al menos un carácter especial (ej. !@#$%^&*).",
+                    icon: 'error',
+                    confirmButtonText: 'Ok'
+                });
+                return; // Detiene el envío
+            }
+        }
+  
         const data = {
             nombreCompleto: nombreCompleto.value,
             correo: correo.value,
-            id_rol: id_rol.value,
+            id_rol: parseInt(id_rol.value),
             estado: estado.value,
         };
 
         // Solo enviar contraseña si se escribió
-        if (contrasena.value.trim() !== "") {
-            data.contrasena = contrasena.value;
+        if (contrasena_input.value.trim() !== "") {
+            data.contrasena = newPassword;
         }
 
         try {
@@ -51,11 +90,11 @@ export const editarUserController = async (idUsuario) => {
 
             if (result.code === 200 && !result.error) {
                 form.reset();
-                success(result);
+                await success(result);
                 location.hash = "#user/me";
             } else {
                 console.error("Error en respuesta:", result);
-                error(result);
+                await error(result);
             }
         } catch (err) {
             console.error("Error en la petición:", err);

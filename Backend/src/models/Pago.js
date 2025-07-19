@@ -5,11 +5,11 @@ class Pago {
     async getAll() {
         try {
             const [rows] = await connection.query("SELECT pa.id_pago, p.nombre_completo_razon_social, pa.id_mantenimiento, pa.detalle,  pa.valor_trabajo, " +
-                " pa.valor_pagado, pa.valor_mora, pa.estado_pago, pa.dias_plazo, pa.fecha_vencimiento " + 
+                " pa.valor_pagado, pa.valor_mora, pa.estado_pago, pa.dias_plazo, pa.fecha_vencimiento " +
                 "FROM pagos pa " +
                 "JOIN clientes c ON c.id_cliente = pa.id_cliente " +
                 "JOIN personas p ON p.id_persona = c.id_cliente");
-           return rows;
+            return rows;
         } catch (error) {
             console.error("Error al obtener todos los pagos:", error);
             throw new Error("Error al obtener los pagos.");
@@ -48,7 +48,7 @@ class Pago {
     }
 
     // Método para actualizar un pago
-    async update(id_pago, campos) { // <-- ¡Corregido! Recibe 'id_pago'
+    async update(id_pago, campos) { 
         try {
             let query = "UPDATE pagos SET ";
             let params = [];
@@ -63,9 +63,9 @@ class Pago {
             query = query.slice(0, -2);
 
             // Añadimos la condición WHERE para seleccionar el pago por su ID
-            query += " WHERE id_pago = ?"; // <-- ¡Corregido! Usa 'id_pago'
-            params.push(id_pago); // El ID del pago a actualizar
-            
+            query += " WHERE id_pago = ?"; 
+            params.push(id_pago); 
+
             const [result] = await connection.query(query, params);
             return result.affectedRows > 0 ? { id_pago: id_pago, ...campos } : null;
         } catch (error) {
@@ -75,7 +75,7 @@ class Pago {
     }
 
     // Método para eliminar un pago
-    async delete(id_pago) { // <-- Asume que recibe id_pago
+    async delete(id_pago) { 
         try {
             const [result] = await connection.query(
                 "DELETE FROM pagos WHERE id_pago = ?",
@@ -98,7 +98,6 @@ class Pago {
         }
     }
 
-    // --- NUEVOS MÉTODOS PARA DATOS DE GRÁFICOS ---
 
     // Método para obtener el resumen de pagos por estado (para el gráfico de torta/donut)
     async getPaymentStatusSummary() {

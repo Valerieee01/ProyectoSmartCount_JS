@@ -8,6 +8,24 @@ import {
 
 import { cleanLocalStorage } from '../../helpers/auth.js';
 
+const censorEmail = (email) => {
+    if (!email || typeof email !== 'string' || email.indexOf('@') === -1) {
+        return 'Email no válido';
+    }
+
+    const [localPart, domain] = email.split('@');
+    let censoredLocalPart;
+
+    if (localPart.length <= 4) {
+        censoredLocalPart = localPart.substring(0, 1) + '*****'; // Ej: j***
+    } else {
+        censoredLocalPart = localPart.substring(0, 2) + '*****' + localPart.substring(localPart.length - 2); // Ej: ju***lo
+    }
+
+    return `${censoredLocalPart}@${domain}`;
+};
+
+
 export const initUserProfile = async () => {
     console.log("Inicializando vista de perfil de usuario...");
 
@@ -39,7 +57,7 @@ export const initUserProfile = async () => {
 
             if (userData) {
                 userNameSpan.textContent = (userData.data).nombreCompleto || userData.nombreCompleto || 'No disponible';
-                userEmailSpan.textContent = (userData.data).correo || 'No disponible';
+                userEmailSpan.textContent = censorEmail(userData.data.correo) || 'No disponible'; 
                 userPasswordSpan.textContent = 'No disponible';
                 userRolSpan.textContent = (userData.data).id_rol || 'No disponible';
                 userEstadoSpan.textContent = (userData.data).estado || 'No disponible';

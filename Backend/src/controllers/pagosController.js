@@ -82,7 +82,7 @@ class PagoController {
           response.code
         );
       }
-    } catch (error) {
+    } catch (error) {      
       // Llamamos el pago para centralizar los mensajes de respuesta
       ResponseProvider.error(res, "Error al interno en el servidor", 500);
     }

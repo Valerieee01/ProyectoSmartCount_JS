@@ -1,4 +1,5 @@
 import connection from "../utils/db.js"; // Importa la conexión a tu base de datos
+import bcrypt from 'bcryptjs';
 
 class Usuario {
 
@@ -82,39 +83,43 @@ class Usuario {
     }
   }
 
-  // Actualizar un usuario por su ID
-  async update(id_usuario, campos) {
-    try {
-      let query = "UPDATE usuarios SET ";
-      let params = [];
+  // Método para actualizar un usuario por su ID
+    async update(id_usuario, campos) {
+        try {
+            if (campos.contrasena) {
+                const saltRounds = 10; 
+                campos.contrasena = await bcrypt.hash(campos.contrasena, saltRounds);
+                console.log(`[Usuario.update] Contraseña hasheada para usuario ID: ${id_usuario}`);
+            }
 
-      for (const [key, value] of Object.entries(campos)) {
-        // Validación básica: Asegura que la clave sea un nombre de columna válido para evitar inyecciones.
-        // En un sistema real, se usaría una lista blanca de campos permitidos.
-        // Aquí, asumimos que 'campos' solo contiene claves válidas de la tabla 'usuarios'.
-        query += `${key} = ?, `;
-        params.push(value);
-      }
+            let query = "UPDATE usuarios SET ";
+            let params = [];
 
-      query = query.slice(0, -2); // Eliminar la última ', '
-      query += " WHERE id_usuario = ?";
-      params.push(id_usuario);
+            // Construir la consulta dinámicamente con los campos proporcionados
+            for (const [key, value] of Object.entries(campos)) {
+         
+                query += `${key} = ?, `;
+                params.push(value);
+            }
 
-      const [result] = await connection.query(query, params);
-      if (result.affectedRows === 0) {
-        return null; // No se encontró el usuario o no hubo cambios
-      }
-      return { id_usuario, ...campos }; // Retorna el usuario actualizado con los campos que se intentaron modificar
-    } catch (error) {
-      console.error(`Error en el modelo (update) para ID ${id_usuario}:`, error);
-      // Manejo específico para error de duplicado de correo al actualizar
-      if (error.code === 'ER_DUP_ENTRY' && error.message.includes('correo')) {
-        throw new Error("El correo electrónico ya está registrado.");
-      }
-      throw new Error("Error al actualizar el usuario en la base de datos.");
+            query = query.slice(0, -2); 
+            query += " WHERE id_usuario = ?";
+            params.push(id_usuario);
+
+            const [result] = await connection.query(query, params);
+            if (result.affectedRows === 0) {
+                return null; // No se encontró el usuario o no hubo cambios
+            }
+            return { id_usuario, ...campos }; // Retorna el usuario actualizado con los campos que se intentaron modificar
+        } catch (error) {
+            console.error(`Error en el modelo (update) para ID ${id_usuario}:`, error);
+            // Manejo específico para error de duplicado de correo al actualizar
+            if (error.code === 'ER_DUP_ENTRY' && error.message.includes('correo')) {
+                throw new Error("El correo electrónico ya está registrado.");
+            }
+            throw new Error("Error al actualizar el usuario en la base de datos.");
+        }
     }
-  }
-
   // Actualizar el refresh token de un usuario
   async updateRefreshToken(id_usuario, refreshToken) {
     try {
